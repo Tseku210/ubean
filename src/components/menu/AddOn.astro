@@ -1,0 +1,15 @@
+---
+import { formatPrice } from "@/lib/utils";
+import type { AddOn } from "@/types";
+
+const { name, price, separate } = Astro.props as AddOn;
+---
+
+<div
+  class="bg-secondary text-secondary-foreground space-y-3 rounded-3xl px-8 py-7 w-full"
+>
+  <span class="text-h6 uppercase block">{name}</span>
+  <span class="text-h6"
+    >{separate ? formatPrice(price) : `+${formatPrice(price)}`}</span
+  >
+</div>

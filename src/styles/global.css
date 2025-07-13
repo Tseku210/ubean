@@ -1,0 +1,231 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Ubuntu:ital,wght@0,400;0,500;1,400&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --color-primary: #97d5d0;
+  --color-secondary: #000011;
+  --color-gray1: #484848;
+  --color-gray2: #9d9c9c;
+  --color-gray3: #d8d8d8;
+  --color-red: #d73f3e;
+
+  --font-roboto: "Roboto", sans-serif;
+  --font-ubuntu: "Ubuntu", sans-serif;
+
+  --text-h1: 48px;
+  --text-h1--line-height: 56px;
+  --text-h1--font-weight: 700;
+  --text-h1--font-family: var(--font-roboto);
+  --text-h1--letter-spacing: 0px;
+  --text-h2: 32px;
+  --text-h2--line-height: 40px;
+  --text-h2--font-weight: 700;
+  --text-h2--font-family: var(--font-roboto);
+  --text-h2--letter-spacing: 0px;
+  --text-h3: 28px;
+  --text-h3--line-height: 36px;
+  --text-h3--font-weight: 700;
+  --text-h3--font-family: var(--font-roboto);
+  --text-h3--letter-spacing: 0px;
+  --text-h4: 26px;
+  --text-h4--line-height: 32px;
+  --text-h4--font-weight: 700;
+  --text-h4--font-family: var(--font-roboto);
+  --text-h4--letter-spacing: 0px;
+  --text-h5: 18px;
+  --text-h5--line-height: 24px;
+  --text-h5--font-weight: 600;
+  --text-h5--font-family: var(--font-roboto);
+  --text-h5--letter-spacing: 0px;
+  --text-h6: 16px;
+  --text-h6--line-height: 24px;
+  --text-h6--font-weight: 600;
+  --text-h6--font-family: var(--font-roboto);
+  --text-h6--letter-spacing: 0px;
+  --text-h7: 14px;
+  --text-h7--line-height: 20px;
+  --text-h7--font-weight: 600;
+  --text-h7--font-family: var(--font-roboto);
+  --text-h7--letter-spacing: 0px;
+  --text-b1: 18px;
+  --text-b1--line-height: 26px;
+  --text-b1--font-weight: 400;
+  --text-b1--font-family: var(--font-ubuntu);
+  --text-b1--letter-spacing: 0px;
+  --text-b2: 16px;
+  --text-b2--line-height: 24px;
+  --text-b2--font-weight: 500;
+  --text-b2--font-family: var(--font-ubuntu);
+  --text-b2--letter-spacing: 0px;
+  --text-b3: 14px;
+  --text-b3--line-height: 20px;
+  --text-b3--font-weight: 400;
+  --text-b3--font-family: var(--font-ubuntu);
+  --text-b3--letter-spacing: 0px;
+  --text-b4: 14px;
+  --text-b4--line-height: 18px;
+  --text-b4--font-weight: 400;
+  --text-b4--font-family: var(--font-ubuntu);
+  --text-b4--letter-spacing: 0px;
+  --text-b5: 14px;
+  --text-b5--line-height: 20px;
+  --text-b5--font-weight: 400;
+  --text-b5--font-family: var(--font-ubuntu);
+  --text-b5--letter-spacing: 0px;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --shadow-card: 0px -6px 11px 0px #0000000a;
+}
+
+:root {
+  --color-primary: #97d5d0;
+  --color-secondary: #000011;
+  --color-gray1: #484848;
+  --color-gray2: #9d9c9c;
+  --color-gray3: #d8d8d8;
+  --color-red: #d73f3e;
+
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: #000011;
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.147 0.004 49.25);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.147 0.004 49.25);
+  --primary: #97d5d0;
+  --primary-foreground: #000011;
+  --secondary: #000011;
+  --secondary-foreground: #fff;
+  --muted: oklch(0.97 0.001 106.424);
+  --muted-foreground: oklch(0.553 0.013 58.071);
+  --accent: oklch(0.97 0.001 106.424);
+  --accent-foreground: oklch(0.216 0.006 56.043);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.923 0.003 48.717);
+  --input: oklch(0.923 0.003 48.717);
+  --ring: oklch(0.709 0.01 56.259);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0.001 106.423);
+  --sidebar-foreground: oklch(0.147 0.004 49.25);
+  --sidebar-primary: oklch(0.216 0.006 56.043);
+  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-accent: oklch(0.97 0.001 106.424);
+  --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
+  --sidebar-border: oklch(0.923 0.003 48.717);
+  --sidebar-ring: oklch(0.709 0.01 56.259);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  h1 {
+    font-family: var(--font-roboto);
+    font-size: var(--text-h1);
+    font-weight: bold;
+    line-height: 0;
+  }
+
+  h2 {
+    font-family: var(--font-roboto);
+    font-size: var(--text-h2);
+    font-weight: bold;
+    line-height: 0;
+  }
+
+  h3 {
+    font-family: var(--font-roboto);
+    font-size: var(--text-h3);
+    font-weight: bold;
+    line-height: 0;
+  }
+
+  h4 {
+    font-family: var(--font-roboto);
+    font-size: var(--text-h4);
+    font-weight: bold;
+    line-height: 0;
+  }
+
+  h5 {
+    font-family: var(--font-roboto);
+    font-size: var(--text-h5);
+    font-weight: semibold;
+    line-height: 0;
+  }
+
+  h6 {
+    font-family: var(--font-roboto);
+    font-size: var(--text-h6);
+    font-weight: semibold;
+    line-height: 0;
+  }
+
+  h7 {
+    font-family: var(--font-roboto);
+    font-size: var(--text-h7);
+    font-weight: semibold;
+    line-height: 0;
+  }
+  .animate {
+    @apply translate-y-3 opacity-0;
+    @apply transition-all duration-700 ease-out;
+  }
+
+  .animate.show {
+    @apply translate-y-0 opacity-100;
+  }
+
+  html #back-to-top {
+    @apply pointer-events-none opacity-0;
+  }
+
+  html.scrolled #back-to-top {
+    @apply pointer-events-auto opacity-100;
+  }
+}

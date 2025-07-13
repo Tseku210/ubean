@@ -1,0 +1,97 @@
+---
+
+---
+
+<section id="portofilters-section">
+  <div class="flex w-fit">
+    <img
+      src="/images/bean-portofilter.png"
+      class="portofilter-bean translate-x-10"
+      alt="Beans inside a porto filter"
+      width={264}
+    />
+    <img
+      src="/images/butalsan-portofilter.png"
+      class="portofilter-butalsan"
+      alt="Butalsan beans inside a porto filter"
+      width={265}
+    />
+    <img
+      src="/images/latte-portofilter.png"
+      class="portofilter-latte -translate-x-10"
+      alt="Latte inside a porto filter"
+      width={241}
+    />
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.set(".portofilter-bean", {
+      x: -200,
+      y: 200,
+      rotation: -45,
+      opacity: 0,
+    });
+
+    gsap.set(".portofilter-butalsan", {
+      y: 200,
+      opacity: 0,
+    });
+
+    gsap.set(".portofilter-latte", {
+      x: 200,
+      y: 200,
+      rotation: 45,
+      opacity: 0,
+    });
+
+    // Create timeline for coordinated animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#portofilters-section",
+        start: "top 70%",
+        end: "bottom 10%",
+      },
+    });
+
+    tl.to(
+      ".portofilter-bean",
+      {
+        x: 40,
+        y: 0,
+        rotation: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: "power2.out",
+      },
+      0,
+    );
+
+    tl.to(
+      ".portofilter-butalsan",
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+      },
+      0,
+    );
+
+    tl.to(
+      ".portofilter-latte",
+      {
+        x: -40,
+        y: 0,
+        rotation: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: "power2.out",
+      },
+      0,
+    );
+  });
+</script>

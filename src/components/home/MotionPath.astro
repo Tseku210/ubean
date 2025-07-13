@@ -1,0 +1,149 @@
+---
+import Beans from "./Beans.astro";
+import Cup from "./Cup.astro";
+import Portofilters from "./Portofilters.astro";
+import RoastedBeans from "./RoastedBeans.astro";
+import Since from "./Since.astro";
+---
+
+<div class="motion-path relative mx-auto h-[calc(100%+320px)] max-w-5xl">
+  <!-- Main SVG Path -->
+  <svg
+    width="100%"
+    height="100%"
+    viewBox="0 0 1021 3018"
+    fill="none"
+    class="relative overflow-visible"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      id="path"
+      d="M535 1V1C535 50.9818 494.482 91.5 444.5 91.5H154.5C79.9416 91.5 19.5 151.942 19.5 226.5V526C19.5 600.558 79.9416 661 154.5 661H400C474.558 661 535 721.442 535 796V1346C535 1420.56 595.442 1481 670 1481H884.5C959.058 1481 1019.5 1541.44 1019.5 1616V2223.5C1019.5 2298.06 959.058 2358.5 884.5 2358.5H136C61.4416 2358.5 1 2418.94 1 2493.5V2793C1 2867.56 61.4416 2928 136 2928H447C496.153 2928 536 2967.85 536 3017V3017"
+      stroke="#97D5D0"
+      stroke-width="2"
+      stroke-dasharray="4 7"></path>
+    <path
+      id="droplet"
+      d="M23 20.3755C23 26.7955 17.8513 32 11.5 32C5.14872 32 -3.34002e-06 26.7955 -3.34002e-06 20.3755C-3.34002e-06 13.9555 11.5 0 11.5 0C11.5 0 23 13.9555 23 20.3755Z"
+      fill="#97D5D0"></path>
+  </svg>
+
+  <div
+    id="beans-section"
+    class="absolute right-0 mx-auto w-fit"
+    data-progress="0.12"
+  >
+    <Beans />
+  </div>
+
+  <div
+    id="aroma-section"
+    class="absolute mx-auto flex w-full justify-center"
+    data-progress="0.29"
+  >
+    <Portofilters />
+  </div>
+
+  <div
+    id="tools-section"
+    class="pointer-events-auto absolute"
+    data-progress="0.50"
+  >
+    <RoastedBeans />
+  </div>
+
+  <div id="products-section" class="absolute w-full" data-progress="0.82">
+    <Since />
+  </div>
+
+  <!-- Since 2012 Section - at 90% along path -->
+  <div id="heritage-section" class="w-full">
+    <Cup />
+  </div>
+</div>
+
+<script>
+  import { pathEase } from "@/lib/pathEaseHelper";
+  import { gsap } from "gsap";
+  import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
+
+  // Position components along the path
+  function positionComponentsAlongPath() {
+    const path = document.querySelector("#path") as SVGPathElement;
+    if (!path) return;
+
+    const rawPath = MotionPathPlugin.getRawPath(path);
+    const sections = document.querySelectorAll("[data-progress]");
+
+    sections.forEach((section) => {
+      const progress = parseFloat(section.getAttribute("data-progress") || "0");
+      const point = MotionPathPlugin.getPositionOnPath(rawPath, progress);
+
+      gsap.set(section, {
+        // left: point.x,
+        top: point.y,
+        // opacity: 0,
+        // scale: 0.8,
+      });
+    });
+  }
+
+  // Animate components into view on scroll
+  function animateComponentsOnScroll() {
+    const sections = document.querySelectorAll("[data-progress]");
+
+    sections.forEach((section) => {
+      gsap.to(section, {
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        ease: "back.out(1.2)",
+        scrollTrigger: {
+          once: true,
+          trigger: section,
+          start: "top 80%",
+          end: "bottom 20%",
+          // toggleActions: "play none none reverse",
+        },
+      });
+    });
+  }
+
+  // Set up initial state and animations
+  gsap.set("#droplet", { scale: 0.8, transformOrigin: "50% 50%" });
+
+  // Animate the droplet along the path
+  gsap.to("#droplet", {
+    scrollTrigger: {
+      trigger: ".motion-path",
+      start: "top center",
+      end: () =>
+        "+=" +
+        (document.querySelector(".motion-path")?.getBoundingClientRect()
+          .height || 1000),
+      scrub: 1,
+    },
+    ease: pathEase("#path", { smooth: true }),
+    immediateRender: true,
+    motionPath: {
+      path: "#path",
+      align: "#path",
+      alignOrigin: [0.5, 0.5],
+      autoRotate: 270,
+    },
+  });
+
+  // Initialize positioning when DOM is loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    positionComponentsAlongPath();
+    animateComponentsOnScroll();
+
+    // Reposition on window resize
+    window.addEventListener("resize", () => {
+      positionComponentsAlongPath();
+    });
+  });
+</script>

@@ -1,0 +1,74 @@
+---
+import { BEANS } from "@/consts";
+import { formatPrice } from "@/lib/utils";
+---
+
+<section class="relative space-y-15 text-center" id="roasted-beans-section">
+  <h2 class="text-h2">FRESHLY ROASTED BEANS</h2>
+  <div
+    class="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5"
+  >
+    {
+      BEANS.map((bean, index) => (
+        <div class={`bean-card relative min-w-48 space-y-4 bean-item-${index}`}>
+          <div class="shadow-card absolute bottom-0 -z-1 m-0 h-3/5 w-full rounded-4xl bg-white" />
+          <div class="bean-image-container">
+            <img
+              src={`/images/${bean.image}`}
+              alt={`${bean.name} coffee beans`}
+              width={264}
+              height={264}
+            />
+          </div>
+
+          <div class="space-y-2 px-6 pb-7 text-left">
+            <h3 class="text-h6">{bean.name}</h3>
+            <p class="text-b3">{bean.description}</p>
+
+            <div class="mt-4 space-y-1">
+              <div class="price-row flex items-center gap-2">
+                <span class="text-h6">{formatPrice(bean.price250)}</span>
+                <span class="text-b4 text-gray1">250g</span>
+              </div>
+              <div class="price-row flex items-center gap-2">
+                <span class="text-h6">{formatPrice(bean.price500)}</span>
+                <span class="text-b4 text-gray1">500g</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.set(".bean-card", {
+      y: 100,
+      opacity: 0,
+    });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#roasted-beans-section",
+        start: "top 75%",
+        end: "bottom 25%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl.to(".bean-card", {
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: "power2.out",
+      stagger: {
+        amount: 0.6,
+        from: "center",
+      },
+    });
+  });
+</script>

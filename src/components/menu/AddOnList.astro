@@ -1,0 +1,8 @@
+---
+import { ADDONS } from "@/consts";
+import AddOn from "./AddOn.astro";
+---
+
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+  {ADDONS.map((addon) => <AddOn {...addon} />)}
+</div>
