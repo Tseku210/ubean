@@ -9,7 +9,6 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-
   integrations: [
     react(),
     sanity({
@@ -19,4 +18,8 @@ export default defineConfig({
       studioBasePath: "/admin",
     }),
   ],
+  image: {
+    domains: ["cdn.sanity.io"],
+    remotePatterns: [{ protocol: "https" }],
+  },
 });
