@@ -1,3 +1,14 @@
+/*
+ * UBean Landing Page - Global Styles
+ * 
+ * Animation System:
+ * - Custom easing functions following animation guidelines
+ * - Fast animations (0.2s-0.3s) with ease-out curves for entrances
+ * - Reduced motion support for accessibility
+ * - Performance-optimized with will-change properties
+ * - Hover effects only on devices with hover capability
+ */
+
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Ubuntu:ital,wght@0,400;0,500;1,400&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -125,6 +136,36 @@
   --color-red: #d73f3e;
 
   --radius: 0.625rem;
+
+  /* Animation Easing Functions */
+  /* Ease-in curves (avoid unless necessary) */
+  --ease-in-quad: cubic-bezier(.55, .085, .68, .53);
+  --ease-in-cubic: cubic-bezier(.550, .055, .675, .19);
+  --ease-in-quart: cubic-bezier(.895, .03, .685, .22);
+  --ease-in-quint: cubic-bezier(.755, .05, .855, .06);
+  --ease-in-expo: cubic-bezier(.95, .05, .795, .035);
+  --ease-in-circ: cubic-bezier(.6, .04, .98, .335);
+
+  /* Ease-out curves (best for entrances and user interactions) */
+  --ease-out-quad: cubic-bezier(.25, .46, .45, .94);
+  --ease-out-cubic: cubic-bezier(.215, .61, .355, 1);
+  --ease-out-quart: cubic-bezier(.165, .84, .44, 1);
+  --ease-out-quint: cubic-bezier(.23, 1, .32, 1);
+  --ease-out-expo: cubic-bezier(.19, 1, .22, 1);
+  --ease-out-circ: cubic-bezier(.075, .82, .165, 1);
+
+  /* Ease-in-out curves (smooth for elements moving within screen) */
+  --ease-in-out-quad: cubic-bezier(.455, .03, .515, .955);
+  --ease-in-out-cubic: cubic-bezier(.645, .045, .355, 1);
+  --ease-in-out-quart: cubic-bezier(.77, 0, .175, 1);
+  --ease-in-out-quint: cubic-bezier(.86, 0, .07, 1);
+  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+  --ease-in-out-circ: cubic-bezier(.785, .135, .15, .86);
+
+  /* Animation Durations */
+  --duration-fast: 0.2s;
+  --duration-normal: 0.3s;
+  --duration-hover: 200ms;
   --background: oklch(1 0 0);
   --foreground: #000011;
   --card: oklch(1 0 0);
@@ -215,12 +256,14 @@
     line-height: 0;
   }
   .animate {
-    @apply translate-y-3 opacity-0;
-    @apply transition-all duration-700 ease-out;
+    opacity: 0;
+    transform: translateY(0.75rem);
+    transition: all var(--duration-normal) var(--ease-out-cubic);
   }
 
   .animate.show {
-    @apply translate-y-0 opacity-100;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   html #back-to-top {
@@ -229,5 +272,149 @@
 
   html.scrolled #back-to-top {
     @apply pointer-events-auto opacity-100;
+  }
+
+  /* Animation Utility Classes */
+  .animate-fade-in {
+    opacity: 0;
+    animation: fade-in var(--duration-normal) var(--ease-out-cubic) forwards;
+  }
+
+  .animate-slide-up {
+    opacity: 0;
+    transform: translateY(2rem);
+    animation: slide-up var(--duration-normal) var(--ease-out-quart) forwards;
+  }
+
+  .animate-slide-down {
+    opacity: 0;
+    transform: translateY(-2rem);
+    animation: slide-down var(--duration-normal) var(--ease-out-quart) forwards;
+  }
+
+  .animate-scale-in {
+    opacity: 0;
+    transform: scale(0.95);
+    animation: scale-in var(--duration-normal) var(--ease-out-cubic) forwards;
+  }
+
+  .animate-stagger-1 { animation-delay: 0.05s; }
+  .animate-stagger-2 { animation-delay: 0.1s; }
+  .animate-stagger-3 { animation-delay: 0.15s; }
+  .animate-stagger-4 { animation-delay: 0.2s; }
+  .animate-stagger-5 { animation-delay: 0.25s; }
+
+  /* Hover Transitions (only on devices with hover capability) */
+  @media (hover: hover) and (pointer: fine) {
+    .hover-lift {
+      transition: transform var(--duration-hover) ease, box-shadow var(--duration-hover) ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .hover-scale {
+      transition: transform var(--duration-hover) ease;
+    }
+    
+    .hover-scale:hover {
+      transform: scale(1.05);
+    }
+
+    .hover-fade {
+      transition: opacity var(--duration-hover) ease;
+    }
+    
+    .hover-fade:hover {
+      opacity: 0.8;
+    }
+  }
+
+  /* Performance Optimizations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .will-change-auto {
+    will-change: auto;
+  }
+}
+
+/* Animation Keyframes */
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable transform animations for reduced motion */
+  .animate-slide-up,
+  .animate-slide-down,
+  .animate-scale-in,
+  .hover-lift,
+  .hover-scale {
+    transform: none !important;
+  }
+
+  /* Keep opacity animations but make them instant */
+  .animate-fade-in {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  /* Disable GSAP animations */
+  .gsap-animation {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  /* Disable motion path animations */
+  .motion-path svg path {
+    animation: none !important;
+  }
+
+  /* Disable scroll-triggered animations */
+  .scroll-trigger {
+    transform: none !important;
+    opacity: 1 !important;
   }
 }

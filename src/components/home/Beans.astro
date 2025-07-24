@@ -2,34 +2,70 @@
 
 ---
 
-<section>
-  <div class="flex max-w-4xl items-center gap-8">
-    <div class="order-2 max-w-72 text-center md:order-1 md:text-left">
-      <div
-        class="bg-secondary mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full md:mx-0"
-      >
-        <div class="bg-primary h-8 w-8 rounded-full"></div>
+<section class='beans-section'>
+  <div class='flex max-w-4xl items-center gap-8'>
+    <div class='order-2 max-w-72 text-center md:order-1 md:text-left'>
+      <div class='beans-icon bg-secondary mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full md:mx-0'>
+        <div class='bg-primary h-8 w-8 rounded-full'></div>
       </div>
-      <h3 class="text-secondary mb-4 text-2xl font-bold">BEANS</h3>
-      <p class="text-gray1 leading-relaxed">
-        Coffee beans naturally grown in rich, fertile soils, nurtured by ideal
-        climates and expert hands.
+      <h3 class='beans-title text-secondary mb-4 text-2xl font-bold'>BEANS</h3>
+      <p class='beans-description text-gray1 leading-relaxed'>
+        Coffee beans naturally grown in rich, fertile soils, nurtured by ideal climates and expert hands.
       </p>
     </div>
-    <div class="order-1 md:order-2">
-      <div
-        class="bg-secondary relative aspect-[5/3] h-[250px] overflow-hidden rounded-[40px]"
-      >
-        <div
-          class="absolute inset-4 rounded-[32px] bg-gradient-to-br from-amber-800 to-amber-900 opacity-20"
-        >
-        </div>
-        <div
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"
-        >
-          <div class="text-primary text-6xl opacity-30">☕</div>
+    <div class='order-1 md:order-2'>
+      <div class='beans-image bg-secondary relative aspect-[5/3] h-[250px] overflow-hidden rounded-[40px]'>
+        <div class='absolute inset-4 rounded-[32px] bg-gradient-to-br from-amber-800 to-amber-900 opacity-20'></div>
+        <div class='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform'>
+          <div class='text-primary text-6xl opacity-30'>☕</div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { durations, staggerDelays, prefersReducedMotion } from '@/lib/animations';
+
+  function initBeansAnimation() {
+    const shouldAnimate = !prefersReducedMotion();
+
+    if (!shouldAnimate) return;
+
+    const elements = ['.beans-icon', '.beans-title', '.beans-description', '.beans-image'];
+
+    gsap.set(elements, {
+      opacity: 0,
+      y: 20,
+      scale: 0.95,
+    });
+
+    // Create staggered animation timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.beans-section',
+        start: 'top 80%',
+        once: true,
+      },
+    });
+
+    // Animate each element with stagger
+    elements.forEach((selector, index) => {
+      tl.to(
+        selector,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: durations.normal,
+          ease: 'cubic-bezier(.215, .61, .355, 1)', // ease-out-cubic
+        },
+        index * staggerDelays.normal,
+      ); // Stagger by 0.1s
+    });
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', initBeansAnimation);
+</script>

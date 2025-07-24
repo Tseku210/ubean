@@ -2,13 +2,60 @@
 
 ---
 
-<section class="relative flex items-center justify-center gap-10">
-  <div class="flex max-w-64 flex-col gap-6 text-left">
-    <h4 class="text-h2">SINCE 2012</h4>
-    <span class="text-b1 font-normal"
-      >We deliver Mongolia’s finest coffee with quality, integrity, and a
-      commitment to community.</span
+<section class='since-section relative flex items-center justify-center gap-10'>
+  <div class='flex max-w-64 flex-col gap-6 text-left'>
+    <h4 class='since-title text-h2'>SINCE 2012</h4>
+    <span class='since-description text-b1 font-normal'
+      >We deliver Mongolia's finest coffee with quality, integrity, and a commitment to community.</span
     >
   </div>
-  <div class="aspect-[5/3] h-72 rounded-4xl bg-gray-200"></div>
+  <div class='since-image aspect-[5/3] h-72 rounded-4xl bg-gray-200'></div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { durations, staggerDelays, prefersReducedMotion } from '@/lib/animations';
+
+  function initSinceAnimation() {
+    const shouldAnimate = !prefersReducedMotion();
+
+    if (!shouldAnimate) return;
+
+    // Elements to animate in staggered sequence
+    const elements = ['.since-title', '.since-description', '.since-image'];
+
+    // Set initial state for all elements
+    gsap.set(elements, {
+      opacity: 0,
+      y: 20,
+      scale: 0.95,
+    });
+
+    // Create staggered animation timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.since-section',
+        start: 'top 80%',
+        once: true,
+      },
+    });
+
+    // Animate each element with stagger
+    elements.forEach((selector, index) => {
+      tl.to(
+        selector,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: durations.normal,
+          ease: 'cubic-bezier(.215, .61, .355, 1)', // ease-out-cubic
+        },
+        index * staggerDelays.normal,
+      ); // Stagger by 0.1s
+    });
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', initSinceAnimation);
+</script>
