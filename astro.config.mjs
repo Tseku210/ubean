@@ -4,13 +4,18 @@ import react from "@astrojs/react";
 
 import sanity from "@sanity/astro";
 
+import vercel from "@astrojs/vercel";
+
 // https://astro.build/config
 export default defineConfig({
-  site: "https://your-coffee-shop.com", // Replace with your actual domain
+  site: "https://ubean.mn",
+
   prefetch: true,
+
   vite: {
     plugins: [tailwindcss()],
   },
+
   integrations: [
     react(),
     sanity({
@@ -20,8 +25,11 @@ export default defineConfig({
       studioBasePath: "/admin",
     }),
   ],
+
   image: {
     domains: ["cdn.sanity.io"],
     remotePatterns: [{ protocol: "https" }],
   },
+
+  adapter: vercel(),
 });
