@@ -1,7 +1,7 @@
 ---
-import type { SanityDocument } from "@sanity/client";
-import { formatPrice } from "@/lib/utils";
-import SanityImage from "../SanityImage.astro";
+import type { SanityDocument } from '@sanity/client';
+import { formatPrice } from '@/lib/utils';
+import SanityImage from '../SanityImage.astro';
 
 interface Props {
   menuItem: SanityDocument;
@@ -10,20 +10,16 @@ interface Props {
 const { menuItem } = Astro.props;
 ---
 
-<div class="relative w-fit space-y-4 group">
+<div class='group relative w-fit space-y-4'>
   <div
-    class="shadow-card absolute bottom-0 -z-1 m-0 h-3/6 w-full rounded-4xl bg-white"
+    class='shadow-card group-hover:shadow-card-hover absolute bottom-0 -z-1 m-0 h-3/6 w-full rounded-4xl bg-white transition-shadow'
   >
   </div>
-  <div class="transition-transform group-hover:-translate-y-2">
-    <SanityImage
-      node={menuItem.image}
-      alt={`${menuItem.name} menu item`}
-      width={270}
-    />
+  <div class='origin-center transition-transform group-hover:-translate-y-2 group-hover:-rotate-2'>
+    <SanityImage node={menuItem.image} alt={`${menuItem.name} menu item`} />
   </div>
-  <div class="flex flex-col space-y-2 px-6 pb-7 text-left">
-    <span class="text-h6">{menuItem.name}</span>
-    <span class="text-h6">{formatPrice(menuItem.price)}</span>
+  <div class='flex flex-col space-y-2 px-6 pb-7 text-left'>
+    <span class='text-h6'>{menuItem.name}</span>
+    <span class='text-h6'>{formatPrice(menuItem.price)}</span>
   </div>
 </div>

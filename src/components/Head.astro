@@ -3,54 +3,123 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  keywords?: string;
+  author?: string;
+  canonicalURL?: string;
+  noindex?: boolean;
 }
-const { title, description, image = "/nano.png" } = Astro.props;
+
+const {
+  title,
+  description,
+  image = '/images/logo.webp',
+  keywords,
+  author = 'UBean',
+  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  noindex = false,
+} = Astro.props;
+
+const siteName = 'UBean Roastery Shop';
+const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 ---
 
-<meta charset="UTF-8" />
-<meta name="description" content={description} />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<meta name="generator" content={Astro.generator} />
-<title>{title}</title>
+<!-- Basic Meta Tags -->
+<meta charset='UTF-8' />
+<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+<meta name='description' content={description} />
+{keywords && <meta name='keywords' content={keywords} />}
+{author && <meta name='author' content={author} />}
+<meta name='generator' content={Astro.generator} />
+{noindex && <meta name='robots' content='noindex, nofollow' />}
 
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Title -->
+<title>{fullTitle}</title>
+
+<!-- Canonical URL -->
+<link rel='canonical' href={canonicalURL} />
+
+<!-- Favicon -->
+<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+
+<!-- Open Graph / Facebook -->
+<meta property='og:type' content='website' />
+<meta property='og:url' content={canonicalURL} />
+<meta property='og:title' content={fullTitle} />
+<meta property='og:description' content={description} />
+<meta property='og:image' content={new URL(image, Astro.site).href} />
+<meta property='og:site_name' content={siteName} />
+
+<!-- Twitter -->
+<meta property='twitter:card' content='summary_large_image' />
+<meta property='twitter:url' content={canonicalURL} />
+<meta property='twitter:title' content={fullTitle} />
+<meta property='twitter:description' content={description} />
+<meta property='twitter:image' content={new URL(image, Astro.site).href} />
+
+<!-- Additional SEO -->
+<meta name='theme-color' content='#8B4513' />
+<meta name='format-detection' content='telephone=no' />
+
+<!-- JSON-LD Structured Data -->
+<script type='application/ld+json'>
+  {
+    "@context": "https://schema.org",
+    "@type": "CafeOrCoffeeShop",
+    "name": "UBean Roastery Shop",
+    "description": "Premium coffee beans and expertly crafted beverages",
+    "url": "https://ubean.mn",
+    "logo": "https://ubean.mn/images/logo.webp",
+    "image": "https://ubean.mn/images/logo.webp",
+    "servesCuisine": "Coffee",
+    "priceRange": "$"
+  }
+</script>
+
+<!-- Google Fonts - Optimized Loading -->
+<link rel='preconnect' href='https://fonts.googleapis.com' />
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
 <link
-  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:ital,wght@0,400;0,500;1,400&display=swap"
-  rel="stylesheet"
+  href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap'
+  rel='stylesheet'
+  media='print'
+  onload="this.media='all'"
 />
+<noscript>
+  <link
+    href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap'
+    rel='stylesheet'
+  />
+</noscript>
 
 <script is:inline>
   function init() {
     onScroll();
     animate();
 
-    const backToTop = document.getElementById("back-to-top");
-    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+    const backToTop = document.getElementById('back-to-top');
+    backToTop?.addEventListener('click', (event) => scrollToTop(event));
 
-    const backToPrev = document.getElementById("back-to-prev");
-    backToPrev?.addEventListener("click", () => window.history.back());
+    const backToPrev = document.getElementById('back-to-prev');
+    backToPrev?.addEventListener('click', () => window.history.back());
 
-    document.addEventListener("scroll", onScroll);
+    document.addEventListener('scroll', onScroll);
   }
 
   function animate() {
-    const animateElements = document.querySelectorAll(".animate");
+    const animateElements = document.querySelectorAll('.animate');
 
     animateElements.forEach((element, index) => {
       setTimeout(() => {
-        element.classList.add("show");
+        element.classList.add('show');
       }, index * 150);
     });
   }
 
   function onScroll() {
     if (window.scrollY > 0) {
-      document.documentElement.classList.add("scrolled");
+      document.documentElement.classList.add('scrolled');
     } else {
-      document.documentElement.classList.remove("scrolled");
+      document.documentElement.classList.remove('scrolled');
     }
   }
 
@@ -58,10 +127,10 @@ const { title, description, image = "/nano.png" } = Astro.props;
     event.preventDefault();
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => init());
-  document.addEventListener("astro:after-swap", () => init());
+  document.addEventListener('DOMContentLoaded', () => init());
+  document.addEventListener('astro:after-swap', () => init());
 </script>

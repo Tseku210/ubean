@@ -1,0 +1,31 @@
+---
+import AddOnList from '@/components/menu/AddOnList.astro';
+import CategoryButtons from '@/components/menu/CategoryButtons.astro';
+import MenuList from '@/components/menu/MenuList.astro';
+import Layout from '@/layouts/Layout.astro';
+import { Category } from '@/types';
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+---
+
+<Layout title='UBean - Menu'>
+  <main class='container mx-auto my-32 flex min-h-screen w-full max-w-6xl flex-col items-center'>
+    <div class='flex max-w-lg flex-col gap-6 text-center'>
+      <h1 class='animate text-h2'>Menu</h1>
+      <h2 class='animate text-b2'>
+        "Making coffee art is an experience we thoroughly enjoy creating, and we hope that so will you."
+      </h2>
+    </div>
+    <div class='animate mt-20 mb-16'>
+      <CategoryButtons category={category} />
+    </div>
+    <div class='animate w-full space-y-20'>
+      <MenuList category={category} />
+      <AddOnList />
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,53 @@
+---
+import { Button } from '@/components/ui/button';
+import { Category } from '@/types';
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+---
+
+<div class='flex gap-2' data-category-buttons-container>
+  <a href={`/menu/${Category.coffee}`} data-astro-prefetch>
+    <Button
+      variant={category === Category.coffee ? 'secondary' : 'ghost'}
+      size='lg'
+      data-category={Category.coffee}
+      className='category-button'
+    >
+      Coffee
+    </Button>
+  </a>
+  <a href={`/menu/${Category.nonCoffee}`} data-astro-prefetch>
+    <Button
+      variant={category === Category.nonCoffee ? 'secondary' : 'ghost'}
+      size='lg'
+      data-category={Category.nonCoffee}
+      className='category-button'
+    >
+      Non Coffee
+    </Button>
+  </a>
+  <a href={`/menu/${Category.specialty}`} data-astro-prefetch>
+    <Button
+      variant={category === Category.specialty ? 'secondary' : 'ghost'}
+      size='lg'
+      data-category={Category.specialty}
+      className='category-button'
+    >
+      Specialty
+    </Button>
+  </a>
+  <a href={`/menu/${Category.grub}`} data-astro-prefetch>
+    <Button
+      variant={category === Category.grub ? 'secondary' : 'ghost'}
+      size='lg'
+      data-category={Category.grub}
+      className='category-button'
+    >
+      Grub
+    </Button>
+  </a>
+</div>

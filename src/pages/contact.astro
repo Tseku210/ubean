@@ -1,26 +1,26 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { Image } from "astro:assets";
-import ContactImage from "@assets/images/contact.webp";
-import PhoneIcon from "@assets/icons/phone.svg";
-import ContactForm from "@/components/contact/ContactForm";
+import Layout from '@/layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import ContactImage from '@assets/images/contact.webp';
+import PhoneIcon from '@assets/icons/phone.svg';
+import ContactForm from '@/components/contact/ContactForm';
 ---
 
-<Layout title="UBean - Contact Us">
-  <main
-    class="flex items-center min-h-[calc(100vh-74px-106px)] max-w-4xl mx-auto"
-  >
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Image
-        src={ContactImage}
-        alt="Contact Us"
-        class="w-full h-full aspect-video md:aspect-[4/5] object-cover rounded-4xl transition-shadow hover:shadow-2xl"
-      />
-      <section class="flex flex-col items-center gap-6 w-full max-w-md">
-        <h2 class="text-h4 uppercase">Contact</h2>
-        <div class="flex gap-4">
+<Layout title='UBean - Contact Us'>
+  <main class='mx-auto flex min-h-[calc(100vh-74px-122px)] max-w-4xl items-center'>
+    <div class='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-16'>
+      <div class='group h-full w-full overflow-hidden rounded-4xl transition-shadow hover:shadow-xl md:aspect-[4/5]'>
+        <Image
+          src={ContactImage}
+          alt='Contact Us'
+          class='size-full object-cover transition-transform group-hover:scale-105'
+        />
+      </div>
+      <section class='flex w-full max-w-md flex-col items-center gap-6'>
+        <h2 class='text-h4 uppercase'>Contact</h2>
+        <div class='flex gap-4'>
           <PhoneIcon />
-          <span class="text-b1">99837165, 86038620, 99590593</span>
+          <span class='text-b1'>99837165, 86038620, 99590593</span>
         </div>
         <ContactForm client:load />
       </section>

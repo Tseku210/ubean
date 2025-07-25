@@ -38,12 +38,12 @@ export function pathEase(
       config.smooth === true ? 7 : Math.round(config.smooth as number) || 0,
     fullSmoothRange = smoothRange * 2,
     getClosest = (p: number) => {
-      while (positions[minIndex] <= p && minIndex++ < l) {}
+      while (positions[minIndex] <= p && minIndex++ < l) { }
       a.push(
         ((p - positions[minIndex - 1]) /
           (positions[minIndex] - positions[minIndex - 1])) *
-          inc +
-          minIndex * inc,
+        inc +
+        minIndex * inc,
       );
       smoothRange &&
         a.length > smoothRange &&

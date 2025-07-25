@@ -1,14 +1,14 @@
 ---
-import Logo from "../assets/icons/logo.svg";
+import Logo from '../assets/icons/logo.svg';
 ---
 
-<nav class="grid grid-cols-3 items-center py-4">
-  <Logo class="justify-self-start" />
-  <div class="flex items-center justify-between gap-2">
-    <a href="/">Home</a>
-    <a href="/menu">Menu</a>
-    <a href="/about-us">About</a>
-    <a href="/contact">Contact</a>
+<nav class='grid h-[90px] grid-cols-3 items-center py-4'>
+  <Logo class='justify-self-start' />
+  <div class='text-h7 flex items-center justify-between gap-2 uppercase'>
+    <a href='/'>Home</a>
+    <a href='/menu/coffee' data-astro-prefetch>Menu</a>
+    <a href='/about-us' data-astro-prefetch>About</a>
+    <a href='/contact' data-astro-prefetch>Contact</a>
   </div>
-  <div class="justify-self-end">MN</div>
+  <div class='justify-self-end'>MN</div>
 </nav>

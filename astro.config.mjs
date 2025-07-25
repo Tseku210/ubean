@@ -6,6 +6,8 @@ import sanity from "@sanity/astro";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://your-coffee-shop.com", // Replace with your actual domain
+  prefetch: true,
   vite: {
     plugins: [tailwindcss()],
   },
@@ -14,7 +16,7 @@ export default defineConfig({
     sanity({
       projectId: "ulqjwxud",
       dataset: "production",
-      useCdn: false,
+      useCdn: true,
       studioBasePath: "/admin",
     }),
   ],
