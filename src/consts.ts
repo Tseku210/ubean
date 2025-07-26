@@ -48,7 +48,7 @@ export const ADDONS: AddOn[] = [
     price: 500,
   },
   {
-    name: "Шар тос",
+    name: "Butter",
     price: 1500,
     separate: true,
   },
