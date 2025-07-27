@@ -5,6 +5,7 @@ import MenuList from "@/components/menu/MenuList.astro";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import { Category } from "@/types";
+import MenuListLoading from "./MenuListLoading.astro";
 
 interface Props {
   category: Category;
@@ -29,7 +30,9 @@ const t = useTranslations(lang);
       <CategoryButtons lang={lang} category={category} />
     </div>
     <div class="animate w-full space-y-20">
-      <MenuList category={category} />
+      <MenuList server:defer category={category}>
+        <MenuListLoading slot="fallback" />
+      </MenuList>
       <AddOnList lang={lang} />
     </div>
   </main>

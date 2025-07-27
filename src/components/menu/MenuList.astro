@@ -1,9 +1,8 @@
 ---
-// src/components/menu/MenuList.astro
-import type { SanityDocument } from '@sanity/client';
-import { sanityClient } from 'sanity:client';
-import MenuItem from './MenuItem.astro';
-import { Category } from '@/types';
+import type { SanityDocument } from "@sanity/client";
+import { sanityClient } from "sanity:client";
+import MenuItem from "./MenuItem.astro";
+import { Category } from "@/types";
 
 interface Props {
   category: Category;
@@ -16,16 +15,16 @@ const MENU_ITEMS_QUERY = `*[_type == "menuItem" && category == "${category}" && 
 const menuItems = await sanityClient.fetch<SanityDocument[]>(MENU_ITEMS_QUERY);
 ---
 
-<div class='grid grid-cols-2 items-center gap-x-8 gap-y-16 md:grid-cols-4'>
+<div class="grid grid-cols-2 items-center gap-x-8 gap-y-16 md:grid-cols-4">
   {
     menuItems.length > 0 ? (
       menuItems.map((item) => (
-        <div class='place-self-center'>
+        <div class="place-self-center">
           <MenuItem menuItem={item} />
         </div>
       ))
     ) : (
-      <p class='text-b1 col-span-full text-center'>☕️😭 No coffees found.</p>
+      <p class="text-b1 col-span-full text-center">☕️😭 No coffees found.</p>
     )
   }
 </div>
