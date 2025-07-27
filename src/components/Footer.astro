@@ -2,6 +2,7 @@
 import Logo from "@/assets/icons/logo.svg";
 import Facebook from "@/assets/icons/facebook.svg";
 import Instagram from "@/assets/icons/instagram.svg";
+import BackToTop from "@/components/BackToTop.astro";
 ---
 
 <footer class="grid grid-cols-3 items-center py-8">
@@ -9,8 +10,19 @@ import Instagram from "@/assets/icons/instagram.svg";
   <span class="text-b4 justify-self-center"
     >© 2025 UBean. All rights reserved.</span
   >
-  <div class="flex gap-4 justify-self-end">
-    <Facebook />
-    <Instagram />
+  <div class="flex items-center gap-4 justify-self-end">
+    <a
+      href="https://www.facebook.com/ubeancoffeehouseandroasterie"
+      class="transition-transform ease-in-out hover:-translate-y-1"
+    >
+      <Facebook />
+    </a>
+    <a
+      href="https://www.instagram.com/ubeancoffee/"
+      class="transition-transform ease-in-out hover:-translate-y-1"
+    >
+      <Instagram />
+    </a>
+    <BackToTop />
   </div>
 </footer>

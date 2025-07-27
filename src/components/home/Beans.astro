@@ -2,31 +2,44 @@
 
 ---
 
-<section class='beans-section w-fit'>
-  <div class='flex w-full items-center justify-between gap-10 md:gap-32'>
-    <div class='order-2 max-w-70 text-center md:order-1 md:text-left'>
-      <img src='/fire.webp' class='mb-8 size-[76px] rounded-full' />
-      <h3 class='beans-title text-secondary mb-4 text-2xl font-bold'>BEANS</h3>
-      <p class='beans-description text-gray1 leading-relaxed'>
-        Coffee beans naturally grown in rich, fertile soils, nurtured by ideal climates and expert hands.
+<section class="beans-section w-fit">
+  <div class="flex w-full items-center justify-between gap-10 md:gap-32">
+    <div class="order-2 max-w-70 text-center md:order-1 md:text-left">
+      <img src="/fire.webp" class="beans-icon mb-8 size-[76px] rounded-full" />
+      <h3 class="beans-title text-secondary mb-4 text-2xl font-bold">BEANS</h3>
+      <p class="beans-description text-gray1 leading-relaxed">
+        Coffee beans naturally grown in rich, fertile soils, nurtured by ideal
+        climates and expert hands.
       </p>
     </div>
-    <div class='order-1 md:order-2'>
-      <img src='/images/where-the-aroma-begins.webp' class='aspect-[5/3] h-[330px]' />
+    <div class="order-1 md:order-2">
+      <img
+        src="/images/where-the-aroma-begins.webp"
+        class="aspect-[5/3] h-[330px]"
+      />
     </div>
   </div>
 </section>
 
 <script>
-  import { gsap } from 'gsap';
-  import { durations, staggerDelays, prefersReducedMotion } from '@/lib/animations';
+  import { gsap } from "gsap";
+  import {
+    durations,
+    staggerDelays,
+    prefersReducedMotion,
+  } from "@/lib/animations";
 
   function initBeansAnimation() {
     const shouldAnimate = !prefersReducedMotion();
 
     if (!shouldAnimate) return;
 
-    const elements = ['.beans-icon', '.beans-title', '.beans-description', '.beans-image'];
+    const elements = [
+      ".beans-icon",
+      ".beans-title",
+      ".beans-description",
+      ".beans-image",
+    ];
 
     gsap.set(elements, {
       opacity: 0,
@@ -37,8 +50,8 @@
     // Create staggered animation timeline
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: '.beans-section',
-        start: 'top 80%',
+        trigger: ".beans-section",
+        start: "top 80%",
         once: true,
       },
     });
@@ -52,7 +65,7 @@
           y: 0,
           scale: 1,
           duration: durations.normal,
-          ease: 'cubic-bezier(.215, .61, .355, 1)', // ease-out-cubic
+          ease: "cubic-bezier(.215, .61, .355, 1)", // ease-out-cubic
         },
         index * staggerDelays.normal,
       ); // Stagger by 0.1s
@@ -60,5 +73,5 @@
   }
 
   // Initialize when DOM is ready
-  document.addEventListener('DOMContentLoaded', initBeansAnimation);
+  document.addEventListener("DOMContentLoaded", initBeansAnimation);
 </script>

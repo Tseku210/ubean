@@ -7,20 +7,12 @@ import UBeanCup from '/public/images/ubean-cup.webp';
 <Layout title='UBean - Page Not Found'>
   <main class='mx-auto flex min-h-[calc(100vh-74px-122px)] max-w-4xl items-center justify-center'>
     <div class='flex flex-col items-center gap-8 text-center'>
-      <!-- Rotating Coffee Cup -->
       <div class='relative'>
-        <div class='coffee-cup-container'>
-          <Image
-            src={UBeanCup}
-            alt='UBean Coffee Cup'
-            class='coffee-cup h-48 w-48 md:h-64 md:w-64'
-            width={256}
-            height={256}
-          />
+        <div class='coffee-cup-container size-64 md:size-72'>
+          <img src="/images/ubean-cup.webp" alt="Ubean Coffee Cup" class="coffee-cup object-contain size-full" />
         </div>
       </div>
 
-      <!-- Error Message -->
       <h1 class='text-primary text-7xl font-bold'>404</h1>
       <h2 class='text-h3 text-secondary font-bold'>Oops! This page got lost in the coffee grounds</h2>
     </div>

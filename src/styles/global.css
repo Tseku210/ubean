@@ -266,6 +266,19 @@
     transform: translateY(0);
   }
 
+  mux-player {
+    --controls: none;
+    --media-object-fit: cover;
+
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  mux-player::part(gesture-layer) {
+    display: none;
+  }
+
   html #back-to-top {
     @apply pointer-events-none opacity-0;
   }
