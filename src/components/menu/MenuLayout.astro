@@ -18,7 +18,7 @@ const t = useTranslations(lang);
 
 <Layout title={`UBean - ${t("menu.title")}`}>
   <main
-    class="container mx-auto my-32 flex min-h-screen w-full max-w-6xl flex-col items-center"
+    class="container mx-auto my-16 flex min-h-screen w-full max-w-6xl flex-col items-center md:my-32"
   >
     <div class="flex max-w-lg flex-col gap-6 text-center">
       <h1 class="animate text-h2">{t("menu.menu")}</h1>
@@ -26,11 +26,11 @@ const t = useTranslations(lang);
         {t("menu.desc")}
       </h2>
     </div>
-    <div class="animate mt-20 mb-16">
+    <div class="animate mt-10 mb-8 md:mt-20 md:mb-16">
       <CategoryButtons lang={lang} category={category} />
     </div>
-    <div class="animate w-full space-y-20">
-      <MenuList server:defer category={category}>
+    <div class="animate w-full space-y-10 md:space-y-20">
+      <MenuList server:defer lang={lang} category={category}>
         <MenuListLoading slot="fallback" />
       </MenuList>
       <AddOnList lang={lang} />

@@ -14,13 +14,16 @@ const t = useTranslations(lang);
 const translatedPath = useTranslatedPath(lang);
 ---
 
-<div class="flex gap-2" data-category-buttons-container>
+<div
+  class="grid grid-cols-2 content-center gap-2 md:grid-cols-4"
+  data-category-buttons-container
+>
   <a href={translatedPath(`/menu/${Category.coffee}/`)} data-astro-prefetch>
     <Button
       variant={category === Category.coffee ? "secondary" : "ghost"}
       size="lg"
       data-category={Category.coffee}
-      className="category-button"
+      className="category-button w-full"
     >
       {t("menu.coffee")}
     </Button>
@@ -30,7 +33,7 @@ const translatedPath = useTranslatedPath(lang);
       variant={category === Category.nonCoffee ? "secondary" : "ghost"}
       size="lg"
       data-category={Category.nonCoffee}
-      className="category-button"
+      className="category-button w-full"
     >
       {t("menu.non-coffee")}
     </Button>
@@ -40,7 +43,7 @@ const translatedPath = useTranslatedPath(lang);
       variant={category === Category.specialty ? "secondary" : "ghost"}
       size="lg"
       data-category={Category.specialty}
-      className="category-button"
+      className="category-button w-full"
     >
       {t("menu.specialty")}
     </Button>
@@ -50,7 +53,7 @@ const translatedPath = useTranslatedPath(lang);
       variant={category === Category.grub ? "secondary" : "ghost"}
       size="lg"
       data-category={Category.grub}
-      className="category-button"
+      className="category-button w-full"
     >
       {t("menu.grub")}
     </Button>

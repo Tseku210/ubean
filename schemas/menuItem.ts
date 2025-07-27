@@ -6,8 +6,14 @@ const menuItem = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "name",
-      title: "Name",
+      name: "nameEn",
+      title: "Name (English)",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "nameMn",
+      title: "Name (Mongolian)",
       type: "string",
       validation: (rule) => rule.required(),
     }),
@@ -26,10 +32,53 @@ const menuItem = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "price",
-      title: "Price",
-      type: "number",
-      validation: (rule) => rule.required().positive(),
+      name: "prices",
+      title: "Prices",
+      type: "object",
+      fields: [
+        defineField({
+          name: "default",
+          title: "Default Cup Price",
+          type: "number",
+          validation: (rule) => rule.positive().precision(2),
+        }),
+        defineField({
+          name: "small",
+          title: "Small Cup Price",
+          type: "number",
+          validation: (rule) => rule.positive().precision(2), // optional
+        }),
+        defineField({
+          name: "large",
+          title: "Large Cup Price",
+          type: "number",
+          validation: (rule) => rule.positive().precision(2), // optional
+        }),
+      ],
+    }),
+    defineField({
+      name: "variants",
+      title: "Variants / Flavors",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "nameEn",
+              title: "Variant Name (English)",
+              type: "string",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "nameMn",
+              title: "Variant Name (Mongolian)",
+              type: "string",
+              validation: (rule) => rule.required(),
+            }),
+          ],
+        },
+      ],
     }),
     defineField({
       name: "image",
@@ -54,16 +103,15 @@ const menuItem = defineType({
   ],
   preview: {
     select: {
-      title: "name",
+      title: "nameEn",
       category: "category",
       media: "image",
-      price: "price",
     },
-    prepare(selection) {
-      const { title, category } = selection;
+    prepare({ title, category, media }) {
       return {
         title,
-        subtitle: category ? `${category}` : "No category",
+        subtitle: category || "No category",
+        media,
       };
     },
   },

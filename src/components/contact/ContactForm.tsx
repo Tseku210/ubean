@@ -75,7 +75,12 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
         rows={5}
         required
       />
-      <Button size="lg" type="submit" disabled={status === "submitting"}>
+      <Button
+        size="lg"
+        type="submit"
+        className="w-full md:w-auto"
+        disabled={status === "submitting"}
+      >
         {status === "submitting" ? t("contact.sending") : t("contact.submit")}
       </Button>
 
@@ -89,4 +94,3 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
     </form>
   );
 }
-

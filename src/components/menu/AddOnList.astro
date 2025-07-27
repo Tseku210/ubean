@@ -11,6 +11,6 @@ const { lang } = Astro.props;
 const addons = ADDONS[lang];
 ---
 
-<div class="grid grid-cols-2 gap-8 lg:grid-cols-4">
+<div class="grid grid-cols-2 gap-2 md:gap-8 lg:grid-cols-4">
   {addons.map((addon) => <AddOn {...addon} />)}
 </div>

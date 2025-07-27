@@ -5,12 +5,15 @@ import Instagram from "@/assets/icons/instagram.svg";
 import BackToTop from "@/components/BackToTop.astro";
 ---
 
-<footer class="grid grid-cols-3 items-center py-8">
-  <Logo />
-  <span class="text-b4 justify-self-center"
+<footer class="grid grid-cols-2 items-center gap-4 py-8 md:grid-cols-3">
+  <Logo class="order-1" />
+  <span
+    class="text-b4 order-3 col-span-2 justify-self-center md:order-2 md:col-span-1"
     >© 2025 UBean. All rights reserved.</span
   >
-  <div class="flex items-center gap-4 justify-self-end">
+  <div
+    class="order-2 flex items-center gap-2 md:order-3 md:gap-4 md:justify-self-end"
+  >
     <a
       href="https://www.facebook.com/ubeancoffeehouseandroasterie"
       class="transition-transform ease-in-out hover:-translate-y-1"

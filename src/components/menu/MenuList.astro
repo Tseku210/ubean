@@ -3,28 +3,43 @@ import type { SanityDocument } from "@sanity/client";
 import { sanityClient } from "sanity:client";
 import MenuItem from "./MenuItem.astro";
 import { Category } from "@/types";
+import type { languages } from "@/i18n/ui";
 
 interface Props {
   category: Category;
+  lang: keyof typeof languages;
 }
 
-const { category } = Astro.props;
+const { category, lang } = Astro.props;
 
-const MENU_ITEMS_QUERY = `*[_type == "menuItem" && category == "${category}" && available == true] | order(name){_id, name, category, price, image}`;
+const MENU_ITEMS_QUERY = `*[_type == "menuItem" && category == "${category}" && available == true] | order(nameEn asc) {
+  _id,
+  nameEn,
+  nameMn,
+  category,
+  image,
+  prices {
+    default,
+    small,
+    large
+  },
+  variants[] {
+    nameEn,
+    nameMn
+  }
+}`;
 
 const menuItems = await sanityClient.fetch<SanityDocument[]>(MENU_ITEMS_QUERY);
 ---
 
-<div class="grid grid-cols-2 items-center gap-x-8 gap-y-16 md:grid-cols-4">
+<div
+  class="grid grid-cols-2 items-stretch gap-x-4 gap-y-8 md:grid-cols-4 md:gap-x-8 md:gap-y-16"
+>
   {
-    menuItems.length > 0 ? (
-      menuItems.map((item) => (
-        <div class="place-self-center">
-          <MenuItem menuItem={item} />
-        </div>
-      ))
-    ) : (
-      <p class="text-b1 col-span-full text-center">☕️😭 No coffees found.</p>
-    )
+    menuItems.map((item) => (
+      <div class="h-full">
+        <MenuItem menuItem={item} lang={lang} />
+      </div>
+    ))
   }
 </div>

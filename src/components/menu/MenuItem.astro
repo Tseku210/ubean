@@ -1,25 +1,53 @@
 ---
-import type { SanityDocument } from '@sanity/client';
-import { formatPrice } from '@/lib/utils';
-import SanityImage from '../SanityImage.astro';
+import type { SanityDocument } from "@sanity/client";
+import { formatPrice } from "@/lib/utils";
+import SanityImage from "../SanityImage.astro";
+import type { languages } from "@/i18n/ui";
 
 interface Props {
   menuItem: SanityDocument;
+  lang: keyof typeof languages;
 }
 
-const { menuItem } = Astro.props;
+const { menuItem, lang } = Astro.props;
+
+const name = lang === "mn" ? menuItem.nameMn : menuItem.nameEn;
+
+const variants = menuItem.variants?.map((v: SanityDocument) =>
+  lang === "mn" ? v.nameMn : v.nameEn,
+);
+const defaultPrice = menuItem.prices?.default;
+const smallPrice = menuItem.prices?.small;
+const largePrice = menuItem.prices?.large;
 ---
 
-<div class='group relative w-fit space-y-4'>
+<div class="group relative flex h-full flex-col md:space-y-4">
   <div
-    class='shadow-card group-hover:shadow-card-hover absolute bottom-0 -z-1 m-0 h-3/6 w-full rounded-4xl bg-white transition-shadow'
+    class="shadow-card group-hover:shadow-card-hover absolute bottom-0 -z-1 m-0 h-6/10 w-full rounded-4xl bg-white transition-shadow"
   >
   </div>
-  <div class='origin-center transition-transform group-hover:-translate-y-2 group-hover:-rotate-2'>
-    <SanityImage node={menuItem.image} alt={`${menuItem.name} menu item`} />
+  <div
+    class="relative min-h-32 w-full origin-bottom overflow-hidden rounded-4xl transition-transform group-hover:-translate-y-2 group-hover:-rotate-2 md:h-60 md:origin-center"
+  >
+    <SanityImage
+      node={menuItem.image}
+      alt={`${name} menu item`}
+      class="h-full w-full"
+    />
   </div>
-  <div class='flex flex-col space-y-2 px-6 pb-7 text-left'>
-    <span class='text-h6'>{menuItem.name}</span>
-    <span class='text-h6'>{formatPrice(menuItem.price)}</span>
+  <div class="flex flex-col space-y-3 px-6 pb-7 text-left">
+    <span class="text-h6 capitalize">{name}</span>
+    <div class={`flex flex-col ${smallPrice && largePrice ? "gap-[2px]" : ""}`}>
+      {defaultPrice && <span class="text-h6">{formatPrice(defaultPrice)}</span>}
+      {smallPrice && <span class="text-h6">{formatPrice(smallPrice)}</span>}
+      {largePrice && <span class="text-h6">{formatPrice(largePrice)}</span>}
+    </div>
+    {
+      variants?.length > 0 && (
+        <span class="text-b4 text-secondary text-xs">
+          {variants.join(", ")}
+        </span>
+      )
+    }
   </div>
 </div>
