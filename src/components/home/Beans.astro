@@ -1,15 +1,24 @@
 ---
+import { languages } from "@/i18n/ui";
+import { useTranslations } from "@/i18n/utils";
 
+interface Props {
+  lang: keyof typeof languages;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section class="beans-section w-fit">
   <div class="flex w-full items-center justify-between gap-10 md:gap-32">
     <div class="order-2 max-w-70 text-center md:order-1 md:text-left">
       <img src="/fire.webp" class="beans-icon mb-8 size-[76px] rounded-full" />
-      <h3 class="beans-title text-secondary mb-4 text-2xl font-bold">BEANS</h3>
+      <h3 class="beans-title text-secondary mb-4 text-2xl font-bold">
+        {t("home.beans.title")}
+      </h3>
       <p class="beans-description text-gray1 leading-relaxed">
-        Coffee beans naturally grown in rich, fertile soils, nurtured by ideal
-        climates and expert hands.
+        {t("home.beans.desc")}
       </p>
     </div>
     <div class="order-1 md:order-2">

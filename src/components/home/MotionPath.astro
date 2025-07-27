@@ -1,13 +1,19 @@
 ---
+import type { languages } from "@/i18n/ui";
 import Beans from "./Beans.astro";
 import Cup from "./Cup.astro";
 import Portofilters from "./Portofilters.astro";
 import RoastedBeans from "./RoastedBeans.astro";
 import Since from "./Since.astro";
+
+interface Props {
+  lang: keyof typeof languages;
+}
+
+const { lang } = Astro.props;
 ---
 
 <div class="motion-path relative mx-auto h-[calc(100%+320px)] max-w-6xl">
-  <!-- Main SVG Path -->
   <svg
     width="100%"
     height="100%"
@@ -34,7 +40,7 @@ import Since from "./Since.astro";
     data-progress="0.12"
     style={{ visibility: "hidden" }}
   >
-    <Beans />
+    <Beans lang={lang} />
   </div>
 
   <div
@@ -61,7 +67,7 @@ import Since from "./Since.astro";
     data-progress="0.89"
     style={{ visibility: "hidden" }}
   >
-    <Since />
+    <Since lang={lang} />
   </div>
 
   <div id="heritage-section" class="mt-5 w-full">

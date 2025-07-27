@@ -1,0 +1,17 @@
+---
+import { getLangFromUrl } from "@/i18n/utils";
+import { defaultLang, languages } from "../i18n/ui";
+
+const lang = getLangFromUrl(Astro.url);
+const otherLang = (Object.keys(languages).find((l) => l !== lang) ??
+  defaultLang) as keyof typeof languages;
+const currentPath = Astro.url.pathname.replace(/^\/(en|mn)/, "");
+const otherLangHref =
+  otherLang === defaultLang
+    ? `${currentPath || "/"}`
+    : `/${otherLang}${currentPath || "/"}`;
+---
+
+<a href={otherLangHref}>
+  {languages[otherLang]}
+</a>

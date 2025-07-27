@@ -1,31 +1,5 @@
 ---
-import Hero from "@/components/home/Hero.astro";
-import Layout from "@/layouts/Layout.astro";
-import MotionPath from "@/components/home/MotionPath.astro";
-import Discount from "@/components/home/Discount.astro";
+import HomePage from "@/components/home/HomePage.astro";
 ---
 
-<Layout title="UBean - Premium Coffee Experience">
-  <main class="relative">
-    <Hero />
-    <MotionPath />
-    <h2 class="text-h2 mx-auto my-30 max-w-4xl text-center font-bold uppercase">
-      We serve freshly brewed coffee made from premium coffee beans.
-    </h2>
-    <Discount />
-  </main>
-</Layout>
-
-<script>
-  import { gsap } from "gsap";
-  import { ScrollSmoother } from "gsap/ScrollSmoother";
-
-  gsap.registerPlugin(ScrollSmoother);
-
-  // create the scrollSmoother before your scrollTriggers
-  ScrollSmoother.create({
-    smooth: 1.5, // how long (in seconds) it takes to "catch up" to the native scroll position
-    effects: true, // looks for data-speed and data-lag attributes on elements
-    smoothTouch: 0.1, // much shorter smoothing time on touch devices (default is NO smoothing on touch devices)
-  });
-</script>
+<HomePage />

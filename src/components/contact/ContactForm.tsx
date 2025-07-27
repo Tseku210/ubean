@@ -1,10 +1,12 @@
-// components/contact/ContactForm.tsx
+import type { ui } from "@/i18n/ui";
 import { Button } from "../ui/button";
 import { LabeledInput } from "../ui/LabeledInput";
 import { LabeledTextArea } from "../ui/LabeledTextArea";
-import { useState } from "react"; // <--- Add this import
+import { useState } from "react";
+import { useTranslations } from "@/i18n/utils";
 
-export default function ContactForm() {
+export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
+  const t = useTranslations(lang);
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
@@ -51,42 +53,35 @@ export default function ContactForm() {
       onSubmit={handleSubmit}
     >
       <LabeledInput
-        label="Name"
-        placeholder="Enter your name"
+        label={t("contact.name")}
+        placeholder={t("contact.name_placeholder")}
         id="name"
         name="name"
         required
       />
       <LabeledInput
-        label="Email"
-        placeholder="Enter your email"
+        label={t("contact.email")}
+        placeholder={t("contact.email_placeholder")}
         id="email"
         name="email"
         type="email"
         required
       />
       <LabeledTextArea
-        label="Message"
+        label={t("contact.message")}
+        placeholder={t("contact.message_placeholder")}
         id="message"
         name="message"
-        placeholder="Enter your message"
         rows={5}
         required
       />
-      <Button
-        size="lg"
-        type="submit"
-        className="aspect-[165/44] rounded-full py-2"
-        disabled={status === "submitting"}
-      >
-        {status === "submitting" ? "Sending..." : "Submit"}
+      <Button size="lg" type="submit" disabled={status === "submitting"}>
+        {status === "submitting" ? t("contact.sending") : t("contact.submit")}
       </Button>
 
       {message && (
         <p
-          className={`text-center ${
-            status === "success" ? "text-green-600" : "text-red-600"
-          }`}
+          className={`text-center ${status === "success" ? "text-green-600" : "text-red-600"}`}
         >
           {message}
         </p>
@@ -94,3 +89,4 @@ export default function ContactForm() {
     </form>
   );
 }
+

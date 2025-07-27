@@ -1,8 +1,9 @@
 ---
-import Header from '@/components/Header.astro';
-import '../styles/global.css';
-import Head from '@/components/Head.astro';
-import Footer from '@/components/Footer.astro';
+import Header from "@/components/Header.astro";
+import "../styles/global.css";
+import Head from "@/components/Head.astro";
+import Footer from "@/components/Footer.astro";
+import { getLangFromUrl } from "@/i18n/utils";
 
 export interface Props {
   title: string;
@@ -11,25 +12,32 @@ export interface Props {
   image?: string;
 }
 
+const lang = getLangFromUrl(Astro.url);
+
 const {
   title,
-  description = 'UBean - Premium Coffee Experience',
-  keywords = 'ubean, roastery, coffee, beans, premium, espresso, americano',
-  image = '/images/coffee-beans.webp',
+  description = "UBean - Premium Coffee Experience",
+  keywords = "ubean, roastery, coffee, beans, premium, espresso, americano",
+  image = "/images/coffee-beans.webp",
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang='en'>
+<html lang={lang}>
   <head>
-    <Head title={title} description={description} keywords={keywords} image={image} />
+    <Head
+      title={title}
+      description={description}
+      keywords={keywords}
+      image={image}
+    />
   </head>
-  <body class='w-screen'>
+  <body class="w-screen">
     <div
-      id='smooth-wrapper'
+      id="smooth-wrapper"
       class="font-ubuntu text-secondary bg-white bg-[url('/images/bg.webp')]"
     >
-      <div id='smooth-content' class='container mx-auto max-w-[1440px] px-4'>
+      <div id="smooth-content" class="container mx-auto max-w-[1440px] px-4">
         <div>
           <Header />
           <slot />

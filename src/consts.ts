@@ -38,22 +38,17 @@ export const BEANS: Bean[] = [
   },
 ];
 
-export const ADDONS: AddOn[] = [
-  {
-    name: "Decaf",
-    price: 500,
-  },
-  {
-    name: "Vanilla, Caramel",
-    price: 500,
-  },
-  {
-    name: "Butter",
-    price: 1500,
-    separate: true,
-  },
-  {
-    name: "Take Away /Per cup/",
-    price: 500,
-  },
-];
+export const ADDONS = {
+  en: [
+    { name: "Decaf", price: 500 },
+    { name: "Vanilla, Caramel", price: 500 },
+    { name: "Butter", price: 1500, separate: true },
+    { name: "Take Away /Per cup/", price: 500 },
+  ],
+  mn: [
+    { name: "Кофеингүй", price: 500 },
+    { name: "Ваниль, Карамель", price: 500 },
+    { name: "Шар тос", price: 1500, separate: true },
+    { name: "Авч явах /аяга тус бүр/", price: 500 },
+  ],
+} as const;

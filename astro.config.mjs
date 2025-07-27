@@ -32,4 +32,10 @@ export default defineConfig({
   },
 
   adapter: vercel(),
+
+  i18n: {
+    locales: ["en", "mn"],
+    defaultLocale: "en",
+  },
 });
+

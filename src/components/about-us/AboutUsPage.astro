@@ -1,0 +1,69 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Smoke from "@assets/icons/smoke.svg";
+import Line from "@assets/icons/line.svg";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout title={`UBean - ${t("aboutus.title")}`}>
+  <main
+    class="mx-auto mt-16 flex min-h-[calc(100vh-74px-122px)] max-w-4xl flex-col items-center gap-10"
+  >
+    <div class="flex flex-col items-center gap-8">
+      <Smoke width={100} />
+      <h1 class="text-h3 uppercase">{t("aboutus.ourstory.title")}</h1>
+    </div>
+    <div class="space-y-10">
+      <div
+        class="parallax-container aspect-[2/1] overflow-hidden rounded-[40px]"
+      >
+        <img
+          src="/images/aboutus-1.webp"
+          class="parallax-img size-full origin-top object-cover"
+        />
+      </div>
+      <p class="text-b1 text-center font-light">
+        {t("aboutus.ourstory.desc")}
+      </p>
+    </div>
+    <Line />
+    <div class="flex flex-col items-center gap-16 md:w-[calc(100%-200px)]">
+      <div class="max-w-xl space-y-6 text-center">
+        <h2 class="text-h4 uppercase">{t("aboutus.ourvision.title")}</h2>
+        <p class="text-b1 font-light">
+          {t("aboutus.ourvision.desc")}
+        </p>
+      </div>
+      <div
+        class="parallax-container aspect-[2/1] overflow-hidden rounded-[40px]"
+      >
+        <img
+          src="/coffee-brew.webp"
+          class="size-full origin-center object-cover"
+        />
+      </div>
+    </div>
+    <Line />
+    <div
+      class="mb-16 flex flex-col items-center gap-16 md:w-[calc(100%-200px)]"
+    >
+      <div class="max-w-xl space-y-6 text-center">
+        <h2 class="text-h4 uppercase">{t("aboutus.ourmission.title")}</h2>
+        <p class="text-b1 font-light">
+          {t("aboutus.ourmission.desc")}
+        </p>
+      </div>
+      <div
+        class="parallax-container aspect-[2/1] overflow-hidden rounded-[40px]"
+      >
+        <img
+          src="/images/aboutus-2.webp"
+          class="parallax-img size-full origin-top object-cover"
+        />
+      </div>
+    </div>
+  </main>
+</Layout>

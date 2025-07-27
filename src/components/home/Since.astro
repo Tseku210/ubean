@@ -1,15 +1,22 @@
 ---
+import type { languages } from "@/i18n/ui";
+import { useTranslations } from "@/i18n/utils";
 
+interface Props {
+  lang: keyof typeof languages;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section class="beans-section w-fit">
   <div class="flex w-full items-center justify-between gap-10 md:gap-32">
     <div class="order-2 max-w-70 text-center md:order-1 md:text-left">
       <div class="flex max-w-64 flex-col gap-6 text-left">
-        <h4 class="since-title text-h2">SINCE 2012</h4>
+        <h4 class="since-title text-h2">{t("home.since.title")}</h4>
         <span class="since-description text-b1 font-normal"
-          >We deliver Mongolia's finest coffee with quality, integrity, and a
-          commitment to community.</span
+          >{t("home.since.desc")}</span
         >
       </div>
     </div>

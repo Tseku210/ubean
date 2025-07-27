@@ -1,5 +1,14 @@
 ---
+import type { languages } from "@/i18n/ui";
+import { useTranslations } from "@/i18n/utils";
 import Smoke from "@assets/icons/smoke.svg";
+
+interface Props {
+  lang: keyof typeof languages;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section
@@ -16,16 +25,15 @@ import Smoke from "@assets/icons/smoke.svg";
     loop
     muted
     autoplay></mux-player>
-  <div class="absolute inset-0 z-10 bg-black/65"></div>
+  <div class="absolute inset-0 z-10 rounded-[50px] bg-black/65"></div>
 
   <div
     class="absolute inset-0 z-20 mx-auto flex w-full max-w-3xl flex-col items-center justify-center px-4 text-center text-white"
   >
     <Smoke class="animate mb-16" width={74} height={128} />
-    <h1 class="animate text-h1 font-bold uppercase">Unblemished Beans</h1>
+    <h1 class="animate text-h1 font-bold uppercase">{t("home.hero.title")}</h1>
     <p class="animate text-b1 mt-4 font-normal">
-      "Crafting Mongolia's finest coffee experience with exceptional quality,
-      unwavering excellence, integrity, and meaningful connections."
+      {t("home.hero.desc")}
     </p>
   </div>
 </section>

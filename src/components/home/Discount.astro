@@ -1,14 +1,34 @@
 ---
-import { Button } from '../ui/button';
+import { useTranslations, useTranslatedPath } from "@/i18n/utils";
+import { Button } from "../ui/button";
+import type { languages } from "@/i18n/ui";
+
+interface Props {
+  lang: keyof typeof languages;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 ---
 
-<section class='bg-secondary flex h-fit flex-col items-center gap-14 rounded-[50px] px-10 py-20'>
-  <div class='flex flex-col items-center justify-center gap-5'>
-    <h3 class='text-h3 font-bold text-white'>COFFEE AT YOUR HOUSE</h3>
-    <Button size='lg'>Inquire</Button>
+<section
+  class="bg-secondary flex h-fit flex-col items-center gap-14 rounded-[50px] px-10 py-20"
+>
+  <div class="flex flex-col items-center justify-center gap-5">
+    <h3 class="text-h3 font-bold text-white">{t("home.discount.title")}</h3>
+    <a href={translatePath("/contact/")}>
+      <Button size="lg">{t("home.discount.button")}</Button>
+    </a>
   </div>
-  <div class='grid w-full max-w-4xl grid-cols-1 gap-16 md:grid-cols-2'>
-    <img src='/images/loyalty-discount.webp' class='aspect-[4/2] w-full object-contain' />
-    <img src='/images/company-discount.webp' class='aspect-[4/2] w-full object-contain' />
+  <div class="grid w-full max-w-4xl grid-cols-1 gap-16 md:grid-cols-2">
+    <img
+      src="/images/loyalty-discount.webp"
+      class="aspect-[4/2] w-full object-contain"
+    />
+    <img
+      src="/images/company-discount.webp"
+      class="aspect-[4/2] w-full object-contain"
+    />
   </div>
 </section>

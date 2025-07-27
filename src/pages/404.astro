@@ -1,20 +1,28 @@
 ---
-import Layout from '@/layouts/Layout.astro';
-import { Image } from 'astro:assets';
-import UBeanCup from '/public/images/ubean-cup.webp';
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import Layout from "@/layouts/Layout.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<Layout title='UBean - Page Not Found'>
-  <main class='mx-auto flex min-h-[calc(100vh-74px-122px)] max-w-4xl items-center justify-center'>
-    <div class='flex flex-col items-center gap-8 text-center'>
-      <div class='relative'>
-        <div class='coffee-cup-container size-64 md:size-72'>
-          <img src="/images/ubean-cup.webp" alt="Ubean Coffee Cup" class="coffee-cup object-contain size-full" />
+<Layout title="UBean - Page Not Found">
+  <main
+    class="mx-auto flex min-h-[calc(100vh-74px-122px)] max-w-4xl items-center justify-center"
+  >
+    <div class="flex flex-col items-center gap-8 text-center">
+      <div class="relative">
+        <div class="coffee-cup-container size-64 md:size-72">
+          <img
+            src="/images/ubean-cup.webp"
+            alt="Ubean Coffee Cup"
+            class="coffee-cup size-full object-contain"
+          />
         </div>
       </div>
 
-      <h1 class='text-primary text-7xl font-bold'>404</h1>
-      <h2 class='text-h3 text-secondary font-bold'>Oops! This page got lost in the coffee grounds</h2>
+      <h1 class="text-primary text-7xl font-bold">404</h1>
+      <h2 class="text-h3 text-secondary font-bold">{t("error.404")}</h2>
     </div>
   </main>
 </Layout>

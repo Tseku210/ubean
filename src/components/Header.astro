@@ -1,14 +1,34 @@
 ---
+import {
+  getLangFromUrl,
+  useTranslations,
+  useTranslatedPath,
+} from "@/i18n/utils";
 import Logo from "../assets/icons/logo.svg";
+import LanguagePicker from "./LanguagePicker.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 ---
 
 <nav class="grid h-[90px] grid-cols-3 items-center py-4">
-  <Logo class="justify-self-start" />
+  <a href="/">
+    <Logo class="justify-self-start" />
+  </a>
   <div class="text-h7 flex items-center justify-between gap-2 uppercase">
-    <a href="/">Home</a>
-    <a href="/menu/coffee" data-astro-prefetch>Menu</a>
-    <a href="/about-us" data-astro-prefetch>About</a>
-    <a href="/contact" data-astro-prefetch>Contact</a>
+    <a href={translatePath("/")}>{t("nav.home")}</a>
+    <a href={translatePath("/menu/coffee/")} data-astro-prefetch
+      >{t("nav.menu")}</a
+    >
+    <a href={translatePath("/about-us/")} data-astro-prefetch
+      >{t("nav.about")}</a
+    >
+    <a href={translatePath("/contact/")} data-astro-prefetch
+      >{t("nav.contact")}</a
+    >
   </div>
-  <div class="justify-self-end">MN</div>
+  <div class="justify-self-end">
+    <LanguagePicker />
+  </div>
 </nav>

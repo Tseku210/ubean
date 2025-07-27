@@ -1,53 +1,58 @@
 ---
-import { Button } from '@/components/ui/button';
-import { Category } from '@/types';
+import { Button } from "@/components/ui/button";
+import type { languages } from "@/i18n/ui";
+import { useTranslatedPath, useTranslations } from "@/i18n/utils";
+import { Category } from "@/types";
 
 interface Props {
   category: Category;
+  lang: keyof typeof languages;
 }
 
-const { category } = Astro.props;
+const { category, lang } = Astro.props;
+const t = useTranslations(lang);
+const translatedPath = useTranslatedPath(lang);
 ---
 
-<div class='flex gap-2' data-category-buttons-container>
-  <a href={`/menu/${Category.coffee}`} data-astro-prefetch>
+<div class="flex gap-2" data-category-buttons-container>
+  <a href={translatedPath(`/menu/${Category.coffee}/`)} data-astro-prefetch>
     <Button
-      variant={category === Category.coffee ? 'secondary' : 'ghost'}
-      size='lg'
+      variant={category === Category.coffee ? "secondary" : "ghost"}
+      size="lg"
       data-category={Category.coffee}
-      className='category-button'
+      className="category-button"
     >
-      Coffee
+      {t("menu.coffee")}
     </Button>
   </a>
-  <a href={`/menu/${Category.nonCoffee}`} data-astro-prefetch>
+  <a href={translatedPath(`/menu/${Category.nonCoffee}/`)} data-astro-prefetch>
     <Button
-      variant={category === Category.nonCoffee ? 'secondary' : 'ghost'}
-      size='lg'
+      variant={category === Category.nonCoffee ? "secondary" : "ghost"}
+      size="lg"
       data-category={Category.nonCoffee}
-      className='category-button'
+      className="category-button"
     >
-      Non Coffee
+      {t("menu.non-coffee")}
     </Button>
   </a>
-  <a href={`/menu/${Category.specialty}`} data-astro-prefetch>
+  <a href={translatedPath(`/menu/${Category.specialty}/`)} data-astro-prefetch>
     <Button
-      variant={category === Category.specialty ? 'secondary' : 'ghost'}
-      size='lg'
+      variant={category === Category.specialty ? "secondary" : "ghost"}
+      size="lg"
       data-category={Category.specialty}
-      className='category-button'
+      className="category-button"
     >
-      Specialty
+      {t("menu.specialty")}
     </Button>
   </a>
-  <a href={`/menu/${Category.grub}`} data-astro-prefetch>
+  <a href={translatedPath(`/menu/${Category.grub}/`)} data-astro-prefetch>
     <Button
-      variant={category === Category.grub ? 'secondary' : 'ghost'}
-      size='lg'
+      variant={category === Category.grub ? "secondary" : "ghost"}
+      size="lg"
       data-category={Category.grub}
-      className='category-button'
+      className="category-button"
     >
-      Grub
+      {t("menu.grub")}
     </Button>
   </a>
 </div>
