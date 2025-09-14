@@ -78,7 +78,7 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
       <Button
         size="lg"
         type="submit"
-        className="w-full md:w-auto"
+        className=""
         disabled={status === "submitting"}
       >
         {status === "submitting" ? t("contact.sending") : t("contact.submit")}

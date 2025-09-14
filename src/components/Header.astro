@@ -6,29 +6,39 @@ import {
 } from "@/i18n/utils";
 import Logo from "../assets/icons/logo.svg";
 import LanguagePicker from "./LanguagePicker.astro";
+import MobileMenu from "./ui/MobileMenu";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
+
+const navLinks = {
+  [t("nav.home")]: translatePath("/"),
+  [t("nav.menu")]: translatePath("/menu/coffee/"),
+  [t("nav.about")]: translatePath("/about-us/"),
+  [t("nav.contact")]: translatePath("/contact/"),
+};
 ---
 
-<nav class="grid h-[90px] grid-cols-3 items-center py-4">
+<nav
+  class="mb-14 grid h-[90px] grid-cols-2 items-center py-4 md:mb-auto md:grid-cols-3"
+>
   <a href="/">
-    <Logo class="justify-self-start" />
+    <Logo class="w-[121px] justify-self-start md:w-auto" />
   </a>
-  <div class="text-h7 flex items-center justify-between gap-2 uppercase">
-    <a href={translatePath("/")}>{t("nav.home")}</a>
-    <a href={translatePath("/menu/coffee/")} data-astro-prefetch
-      >{t("nav.menu")}</a
-    >
-    <a href={translatePath("/about-us/")} data-astro-prefetch
-      >{t("nav.about")}</a
-    >
-    <a href={translatePath("/contact/")} data-astro-prefetch
-      >{t("nav.contact")}</a
-    >
+  <div
+    class="text-h7 md;flex hidden items-center justify-between gap-2 uppercase"
+  >
+    {
+      Object.entries(navLinks).map(([label, href]) => (
+        <a href={href} data-astro-prefetch>
+          {label}
+        </a>
+      ))
+    }
   </div>
-  <div class="justify-self-end">
+  <div class="flex items-center gap-6 justify-self-end">
     <LanguagePicker />
+    <MobileMenu navLinks={navLinks} client:load />
   </div>
 </nav>

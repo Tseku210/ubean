@@ -327,6 +327,10 @@
     animation-delay: 0.25s;
   }
 
+  /* [data-vaul-drawer-menu] { */
+  /*   transition: transform 0s cubic-bezier(0.32, 0.72, 0, 1) !important; */
+  /* } */
+
   /* Hover Transitions (only on devices with hover capability) */
   @media (hover: hover) and (pointer: fine) {
     .hover-lift {
