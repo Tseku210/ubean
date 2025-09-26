@@ -12,6 +12,8 @@
   "dependencies": {
     "@astrojs/react": "^4.3.0",
     "@astrojs/vercel": "^8.2.7",
+    "@fontsource/ubuntu": "^5.2.8",
+    "@gsap/react": "^2.1.2",
     "@mux/mux-player": "^3.5.1",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.7",
