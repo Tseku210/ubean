@@ -12,10 +12,10 @@ const t = useTranslations(lang);
 ---
 
 <section
-  class="relative aspect-[1290/550] w-full overflow-hidden rounded-[50px]"
+  class="relative z-10 mx-10 aspect-[3/2] overflow-hidden rounded-[50px] md:aspect-[1290/550]"
 >
   <mux-player
-    class="size-full object-cover"
+    class="block"
     playback-id="Gtmx5sme3IckVw2u5vXesfT02xXA62QAfqfDIAN02VSz00"
     metadata-video-id="bAdLgCCx72xWn7epwLpPy00ln5N3l3RIzaXmcGirqe1g"
     metadata-video-title="hero"
@@ -30,9 +30,15 @@ const t = useTranslations(lang);
   <div
     class="absolute inset-0 z-20 mx-auto flex w-full max-w-3xl flex-col items-center justify-center px-4 text-center text-white"
   >
-    <Smoke class="animate mb-16" width={74} height={128} />
-    <h1 class="animate text-h1 font-bold uppercase">{t("home.hero.title")}</h1>
-    <p class="animate text-b1 mt-4 font-normal">
+    <Smoke
+      class="animate mb-6 h-min w-8 md:mb-16 md:w-auto"
+      width={74}
+      height={128}
+    />
+    <h1 class="animate text-h5 md:text-h1 font-bold uppercase">
+      {t("home.hero.title")}
+    </h1>
+    <p class="animate text-b4 md:text-b1 mt-4 font-light md:font-normal">
       {t("home.hero.desc")}
     </p>
   </div>

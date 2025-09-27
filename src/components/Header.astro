@@ -21,21 +21,23 @@ const navLinks = {
 ---
 
 <nav
-  class="mb-14 grid h-[90px] grid-cols-2 items-center py-4 md:mb-auto md:grid-cols-3"
+  class="grid h-[90px] grid-cols-2 items-center px-4 py-4 md:grid-cols-[1fr_2fr_1fr] md:px-14"
 >
   <a href="/">
     <Logo class="w-[121px] justify-self-start md:w-auto" />
   </a>
-  <div
-    class="text-h7 md;flex hidden items-center justify-between gap-2 uppercase"
-  >
-    {
-      Object.entries(navLinks).map(([label, href]) => (
-        <a href={href} data-astro-prefetch>
-          {label}
-        </a>
-      ))
-    }
+  <div class="hidden justify-center md:flex">
+    <div
+      class="text-h7 max-w-2xl items-center justify-between gap-12 uppercase md:flex"
+    >
+      {
+        Object.entries(navLinks).map(([label, href]) => (
+          <a href={href} data-astro-prefetch>
+            {label}
+          </a>
+        ))
+      }
+    </div>
   </div>
   <div class="flex items-center gap-6 justify-self-end">
     <LanguagePicker />

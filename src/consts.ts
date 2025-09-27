@@ -1,4 +1,4 @@
-import type { Bean, AddOn } from "./types";
+import type { Bean, Language } from "./types";
 
 export const BEANS: Bean[] = [
   {
@@ -38,7 +38,10 @@ export const BEANS: Bean[] = [
   },
 ];
 
-export const ADDONS = {
+export const ADDONS: Record<
+  Language,
+  { name: string; price: number; separate?: boolean }[]
+> = {
   en: [
     { name: "Decaf", price: 500 },
     { name: "Vanilla, Caramel", price: 500 },
@@ -52,3 +55,15 @@ export const ADDONS = {
     { name: "Авч явах /аяга тус бүр/", price: 500 },
   ],
 } as const;
+
+export const KEYWORDS: Record<Language, string> = {
+  en: "ubean, coffee shop, roastery, coffee, beans, premium, espresso, americano",
+  mn: "UBean, кофе, кофе шоп, латте, шилдэг кофе, эспрессо, американо, дээд зэрэглэлийн, хуурах, ориг",
+};
+
+export const DESCRIPTION: Record<Language, string> = {
+  en: "UBean - Premium Coffee Experience",
+  mn: "UBean - Шинэ кофе",
+};
+
+export const FEEDBACK_KEY = "is_sent_feedback";

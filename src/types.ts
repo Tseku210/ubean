@@ -1,3 +1,5 @@
+import type { languages } from "./i18n/ui";
+
 export interface Bean {
   name: string;
   image: string;
@@ -18,3 +20,5 @@ export enum Category {
   specialty = "specialty",
   grub = "grub",
 }
+
+export type Language = keyof typeof languages;

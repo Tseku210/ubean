@@ -10,35 +10,43 @@ const t = useTranslations(lang);
 
 <Layout title={`UBean - ${t("aboutus.title")}`}>
   <main
-    class="mx-auto mt-16 flex min-h-[calc(100vh-74px-122px)] max-w-4xl flex-col items-center gap-10"
+    class="mx-auto mt-10 flex min-h-[calc(100vh-74px-122px)] max-w-4xl flex-col items-center gap-10"
   >
-    <div class="flex flex-col items-center gap-8">
+    <div class="animate flex flex-col items-center gap-8">
       <Smoke width={100} />
-      <h1 class="text-h3 uppercase">{t("aboutus.ourstory.title")}</h1>
+      <h1 class="text-h4 md:text-h3 uppercase">
+        {t("aboutus.ourstory.title")}
+      </h1>
     </div>
-    <div class="space-y-10">
+    <div class="space-y-6 md:space-y-10">
       <div
-        class="parallax-container aspect-[2/1] overflow-hidden rounded-[40px]"
+        class="animate parallax-container aspect-[3/2] overflow-hidden rounded-[40px] md:aspect-[2/1]"
       >
         <img
           src="/images/aboutus-1.webp"
           class="parallax-img size-full origin-top object-cover"
         />
       </div>
-      <p class="text-b1 text-center font-light">
+      <p
+        class="animate text-b3 md:text-b1 mx-auto max-w-3xl px-2 text-center md:px-0"
+      >
         {t("aboutus.ourstory.desc")}
       </p>
     </div>
     <Line />
-    <div class="flex flex-col items-center gap-16 md:w-[calc(100%-200px)]">
+    <div
+      class="flex flex-col items-center gap-6 md:w-[calc(100%-200px)] md:gap-16"
+    >
       <div class="max-w-xl space-y-6 text-center">
-        <h2 class="text-h4 uppercase">{t("aboutus.ourvision.title")}</h2>
-        <p class="text-b1 font-light">
+        <h2 class="animate text-h5 md:text-h4 uppercase">
+          {t("aboutus.ourvision.title")}
+        </h2>
+        <p class="animate text-b3 md:text-b1 mx-auto max-w-3xl px-2 md:px-0">
           {t("aboutus.ourvision.desc")}
         </p>
       </div>
       <div
-        class="parallax-container aspect-[2/1] overflow-hidden rounded-[40px]"
+        class="animate parallax-container aspect-[3/2] overflow-hidden rounded-[40px] md:aspect-[2/1]"
       >
         <img
           src="/coffee-brew.webp"
@@ -48,16 +56,18 @@ const t = useTranslations(lang);
     </div>
     <Line />
     <div
-      class="mb-16 flex flex-col items-center gap-16 md:w-[calc(100%-200px)]"
+      class="flex flex-col items-center gap-6 md:mb-16 md:w-[calc(100%-200px)] md:gap-16"
     >
       <div class="max-w-xl space-y-6 text-center">
-        <h2 class="text-h4 uppercase">{t("aboutus.ourmission.title")}</h2>
-        <p class="text-b1 font-light">
+        <h2 class="animate text-h5 md:text-h4 uppercase">
+          {t("aboutus.ourmission.title")}
+        </h2>
+        <p class="animate text-b3 md:text-b1 mx-auto max-w-3xl px-2 md:px-0">
           {t("aboutus.ourmission.desc")}
         </p>
       </div>
       <div
-        class="parallax-container aspect-[2/1] overflow-hidden rounded-[40px]"
+        class="animate parallax-container aspect-[3/2] overflow-hidden rounded-[40px] md:aspect-[2/1]"
       >
         <img
           src="/images/aboutus-2.webp"

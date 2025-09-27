@@ -11,20 +11,25 @@ const t = useTranslations(lang);
 ---
 
 <section class="beans-section w-fit">
-  <div class="flex w-full items-center justify-between gap-10 md:gap-32">
-    <div class="order-2 max-w-70 text-center md:order-1 md:text-left">
-      <img src="/fire.webp" class="beans-icon mb-8 size-[76px] rounded-full" />
-      <h3 class="beans-title text-secondary mb-4 text-2xl font-bold">
+  <div
+    class="flex w-full flex-col-reverse items-center justify-between gap-10 md:flex-row md:gap-32"
+  >
+    <div class="order-2 max-w-70 md:order-1 md:text-left">
+      <img
+        src="/fire.webp"
+        class="beans-icon mb-8 size-14 rounded-full md:size-[76px]"
+      />
+      <h3 class="beans-title text-secondary text-h5 mb-4 font-bold md:text-2xl">
         {t("home.beans.title")}
       </h3>
-      <p class="beans-description text-gray1 leading-relaxed">
+      <p class="beans-description text-b3 md:text-gray1 leading-relaxed">
         {t("home.beans.desc")}
       </p>
     </div>
     <div class="order-1 md:order-2">
       <img
         src="/images/where-the-aroma-begins.webp"
-        class="aspect-[5/3] h-[330px]"
+        class="aspect-[5/3] w-full px-3 md:h-[330px] md:px-0"
       />
     </div>
   </div>

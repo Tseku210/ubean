@@ -1,0 +1,257 @@
+---
+import type { languages } from "@/i18n/ui";
+import Beans from "./Beans.astro";
+import Cup from "./Cup.astro";
+import Portofilters from "./Portofilters.astro";
+import RoastedBeans from "./RoastedBeans.astro";
+import Since from "./Since.astro";
+
+interface Props {
+  lang: keyof typeof languages;
+}
+
+const { lang } = Astro.props;
+
+console.log("hello");
+---
+
+<div
+  class="motion-path-mobile relative mx-auto block h-[calc(100%+320px)] max-w-6xl md:hidden"
+>
+  <!-- for mobile -->
+  <svg
+    width="100%"
+    height="100%"
+    viewBox="0 0 361 2276"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class="block overflow-visible px-4 md:hidden"
+  >
+    <path
+      id="path-mobile"
+      d="M181 0V20.5C181 59.1599 149.66 90.5 111 90.5H71C32.3401 90.5 1 121.84 1 160.5V590C1 628.66 32.3401 660 71 660H113.5C152.16 660 183.5 691.34 183.5 730V1030C183.5 1068.66 214.84 1100 253.5 1100H290C328.66 1100 360 1131.34 360 1170V1647.5C360 1686.16 328.66 1717.5 290 1717.5H71.5C32.8401 1717.5 1.5 1748.84 1.5 1787.5V2117C1.5 2155.66 32.8401 2187 71.5 2187H110.5C149.16 2187 180.5 2218.34 180.5 2257V2276"
+      stroke="#97D5D0"
+      stroke-width="2"
+      stroke-dasharray="4 7"></path>
+    <path
+      id="droplet-mobile"
+      d="M191 20.8286C191 26.4461 186.523 31 181 31C175.477 31 171 26.4461 171 20.8286C171 15.211 181 3 181 3C181 3 191 15.211 191 20.8286Z"
+      fill="#97D5D0"></path>
+  </svg>
+
+  <div
+    id="beans-section-mobile"
+    class="absolute right-0 mx-auto w-fit px-4"
+    data-progress-mobile="0.09"
+    style={{ visibility: "hidden" }}
+  >
+    <Beans lang={lang} />
+  </div>
+
+  <div
+    id="aroma-section-mobile"
+    class="absolute mx-auto flex w-full justify-center"
+    data-progress-mobile="0.35"
+    style={{ visibility: "hidden" }}
+  >
+    <Portofilters />
+  </div>
+
+  <div
+    id="tools-section-mobile"
+    class="absolute w-full"
+    data-progress-mobile="0.53"
+    style={{ visibility: "hidden" }}
+  >
+    <RoastedBeans />
+  </div>
+
+  <div
+    id="products-section-mobile"
+    class="absolute right-0 mx-auto w-full px-4"
+    data-progress-mobile="0.86"
+    style={{ visibility: "hidden" }}
+  >
+    <Since lang={lang} />
+  </div>
+
+  <div id="heritage-section-mobile" class="mx-auto mt-5 w-[200px]">
+    <Cup />
+  </div>
+</div>
+
+<script>
+  import { pathEase } from "@/lib/pathEaseHelper";
+  import { gsap } from "gsap";
+  import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import {
+    durations,
+    staggerDelays,
+    performanceUtils,
+    prefersReducedMotion,
+  } from "@/lib/animations";
+
+  gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
+
+  // Position components along the path
+  function positionComponentsAlongPath(preserveVisibility = false) {
+    const path = document.querySelector("#path-mobile") as SVGPathElement;
+    if (!path) return;
+
+    const rawPath = MotionPathPlugin.getRawPath(path);
+    const sections = document.querySelectorAll("[data-progress-mobile]");
+
+    sections.forEach((section) => {
+      const progress = parseFloat(
+        section.getAttribute("data-progress-mobile") || "0",
+      );
+      const point = MotionPathPlugin.getPositionOnPath(rawPath, progress);
+
+      const props: any = { top: point.y };
+
+      if (!preserveVisibility) {
+        props.opacity = 0;
+        props.scale = 0.95;
+      }
+
+      gsap.set(section, props);
+
+      if (!preserveVisibility) {
+        performanceUtils.optimizeForTransform(section as HTMLElement);
+      }
+    });
+  }
+
+  // Animate components into view on scroll with staggered timing
+  function animateComponentsOnScroll() {
+    const sections = document.querySelectorAll("[data-progress-mobile]");
+
+    // Check for reduced motion preference
+    const shouldAnimate = !prefersReducedMotion();
+
+    sections.forEach((section, index) => {
+      (section as HTMLElement).style.visibility = "visible";
+      const animation = {
+        opacity: 1,
+        scale: 1,
+        duration: shouldAnimate ? durations.normal : 0.01,
+        ease: shouldAnimate ? "power1.out" : "none",
+        delay: shouldAnimate ? index * staggerDelays.tight : 0,
+        scrollTrigger: {
+          once: true,
+          trigger: section,
+          start: "top 80%",
+          end: "bottom 20%",
+          onComplete: () => {
+            // Remove will-change after animation completes for performance
+            performanceUtils.removeWillChange(section as HTMLElement);
+          },
+        },
+      };
+
+      // For reduced motion users, just show the elements without transforms
+      if (!shouldAnimate) {
+        gsap.set(section, {
+          opacity: 1,
+          scale: 1,
+        });
+        return;
+      }
+
+      gsap.to(section, animation);
+    });
+  }
+
+  // Set up initial state and animations
+  gsap.set("#droplet-mobile", {
+    scale: 0.8,
+    scaleY: 1,
+    transformOrigin: "50% 65%",
+  });
+
+  gsap.to("#droplet-mobile", {
+    scrollTrigger: {
+      trigger: ".motion-path-mobile",
+      start: 0.3,
+      end: () =>
+        "+=" +
+        (document.querySelector(".motion-path-mobile")?.getBoundingClientRect()
+          .height || 1000),
+      scrub: 3,
+      onUpdate: (self) => {
+        const rawProgress = self.progress;
+        const progress = gsap.utils.clamp(
+          0,
+          1,
+          (rawProgress - 0.9) / 0.1, // map 0.9‑1.0 → 0‑1
+        );
+
+        // const dir = self.direction;
+
+        const startColor = { r: 151, g: 213, b: 208 }; // #97D5D0
+        const endColor = { r: 101, g: 67, b: 33 }; // #654321 (coffee brown)
+
+        const r = Math.round(
+          startColor.r + (endColor.r - startColor.r) * progress,
+        );
+        const g = Math.round(
+          startColor.g + (endColor.g - startColor.g) * progress,
+        );
+        const b = Math.round(
+          startColor.b + (endColor.b - startColor.b) * progress,
+        );
+
+        // if (dir !== lastDir) {
+        //   lastDir = dir;
+        //   gsap.to('#droplet', {
+        //     rotation: '+=180',
+        //     duration: 0.2,
+        //     overwrite: 'auto',
+        //   });
+        // }
+
+        gsap.set("#droplet-mobile", {
+          fill: `rgb(${r}, ${g}, ${b})`,
+        });
+      },
+    },
+    ease: pathEase("#path-mobile", { smooth: 20 }),
+    immediateRender: true,
+    motionPath: {
+      path: "#path-mobile",
+      align: "#path-mobile",
+      alignOrigin: [0.5, 0.5],
+      autoRotate: 270,
+    },
+  });
+
+  ScrollTrigger.addEventListener("scrollStart", () => {
+    gsap.to("#droplet-mobile", {
+      scaleY: 1.2,
+      duration: 0.3,
+      overwrite: "auto",
+    });
+  });
+
+  ScrollTrigger.addEventListener("scrollEnd", () => {
+    gsap.to("#droplet-mobile", {
+      scaleY: 1,
+      duration: 1,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
+  });
+
+  // Initialize positioning when DOM is loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    positionComponentsAlongPath();
+    animateComponentsOnScroll();
+
+    // Reposition on window resize
+    window.addEventListener("resize", () => {
+      positionComponentsAlongPath(true);
+      ScrollTrigger.refresh();
+    });
+  });
+</script>

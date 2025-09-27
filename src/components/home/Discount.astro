@@ -13,15 +13,17 @@ const translatePath = useTranslatedPath(lang);
 ---
 
 <section
-  class="bg-secondary flex h-fit flex-col items-center gap-14 rounded-[50px] px-10 py-20"
+  class="bg-secondary flex h-fit flex-col items-center gap-14 rounded-[50px] px-10 py-20 md:mx-10"
 >
   <div class="flex flex-col items-center justify-center gap-5">
-    <h3 class="text-h3 font-bold text-white">{t("home.discount.title")}</h3>
+    <h3 class="text-h5 md:text-h3 font-bold text-white">
+      {t("home.discount.title")}
+    </h3>
     <a href={translatePath("/contact/")}>
-      <Button size="lg">{t("home.discount.button")}</Button>
+      <Button className="px-10 py-2">{t("home.discount.button")}</Button>
     </a>
   </div>
-  <div class="grid w-full max-w-4xl grid-cols-1 gap-16 md:grid-cols-2">
+  <div class="grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-2 md:gap-16">
     <img
       src="/images/loyalty-discount.webp"
       class="aspect-[4/2] w-full object-contain"

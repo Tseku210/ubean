@@ -31,7 +31,7 @@ export const ui = {
     "menu.title": "Menu",
     "menu.menu": "Menu",
     "menu.desc":
-      "Making coffee art is an experience we thoroughly enjoy creating, and we hope that so will you.",
+      '"Making coffee art is an experience we thoroughly enjoy creating, and we hope that so will you."',
     "menu.coffee": "Coffee",
     "menu.non-coffee": "Non Coffee",
     "menu.specialty": "Specialty",
@@ -48,6 +48,9 @@ export const ui = {
     "contact.sending": "Sending...",
     "contact.success": "Your message has been sent successfully!",
     "contact.error": "Something went wrong. Please try again.",
+    "contact.error.name": "Please enter your name.",
+    "contact.error.mail": "Please enter a valid email.",
+    "contact.error.message": "Message cannot be empty.",
     "contact.network_error":
       "Network error. Please check your connection and try again.",
     "aboutus.title": "About Us",
@@ -66,6 +69,7 @@ export const ui = {
     "nav.menu": "Мэню",
     "nav.about": "Бидний тухай",
     "nav.contact": "Холбоо барих",
+    "home.title": "Premium Coffee Experience",
     "error.404": "Таны хайж буй хуудас олдсонгүй 😥☕️",
     "home.hero.title": "Unblemished beans",
     "home.hero.desc":
@@ -99,8 +103,11 @@ export const ui = {
     "contact.submit": "Илгээх",
     "contact.sending": "Илгээж байна...",
     "contact.success": "Таны санал хүсэлт амжилттай илгээгдлээ!",
-    "contact.error": "Алдаа гарлаа. Дахин оролдоно уу.",
     "contact.network_error": "Сүлжээний алдаа. Дахин оролдоно уу.",
+    "contact.error": "Алдаа гарлаа. Дахин оролдоно уу.",
+    "contact.error.name": "Нэрээ оруулна уу.",
+    "contact.error.mail": "Зөв майлээ оруулна уу.",
+    "contact.error.message": "Хүсэлтээ бичнэ үү.",
     "aboutus.title": "Бидний тухай",
     "aboutus.ourstory.title": "Бидний түүх",
     "aboutus.ourstory.desc":

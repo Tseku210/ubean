@@ -1,24 +1,26 @@
 ---
 import Hero from "@/components/home/Hero.astro";
-import Layout from "@/layouts/Layout.astro";
 import MotionPath from "@/components/home/MotionPath.astro";
 import Discount from "@/components/home/Discount.astro";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import HomeLayout from "@/layouts/HomeLayout.astro";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<Layout title={`UBean - ${t("home.title")}`}>
+<HomeLayout title={`UBean - ${t("home.title")}`}>
   <main class="relative">
     <Hero lang={lang} />
     <MotionPath lang={lang} />
-    <h2 class="text-h2 mx-auto my-30 max-w-4xl text-center font-bold uppercase">
+    <h2
+      class="text-h5 md:text-h2 mx-auto my-8 max-w-4xl text-center uppercase md:my-30"
+    >
       {t("home.title2")}
     </h2>
     <Discount lang={lang} />
   </main>
-</Layout>
+</HomeLayout>
 
 <script>
   import { gsap } from "gsap";
