@@ -15,7 +15,7 @@ const t = useTranslations(lang);
     class="mx-auto mt-10 flex min-h-[calc(100vh-74px-122px)] max-w-4xl items-center md:mt-0"
   >
     <div
-      class="grid grid-cols-1 justify-items-center gap-10 md:grid-cols-2 md:gap-16"
+      class="grid w-full grid-cols-1 justify-items-center gap-10 md:grid-cols-2 md:gap-16"
     >
       <div
         class="animate group order-2 w-full self-center overflow-hidden rounded-4xl transition-shadow hover:shadow-xl md:order-1 md:aspect-[4/5]"
@@ -24,6 +24,8 @@ const t = useTranslations(lang);
           src={ContactImage}
           alt="Contact Us"
           class="size-full object-cover transition-transform group-hover:scale-105"
+          layout="constrained"
+          width={400}
         />
       </div>
       <section
