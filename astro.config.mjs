@@ -1,9 +1,7 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
-
 import sanity from "@sanity/astro";
-
 import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
@@ -36,5 +34,24 @@ export default defineConfig({
   i18n: {
     locales: ["en", "mn"],
     defaultLocale: "en",
+  },
+
+  experimental: {
+    fonts: [
+      {
+        provider: fontProviders.fontsource(),
+        name: "Ubuntu",
+        cssVariable: "--font-ubuntu",
+        weights: [300, 400, 500, 600, 700],
+        styles: ["normal", "italic"],
+      },
+      {
+        provider: fontProviders.fontsource(),
+        name: "Roboto",
+        cssVariable: "--font-roboto",
+        weights: [300, 400, 500, 600, 700],
+        styles: ["normal"],
+      },
+    ],
   },
 });

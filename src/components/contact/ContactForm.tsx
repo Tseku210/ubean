@@ -5,7 +5,7 @@ import { LabeledTextArea } from "../ui/LabeledTextArea";
 import { useForm } from "react-hook-form";
 import useWeb3Forms from "@web3forms/react";
 import { useTranslations } from "@/i18n/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { storage } from "@/lib/storage";
 import { FEEDBACK_KEY } from "@/consts";
 
@@ -60,7 +60,7 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
   return (
     <form
       className="relative flex size-full max-w-md flex-col items-center justify-center gap-6"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={onSubmit}
     >
       <input
         type="checkbox"

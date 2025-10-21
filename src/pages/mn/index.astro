@@ -1,5 +1,12 @@
 ---
-import HomePage from "@/components/home/HomePage.astro";
+import HomeLayout from "@/layouts/HomeLayout.astro";
+import HomePage from "@/components/home/HomePage";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<HomePage />
+<HomeLayout title={`UBean - ${t("home.title")}`}>
+  <HomePage client:only="react" lang={lang} />
+</HomeLayout>

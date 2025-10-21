@@ -22,3 +22,22 @@ export enum Category {
 }
 
 export type Language = keyof typeof languages;
+
+export type SectionKey = "beans" | "aroma" | "tools" | "products";
+
+export interface SectionConfig {
+  key: SectionKey;
+  progress: number;
+  className: string;
+}
+
+export interface MotionPathConfig {
+  containerClass: string;
+  svgClass: string;
+  viewBox: string;
+  pathData: string;
+  dropletPathData: string;
+  sections: SectionConfig[];
+  cupWrapperClass: string;
+  scrollStart: string | number;
+}
