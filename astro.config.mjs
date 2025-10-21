@@ -2,7 +2,7 @@ import { defineConfig, fontProviders } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import sanity from "@sanity/astro";
-import vercel from "@astrojs/vercel";
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
@@ -29,7 +29,11 @@ export default defineConfig({
     remotePatterns: [{ protocol: "https" }],
   },
 
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+    maxDuration: 8,
+  }),
+  output: "server",
 
   i18n: {
     locales: ["en", "mn"],
