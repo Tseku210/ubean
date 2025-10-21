@@ -1,9 +1,9 @@
 import { renderers } from './renderers.mjs';
-import { c as createExports } from './chunks/entrypoint_D_Cck8Ap.mjs';
-import { manifest } from './manifest_DJqtK66n.mjs';
+import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_DnZmqbc1.mjs';
+import { manifest } from './manifest_BFK3mfTX.mjs';
 
 const serverIslandMap = new Map([
-	['MenuList', () => import('./chunks/MenuList_DoZSk1Tj.mjs')],
+	['MenuList', () => import('./chunks/MenuList_DLoz1d9P.mjs')],
 ]);;
 
 const _page0 = () => import('./pages/_image.astro.mjs');
@@ -24,10 +24,10 @@ const _page14 = () => import('./pages/mn/menu/specialty.astro.mjs');
 const _page15 = () => import('./pages/mn.astro.mjs');
 const _page16 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
-    ["node_modules/.pnpm/astro@5.10.1_@types+node@24.0.4_jiti@2.4.2_lightningcss@1.30.1_rollup@4.44.1_typescript@5.8.3_yaml@2.8.0/node_modules/astro/dist/assets/endpoint/generic.js", _page0],
+    ["node_modules/.pnpm/astro@5.14.5_@types+node@24.0.4_@vercel+functions@2.2.13_jiti@2.4.2_lightningcss@1.30.1_rollu_nwt5vsynhrztguwmiobdqls5wy/node_modules/astro/dist/assets/endpoint/generic.js", _page0],
     ["src/pages/404.astro", _page1],
     ["src/pages/about-us.astro", _page2],
-    ["node_modules/.pnpm/@sanity+astro@3.2.6_@emotion+is-prop-valid@1.2.2_@sanity+client@7.6.0_@sanity+types@3.99.0_@t_uv5s3owjvdrcqhfkjrdsw2vtja/node_modules/@sanity/astro/dist/studio/studio-route.astro", _page3],
+    ["node_modules/.pnpm/@sanity+astro@3.2.6_@emotion+is-prop-valid@1.2.2_@sanity+client@7.6.0_@sanity+types@3.99.0_@t_6fhovp2fgmgf2a4exbk7nhiawi/node_modules/@sanity/astro/dist/studio/studio-route.astro", _page3],
     ["src/pages/contact.astro", _page4],
     ["src/pages/menu/coffee.astro", _page5],
     ["src/pages/menu/grub.astro", _page6],
@@ -51,10 +51,12 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_noop-middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "c78f50bf-2229-4bc8-ba11-c094e75493a3",
+    "middlewareSecret": "d7f0d440-451a-4b2e-87dd-cdfb849ddb9b",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);
 const __astrojsSsrVirtualEntry = _exports.default;
+const _start = 'start';
+if (Object.prototype.hasOwnProperty.call(serverEntrypointModule, _start)) ;
 
 export { __astrojsSsrVirtualEntry as default, pageMap };

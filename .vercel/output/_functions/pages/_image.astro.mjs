@@ -1,5 +1,5 @@
-import { g as getConfiguredImageService, i as imageConfig, a as isRemoteAllowed, l as lookup } from '../chunks/_astro_assets_BCTMpQSF.mjs';
-import { i as isRemotePath } from '../chunks/index_CCxZAn8N.mjs';
+import { g as getConfiguredImageService, i as imageConfig, l as lookup } from '../chunks/_astro_assets_DrZ5--uJ.mjs';
+import { i as isRemotePath, a as isRemoteAllowed } from '../chunks/index_CR4ZvYMV.mjs';
 export { renderers } from '../renderers.mjs';
 
 const fnv1a52 = (str) => {
@@ -54,8 +54,11 @@ const GET = async ({ request }) => {
     }
     let inputBuffer = void 0;
     const isRemoteImage = isRemotePath(transform.src);
-    const sourceUrl = isRemoteImage ? new URL(transform.src) : new URL(transform.src, url.origin);
     if (isRemoteImage && isRemoteAllowed(transform.src, imageConfig) === false) {
+      return new Response("Forbidden", { status: 403 });
+    }
+    const sourceUrl = new URL(transform.src, url.origin);
+    if (!isRemoteImage && sourceUrl.origin !== url.origin) {
       return new Response("Forbidden", { status: 403 });
     }
     inputBuffer = await loadRemoteImage(sourceUrl, isRemoteImage ? new Headers() : request.headers);
