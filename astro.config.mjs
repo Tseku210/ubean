@@ -6,7 +6,7 @@ import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://ubean.mn",
+  site: "https://www.ubean.mn",
 
   prefetch: true,
 
@@ -38,6 +38,9 @@ export default defineConfig({
   i18n: {
     locales: ["en", "mn"],
     defaultLocale: "en",
+    routing: {
+      prefixDefaultLocale: false,
+    },
   },
 
   experimental: {
