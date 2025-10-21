@@ -14,48 +14,65 @@ const t = useTranslations(lang);
 const translatedPath = useTranslatedPath(lang);
 ---
 
-<div
-  class="flex flex-nowrap content-center gap-2 overflow-x-auto md:grid md:grid-cols-4"
-  data-category-buttons-container
->
-  <a href={translatedPath(`/menu/${Category.coffee}/`)} data-astro-prefetch>
-    <Button
-      variant={category === Category.coffee ? "secondary" : "ghost"}
-      size="lg"
-      data-category={Category.coffee}
-      className="category-button md:w-full"
+<div class="no-scrollbar w-full overflow-x-auto">
+  <div
+    class="flex w-fit snap-x gap-2 first:pl-8 last:pr-8 md:first:pl-0 md:last:pr-0"
+  >
+    <a
+      class="shrink-0 snap-start"
+      href={translatedPath(`/menu/${Category.coffee}/`)}
+      data-astro-prefetch
     >
-      {t("menu.coffee")}
-    </Button>
-  </a>
-  <a href={translatedPath(`/menu/${Category.nonCoffee}/`)} data-astro-prefetch>
-    <Button
-      variant={category === Category.nonCoffee ? "secondary" : "ghost"}
-      size="lg"
-      data-category={Category.nonCoffee}
-      className="category-button md:w-full"
+      <Button
+        variant={category === Category.coffee ? "secondary" : "ghost"}
+        size="sm"
+        data-category={Category.coffee}
+        className="md:w-full"
+      >
+        {t("menu.coffee")}
+      </Button>
+    </a>
+    <a
+      class="shrink-0 snap-start"
+      href={translatedPath(`/menu/${Category.nonCoffee}/`)}
+      data-astro-prefetch
     >
-      {t("menu.non-coffee")}
-    </Button>
-  </a>
-  <a href={translatedPath(`/menu/${Category.specialty}/`)} data-astro-prefetch>
-    <Button
-      variant={category === Category.specialty ? "secondary" : "ghost"}
-      size="lg"
-      data-category={Category.specialty}
-      className="category-button md:w-full"
+      <Button
+        variant={category === Category.nonCoffee ? "secondary" : "ghost"}
+        size="sm"
+        data-category={Category.nonCoffee}
+        className="category-button md:w-full"
+      >
+        {t("menu.non-coffee")}
+      </Button>
+    </a>
+    <a
+      class="shrink-0 snap-start"
+      href={translatedPath(`/menu/${Category.specialty}/`)}
+      data-astro-prefetch
     >
-      {t("menu.specialty")}
-    </Button>
-  </a>
-  <a href={translatedPath(`/menu/${Category.grub}/`)} data-astro-prefetch>
-    <Button
-      variant={category === Category.grub ? "secondary" : "ghost"}
-      size="lg"
-      data-category={Category.grub}
-      className="category-button md:w-full"
+      <Button
+        variant={category === Category.specialty ? "secondary" : "ghost"}
+        size="sm"
+        data-category={Category.specialty}
+        className="category-button md:w-full"
+      >
+        {t("menu.specialty")}
+      </Button>
+    </a>
+    <a
+      class="shrink-0 snap-start"
+      href={translatedPath(`/menu/${Category.grub}/`)}
+      data-astro-prefetch
     >
-      {t("menu.grub")}
-    </Button>
-  </a>
+      <Button
+        variant={category === Category.grub ? "secondary" : "ghost"}
+        size="sm"
+        data-category={Category.grub}
+        className="category-button md:w-full"
+      >
+        {t("menu.grub")}
+      </Button>
+    </a>
+  </div>
 </div>

@@ -1,9 +1,9 @@
 import { renderers } from './renderers.mjs';
-import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_DnZmqbc1.mjs';
-import { manifest } from './manifest_BFK3mfTX.mjs';
+import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_BTF6b_1L.mjs';
+import { manifest } from './manifest_C0f_6WZB.mjs';
 
 const serverIslandMap = new Map([
-	['MenuList', () => import('./chunks/MenuList_DLoz1d9P.mjs')],
+	['MenuList', () => import('./chunks/MenuList_DBjn0oGB.mjs')],
 ]);;
 
 const _page0 = () => import('./pages/_image.astro.mjs');
@@ -51,7 +51,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_noop-middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "d7f0d440-451a-4b2e-87dd-cdfb849ddb9b",
+    "middlewareSecret": "a3ed5749-4449-4c30-9408-c1405eafe1fb",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);

@@ -36,15 +36,27 @@ const largePrice = menuItem.prices?.large;
     />
   </div>
   <div class="flex flex-col space-y-3 px-6 pb-7 text-left">
-    <span class="text-h7 md:text-h6 uppercase">{name}</span>
+    <span class="text-h7 md:text-h6 font-medium uppercase">{name}</span>
     <div class={`flex flex-col ${smallPrice && largePrice ? "gap-[2px]" : ""}`}>
-      {defaultPrice && <span class="text-h6">{formatPrice(defaultPrice)}</span>}
-      {smallPrice && <span class="text-h6">{formatPrice(smallPrice)}</span>}
-      {largePrice && <span class="text-h6">{formatPrice(largePrice)}</span>}
+      {
+        defaultPrice && (
+          <span class="text-h6 font-medium">{formatPrice(defaultPrice)}</span>
+        )
+      }
+      {
+        smallPrice && (
+          <span class="text-h6 font-medium">{formatPrice(smallPrice)}</span>
+        )
+      }
+      {
+        largePrice && (
+          <span class="text-h6 font-medium">{formatPrice(largePrice)}</span>
+        )
+      }
     </div>
     {
       variants?.length > 0 && (
-        <span class="text-b4 text-secondary text-xs">
+        <span class="text-b4 text-secondary text-xs font-medium">
           {variants.join(", ")}
         </span>
       )
