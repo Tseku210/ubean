@@ -32,6 +32,8 @@ export interface SectionConfig {
 }
 
 export interface MotionPathConfig {
+  width: string;
+  height: string;
   containerClass: string;
   svgClass: string;
   viewBox: string;

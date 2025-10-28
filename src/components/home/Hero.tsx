@@ -15,7 +15,7 @@ export default function Hero({ lang }: Props) {
   return (
     <section
       ref={container}
-      className="relative z-10 mx-4 aspect-[4/3] overflow-hidden rounded-[50px] md:mx-10 md:aspect-[1290/550]"
+      className="relative z-10 mx-4 aspect-[4/3] overflow-hidden rounded-[50px] md:mx-10 lg:aspect-[1290/550]"
     >
       <MuxPlayer
         className="block h-full w-full"

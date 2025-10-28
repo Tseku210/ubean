@@ -9,6 +9,7 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { MotionPathHelper } from "gsap/MotionPathHelper";
+import Cup from "./Cup";
 
 gsap.registerPlugin(
   useGSAP,
@@ -30,9 +31,10 @@ export default function HomePage({ lang }: Props) {
   const t = useTranslations(lang);
 
   return (
-    <main className="relative">
+    <main className="relative overflow-hidden">
       <Hero lang={lang} />
       <MotionPath lang={lang} />
+      <Cup />
       <h2 className="text-h5 md:text-h2 mx-auto my-8 max-w-4xl px-6 text-center uppercase md:my-30 md:px-0">
         {t("home.title2")}
       </h2>

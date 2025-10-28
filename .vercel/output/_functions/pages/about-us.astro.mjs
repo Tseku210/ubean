@@ -1,6 +1,6 @@
 import '../chunks/page-ssr_BwWVwiW0.mjs';
 import { c as createComponent, r as renderComponent, b as renderTemplate } from '../chunks/astro/server_Dnj5Tjv1.mjs';
-import { $ as $$AboutUsPage } from '../chunks/AboutUsPage_BWI8lglJ.mjs';
+import { $ as $$AboutUsPage } from '../chunks/AboutUsPage_hoPRala0.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$AboutUs = createComponent(($$result, $$props, $$slots) => {

@@ -1,7 +1,7 @@
 import '../chunks/page-ssr_BwWVwiW0.mjs';
 import { c as createComponent, a as createAstro, r as renderComponent, b as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_Dnj5Tjv1.mjs';
-import { g as getLangFromUrl, u as useTranslations } from '../chunks/Footer_DCGX1fy9.mjs';
-import { $ as $$Layout } from '../chunks/Layout_nmJ7Lr5B.mjs';
+import { g as getLangFromUrl, u as useTranslations } from '../chunks/Footer_B4EnovnO.mjs';
+import { $ as $$Layout } from '../chunks/Layout_DErERJ1q.mjs';
 /* empty css                               */
 export { renderers } from '../renderers.mjs';
 

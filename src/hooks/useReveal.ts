@@ -16,7 +16,7 @@ export function useReveal() {
             y: 0,
             stagger: 0.1,
             ease: "back.out",
-            markers: true,
+            // markers: true,
           });
         },
         start: "top 80%",

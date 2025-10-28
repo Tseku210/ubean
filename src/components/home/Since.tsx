@@ -12,7 +12,7 @@ export default function Since({ lang }: Props) {
   const { container } = useReveal();
 
   return (
-    <section ref={container} className="w-full">
+    <section ref={container}>
       <div className="flex w-full flex-col-reverse items-center justify-between gap-10 md:flex-row md:gap-32">
         <div className="order-2 max-w-70 text-center md:order-1 md:text-left">
           <div className="flex flex-col gap-6 text-left">
@@ -24,7 +24,7 @@ export default function Since({ lang }: Props) {
             </span>
           </div>
         </div>
-        <div className="reveal relative order-1 aspect-[5/3] h-[190px] w-full overflow-hidden rounded-4xl md:order-2 md:h-[330px]">
+        <div className="reveal relative order-1 h-[190px] w-[343px] overflow-hidden rounded-[40px] md:order-2 md:aspect-[5/3] md:h-[330px] md:w-[800px] lg:w-auto">
           <MuxPlayer
             className="block h-full w-full"
             playbackId="kfJo02Ax7pE6bO5T6wz024WPeoAJa6qPKhfKdDQ00lvbfk"

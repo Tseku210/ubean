@@ -8,7 +8,7 @@ export const useIsDesktop = () => {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const mediaQuery = window.matchMedia("(min-width: 501px)");
     const handler = (event: MediaQueryListEvent) => setIsDesktop(event.matches);
     mediaQuery.addEventListener("change", handler);
     setIsDesktop(mediaQuery.matches);

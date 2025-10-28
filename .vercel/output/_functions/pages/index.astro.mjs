@@ -1,8 +1,8 @@
 import '../chunks/page-ssr_BwWVwiW0.mjs';
 import { c as createComponent, a as createAstro, r as renderComponent, b as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_Dnj5Tjv1.mjs';
-import { $ as $$HomeLayout } from '../chunks/HomeLayout_BNlzTWII.mjs';
-import { g as getLangFromUrl, u as useTranslations } from '../chunks/Footer_DCGX1fy9.mjs';
-import { S as Smoke } from '../chunks/smoke_pfD68SCJ.mjs';
+import { $ as $$HomeLayout } from '../chunks/HomeLayout_CZH1glp8.mjs';
+import { g as getLangFromUrl, u as useTranslations } from '../chunks/Footer_B4EnovnO.mjs';
+import { S as Smoke } from '../chunks/smoke_ShYGT3If.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro();

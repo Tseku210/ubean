@@ -1,6 +1,6 @@
 import '../../chunks/page-ssr_BwWVwiW0.mjs';
 import { c as createComponent, r as renderComponent, b as renderTemplate } from '../../chunks/astro/server_Dnj5Tjv1.mjs';
-import { C as Category, $ as $$MenuLayout } from '../../chunks/MenuLayout_81YkdgH0.mjs';
+import { C as Category, $ as $$MenuLayout } from '../../chunks/MenuLayout_B4CiO1W3.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Coffee = createComponent(($$result, $$props, $$slots) => {

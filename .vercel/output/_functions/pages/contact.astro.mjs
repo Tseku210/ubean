@@ -1,6 +1,6 @@
 import '../chunks/page-ssr_BwWVwiW0.mjs';
 import { c as createComponent, r as renderComponent, b as renderTemplate } from '../chunks/astro/server_Dnj5Tjv1.mjs';
-import { $ as $$ContactPage } from '../chunks/ContactPage_BOcPHPA-.mjs';
+import { $ as $$ContactPage } from '../chunks/ContactPage_B62ZLgxK.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Contact = createComponent(($$result, $$props, $$slots) => {
