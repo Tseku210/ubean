@@ -23,6 +23,7 @@ export default function MotionPath({ lang }: Props) {
   const { isPhone, isTablet, isDesktop } = useMediaQuery();
   const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
+  const dropletWrapperRef = useRef<SVGPathElement>(null);
   const dropletRef = useRef<SVGPathElement>(null);
   const sectionRefs = useRef<Record<SectionKey, HTMLDivElement | null>>({
     aroma: null,
@@ -30,28 +31,6 @@ export default function MotionPath({ lang }: Props) {
     products: null,
     tools: null,
   });
-
-  // useGSAP(() => {
-  //   if (!dropletRef.current || !pathRef.current) return;
-  //
-  //   gsap.to(dropletRef.current, {
-  //     ease: "none",
-  //     scrollTrigger: {
-  //       trigger: pathRef.current,
-  //       start: "top center",
-  //       end: () => "+=" + pathRef.current?.getBoundingClientRect().height,
-  //       scrub: 1,
-  //       // markers: true,
-  //     },
-  //     immediateRender: true,
-  //     motionPath: {
-  //       path: pathRef.current!,
-  //       align: pathRef.current!,
-  //       alignOrigin: [0.5, 0.5],
-  //       // autoRotate: 270,
-  //     },
-  //   });
-  // });
 
   const config = useMemo<MotionPathConfig>(() => {
     if (isDesktop) {
@@ -151,13 +130,68 @@ export default function MotionPath({ lang }: Props) {
         },
       ],
       cupWrapperClass: "mx-auto mt-5 w-[200px]",
-      scrollStart: "top 60%",
+      scrollStart: "top 20%",
     };
   }, [isDesktop, isTablet, isPhone]);
 
   const rawPath = useMemo(() => {
     return MotionPathPlugin.stringToRawPath(config.pathData);
-  }, [config.pathData]);
+  }, [config.pathData, isTablet, isPhone, isDesktop]);
+
+  useGSAP(
+    () => {
+      if (!dropletWrapperRef.current || !dropletRef.current || !pathRef.current)
+        return;
+
+      let rotateTo = gsap.quickTo(dropletRef.current, "rotation");
+      let prevDirection = 0;
+
+      gsap.set(dropletRef.current, {
+        transformOrigin: "50% 65%",
+      });
+
+      gsap.to(dropletWrapperRef.current, {
+        ease: pathEase(rawPath, { smooth: isPhone ? 50 : 20 }),
+        scrollTrigger: {
+          trigger: pathRef.current,
+          start: config.scrollStart,
+          end: () => "+=" + pathRef.current?.getBoundingClientRect().height,
+          scrub: 2,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const interpolate = gsap.utils.interpolate("#97D5D0", "#654321");
+            const v = gsap.utils.clamp(0, 200, Math.abs(self.getVelocity()));
+            const scaleY = gsap.utils.mapRange(0, 200, 1, 1.5, v);
+
+            gsap.to(dropletRef.current, {
+              scaleY: scaleY,
+              duration: 1,
+              ease: "back.out",
+              overwrite: "auto",
+              fill: interpolate(self.progress),
+            });
+
+            if (prevDirection !== self.direction) {
+              rotateTo(self.direction === 1 ? 0 : -180);
+              prevDirection = self.direction;
+            }
+          },
+        },
+        immediateRender: true,
+        motionPath: {
+          path: pathRef.current!,
+          align: pathRef.current!,
+          alignOrigin: [0.5, 0.5],
+          autoRotate: 270,
+        },
+      });
+    },
+    {
+      dependencies: [rawPath, isPhone],
+      revertOnUpdate: true,
+      scope: svgRef,
+    },
+  );
 
   const sectionYByKey = useMemo(() => {
     const map = new Map<SectionKey, number>();
@@ -186,15 +220,17 @@ export default function MotionPath({ lang }: Props) {
     <div
       id="wrapper"
       style={{ height: config.height }}
-      className="relative w-full overflow-hidden px-0 md:px-10"
+      className="relative mb-10 w-full px-0 md:px-10"
     >
       <svg
         ref={svgRef}
         width={px(config.width)}
         height={px(config.height)}
         viewBox={config.viewBox}
-        fill="none"
-        className={cn(`absolute top-0 left-1/2 -translate-x-1/2`)}
+        fill="transparent"
+        className={cn(
+          `absolute top-0 left-1/2 -translate-x-1/2 overflow-visible`,
+        )}
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -205,9 +241,16 @@ export default function MotionPath({ lang }: Props) {
           strokeWidth={2}
           strokeDasharray="4 7"
         />
-        {/* <g ref={dropletRef}> */}
-        {/*   <path d={config.dropletPathData} fill="#97D5d0" /> */}
-        {/* </g> */}
+        <g ref={dropletWrapperRef}>
+          <g>
+            <path
+              ref={dropletRef}
+              className="origin-[50%_65%]"
+              d={config.dropletPathData}
+              fill="#97D5d0"
+            />
+          </g>
+        </g>
       </svg>
 
       {config.sections.map((section) => {

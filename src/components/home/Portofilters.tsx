@@ -36,6 +36,7 @@ export default function Portofilters() {
             end: "center 30%",
             scrub: true,
             invalidateOnRefresh: true,
+            once: true,
             // markers: true,
           },
         });
