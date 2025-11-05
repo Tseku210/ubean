@@ -63,6 +63,7 @@ export const ui = {
     "aboutus.ourmission.title": "Our mission",
     "aboutus.ourmission.desc":
       '"Our mission is to deliver Mongolia\'s finest coffee experience through exceptional quality, consistent excellence, and genuine connections. We value continuous improvement, honesty, and integrity, fostering a welcoming environment where our community feels known and valued. Together, we aim to make a positive impact through our shared passion for coffee."',
+    "footer.allrights": "© 2025 UBean. All rights reserved.",
   },
   mn: {
     "nav.home": "Нүүр",
@@ -118,5 +119,6 @@ export const ui = {
     "aboutus.ourmission.title": "Бидний эрхэм зорилго",
     "aboutus.ourmission.desc":
       '"Бидний эрхэм зорилго бол Монголын хамгийн шилдэг кофены туршлагыг онцгой чанар, тууштай шилдэг байдал, жинхэнэ холболтоор дамжуулан хүргэх явдал юм. Бид тасралтгүй сайжруулалт, үнэнч шударга байдал, үнэнч шударга байдлыг эрхэмлэн, нийгэмд танигдаж, үнэлэгддэг найрсаг орчинг бий болгоход оршино. Бид хамтдаа кофенд дурлах хүсэл тэмүүллээр эерэг нөлөө үзүүлэхийг зорьж байна."',
+    "footer.allrights": "© 2025 UBean. Бүх эрх хуулиар хамгаалагдсан.",
   },
 } as const;
