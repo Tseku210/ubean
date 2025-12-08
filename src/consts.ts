@@ -13,14 +13,14 @@ export const BEANS: Bean[] = [
     image: "ethiopia-bean.webp",
     description: "Yirgacheffe G2 Tierra",
     price250: 35000,
-    price500: 55000,
+    price500: 70000,
   },
   {
     name: "GUATEMALA",
     image: "guatemala-bean.webp",
     description: "Yirgacheffe G2 Tierra",
     price250: 35000,
-    price500: 55000,
+    price500: 53000,
   },
   {
     name: "DARK HORSE",
