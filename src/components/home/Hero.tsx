@@ -1,6 +1,7 @@
 import MuxPlayer from "@mux/mux-player-react";
 import { useTranslations } from "@/i18n/utils";
 import smokeIcon from "@assets/icons/smoke.svg?url";
+import SmokeSprite from "@assets/images/smoke_sprite.png?url";
 import type { Language } from "@/types";
 import { useReveal } from "@/hooks/useReveal";
 
@@ -26,7 +27,7 @@ export default function Hero({ lang }: Props) {
         }}
         poster="https://image.mux.com/Gtmx5sme3IckVw2u5vXesfT02xXA62QAfqfDIAN02VSz00/thumbnail.png?width=214&height=121&time=5&fit_mode=preserve"
         streamType="on-demand"
-        preload="auto"
+        preload="true"
         loop
         muted
         autoPlay
@@ -36,9 +37,9 @@ export default function Hero({ lang }: Props) {
 
       <div className="absolute inset-0 z-20 mx-auto flex w-full max-w-3xl flex-col items-center justify-center px-4 text-center text-white">
         <img
-          src={smokeIcon}
+          src={SmokeSprite}
           alt="Smoke icon"
-          className="reveal mb-6 h-min w-8 md:mb-16 md:w-auto"
+          className="reveal animate-sprite mb-6 size-12 object-cover md:mb-16 md:size-20"
         />
         <h1 className="reveal text-h5 md:text-h1 uppercase">
           {t("home.hero.title")}
