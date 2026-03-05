@@ -1,6 +1,5 @@
 import MuxPlayer from "@mux/mux-player-react";
 import { useTranslations } from "@/i18n/utils";
-import smokeIcon from "@assets/icons/smoke.svg?url";
 import SmokeSprite from "@assets/images/smoke_sprite.png?url";
 import type { Language } from "@/types";
 import { useReveal } from "@/hooks/useReveal";
@@ -38,7 +37,8 @@ export default function Hero({ lang }: Props) {
       <div className="absolute inset-0 z-20 mx-auto flex w-full max-w-3xl flex-col items-center justify-center px-4 text-center text-white">
         <img
           src={SmokeSprite}
-          alt="Smoke icon"
+          loading="eager"
+          alt=""
           className="reveal animate-sprite mb-6 size-12 object-cover md:mb-16 md:size-20"
         />
         <h1 className="reveal text-h5 md:text-h1 uppercase">
