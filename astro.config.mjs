@@ -30,7 +30,9 @@ export default defineConfig({
   },
 
   adapter: vercel({
-    // webAnalytics: { enabled: true },
+    webAnalytics: {
+      enabled: true,
+    },
     maxDuration: 8,
     imageService: true,
     devImageService: "sharp",

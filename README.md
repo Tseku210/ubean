@@ -31,4 +31,3 @@ organized by section
 - Tailwind CSS - Utility-first CSS framework
 - GSAP - Animation library
 - Sanity CMS - Headless content management system
-
