@@ -55,6 +55,9 @@ importers:
       "@types/react-dom":
         specifier: ^19.1.6
         version: 19.1.6(@types/react@19.1.8)
+      "@vercel/speed-insights":
+        specifier: ^2.0.0
+        version: 2.0.0(react@19.1.0)
       "@vercel/analytics":
         specifier: ^2.0.1
         version: 2.0.1(react@19.1.0)
@@ -4167,6 +4170,35 @@ packages:
       {
         integrity: sha512-EyOik06V2fPXAbKY087BM7DMOQOJK+9mubwwox1TkDi21tMeJcMYwsXwepm6ZmyZ5u0j1TpJW172fP4MbzaCcg==,
       }
+
+  "@vercel/speed-insights@2.0.0":
+    resolution:
+      {
+        integrity: sha512-jwkNcrTeafWxjmWq4AHBaptSqZiJkYU5adLC9QBSqeim0GcqDMgN5Ievh8OG1rJ6W3A4l1oiP7qr9CWxGuzu3w==,
+      }
+    peerDependencies:
+      "@sveltejs/kit": ^1 || ^2
+      next: ">= 13"
+      nuxt: ">= 3"
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: ">= 4"
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      "@sveltejs/kit":
+        optional: true
+      next:
+        optional: true
+      nuxt:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   "@vercel/stega@0.1.2":
     resolution:
@@ -14034,6 +14066,10 @@ snapshots:
       path-to-regexp-updated: path-to-regexp@6.3.0
     optionalDependencies:
       ajv: 6.12.6
+
+  "@vercel/speed-insights@2.0.0(react@19.1.0)":
+    optionalDependencies:
+      react: 19.1.0
 
   "@vercel/stega@0.1.2": {}
 
