@@ -26,16 +26,11 @@ export default function Discount({ lang }: Props) {
           <Button className="px-10 py-2">{t("home.discount.button")}</Button>
         </a>
       </div>
-      <div className="grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-2 md:gap-16">
+      <div className="flex w-full max-w-md justify-center">
         <img
           src="/images/loyalty-discount.webp"
           className="aspect-[4/2] w-full object-contain"
           alt="Loyalty discount"
-        />
-        <img
-          src="/images/company-discount.webp"
-          className="aspect-[4/2] w-full object-contain"
-          alt="Company discount"
         />
       </div>
     </section>
