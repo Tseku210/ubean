@@ -18,7 +18,7 @@ export const BEANS: Bean[] = [
   {
     name: "GUATEMALA",
     image: "guatemala-bean.webp",
-    description: "Yirgacheffe G2 Tierra",
+    description: "Antigua SHB Margarita",
     price250: 35000,
     price500: 53000,
   },
@@ -32,7 +32,7 @@ export const BEANS: Bean[] = [
   {
     name: "IRON HORSE",
     image: "iron-horse-bean.webp",
-    description: "Yirgacheffe G2 Tierra",
+    description: "Espresso",
     price250: 35000,
     price500: 55000,
   },
