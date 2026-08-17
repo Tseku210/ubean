@@ -22,6 +22,7 @@ const translatedPath = useTranslatedPath(lang);
       class="shrink-0 snap-start"
       href={translatedPath(`/menu/${Category.coffee}/`)}
       data-astro-prefetch
+      transition:name="category-pill-coffee"
     >
       <Button
         variant={category === Category.coffee ? "secondary" : "ghost"}
@@ -36,6 +37,7 @@ const translatedPath = useTranslatedPath(lang);
       class="shrink-0 snap-start"
       href={translatedPath(`/menu/${Category.nonCoffee}/`)}
       data-astro-prefetch
+      transition:name="category-pill-non-coffee"
     >
       <Button
         variant={category === Category.nonCoffee ? "secondary" : "ghost"}
@@ -50,6 +52,7 @@ const translatedPath = useTranslatedPath(lang);
       class="shrink-0 snap-start"
       href={translatedPath(`/menu/${Category.specialty}/`)}
       data-astro-prefetch
+      transition:name="category-pill-specialty"
     >
       <Button
         variant={category === Category.specialty ? "secondary" : "ghost"}
@@ -64,6 +67,7 @@ const translatedPath = useTranslatedPath(lang);
       class="shrink-0 snap-start"
       href={translatedPath(`/menu/${Category.grub}/`)}
       data-astro-prefetch
+      transition:name="category-pill-grub"
     >
       <Button
         variant={category === Category.grub ? "secondary" : "ghost"}
