@@ -17,7 +17,7 @@ This is the **animation** plan set; the general codebase plan set lives one leve
 | 007 | [Smooth the contact form's error and focus feedback](007-form-feedback-transitions.md) | MEDIUM | DONE |
 | 008 | [Smooth the menu's skeleton → content handoff](008-menu-loading-handoff.md) | MEDIUM | DONE |
 | 009 | [Easing & transition polish sweep](009-easing-transition-polish.md) | LOW–MED | DONE |
-| 010 | [Menu category switching via ClientRouter](010-menu-view-transitions.md) | MEDIUM | TODO |
+| 010 | [Menu category switching via ClientRouter](010-menu-view-transitions.md) | MEDIUM | DONE |
 | 011 | [Contact form success moment](011-contact-success-moment.md) | LOW | TODO |
 | 012 | [Cup arrival payoff](012-cup-arrival-payoff.md) | LOW | TODO |
 | 013 | [Mux poster → stream crossfade](013-mux-poster-crossfade.md) | LOW | TODO |

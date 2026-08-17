@@ -1,6 +1,6 @@
 # 010 — Turn menu category switching into a tab switch with ClientRouter
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: MEDIUM (missed opportunity — highest-impact motion change available)
 - **Category**: Missed opportunities / Purpose & frequency
