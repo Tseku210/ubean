@@ -38,7 +38,6 @@ export const BEANS: Record<Language, Bean[]> = {
       price500: 55000,
     },
   ],
-  // TODO: native-speaker review — machine-authored Mongolian below.
   // Origin/blend names and coffee varietal codes stay in Latin script on
   // purpose (they are the product identifiers printed on the bags).
   mn: [

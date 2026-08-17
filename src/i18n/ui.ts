@@ -77,7 +77,6 @@ export const ui = {
     "nav.about": "Бидний тухай",
     "nav.contact": "Холбоо барих",
     "error.404": "Таны хайж буй хуудас олдсонгүй 😥☕️",
-    // TODO: native-speaker review — machine-authored Mongolian below
     "error.404.title": "Хуудас олдсонгүй",
     "home.title": "Дээд зэрэглэлийн кофены туршлага",
     "home.hero.title": "Өө сэвгүй кофены үр",
@@ -94,7 +93,6 @@ export const ui = {
       "Бид Монголын хамгийн шилдэг кофег чанар, үнэнч шударга байдал, хамт олноо эрхэмлэх сэтгэлээр хүргэдэг.",
     "home.discount.title": "ТАНЫ ГЭРТ КОФЕ",
     "home.discount.button": "Лавлах",
-    // end machine-authored block
     "menu.title": "Цэс",
     "menu.menu": "Цэс",
     "menu.desc":
