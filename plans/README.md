@@ -19,7 +19,7 @@ plans on any of them.
 | 003  | Patch vulnerable deps, fix adapter import, remove dead packages | P1 | S | 001 | DONE (amended: latest majors — astro 7, adapter 11, sanity 6) |
 | 004  | Contact form: email validation, error states, env-var handling | P1 | S | 001 | DONE |
 | 005  | Menu island: guard Sanity fetch, empty state, param query | P2 | S | 001 | DONE |
-| 006  | SEO: fix og:image/JSON-LD, add sitemap/robots/hreflang | P2 | M | 001, 003 | TODO |
+| 006  | SEO: fix og:image/JSON-LD, add sitemap/robots/hreflang | P2 | M | 001, 003 | DONE |
 | 007  | Complete Mongolian translation coverage | P2 | S | 005, 006 | TODO |
 
 **Run note (2026-08-17)**: user directed plan 003 to upgrade Astro and other
