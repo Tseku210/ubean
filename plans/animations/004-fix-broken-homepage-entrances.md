@@ -1,6 +1,6 @@
 # 004 — Fix the broken Discount reveal and the Portofilters mid-flight freeze
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: MEDIUM
 - **Category**: Physicality & origin / Interruptibility
