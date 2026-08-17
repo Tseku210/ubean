@@ -12,7 +12,7 @@ This is the **animation** plan set; the general codebase plan set lives one leve
 | 002 | [Gate GSAP behind reduced-motion + fix ScrollSmoother lifecycle](002-gsap-reduced-motion-and-scrollsmoother.md) | HIGH | DONE |
 | 003 | [Stop the per-frame tween storm in the droplet ScrollTrigger](003-motionpath-scroll-performance.md) | HIGH | DONE |
 | 004 | [Fix the broken Discount reveal and Portofilters freeze](004-fix-broken-homepage-entrances.md) | MEDIUM | DONE |
-| 005 | [Purge dead animation code](005-purge-dead-animation-code.md) | LOW | TODO |
+| 005 | [Purge dead animation code](005-purge-dead-animation-code.md) | LOW | DONE |
 | 006 | [Reveal the Hero on mount, not via ScrollTrigger](006-hero-mount-reveal.md) | MEDIUM | TODO |
 | 007 | [Smooth the contact form's error and focus feedback](007-form-feedback-transitions.md) | MEDIUM | TODO |
 | 008 | [Smooth the menu's skeleton → content handoff](008-menu-loading-handoff.md) | MEDIUM | TODO |

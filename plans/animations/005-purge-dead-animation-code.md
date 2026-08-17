@@ -1,6 +1,6 @@
 # 005 — Purge dead animation code
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: LOW (trivial effort, high clarity payoff)
 - **Category**: Cohesion & tokens
