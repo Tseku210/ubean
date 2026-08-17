@@ -2,7 +2,9 @@ import MuxPlayer from "@mux/mux-player-react";
 import { useTranslations } from "@/i18n/utils";
 import SmokeSprite from "@assets/images/smoke_sprite.png?url";
 import type { Language } from "@/types";
-import { useReveal } from "@/hooks/useReveal";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
 
 interface Props {
   lang: Language;
@@ -10,7 +12,30 @@ interface Props {
 
 export default function Hero({ lang }: Props) {
   const t = useTranslations(lang);
-  const { container } = useReveal();
+  const container = useRef<HTMLElement | null>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.from(".reveal", {
+          autoAlpha: 0,
+          y: 24,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: 0.1,
+        });
+      });
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.from(".reveal", {
+          autoAlpha: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      });
+    },
+    { scope: container },
+  );
 
   return (
     <section
