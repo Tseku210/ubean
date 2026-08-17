@@ -1,6 +1,6 @@
 # 013 — Crossfade the Mux poster → stream hard cut
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: LOW (missed opportunity — first-impression seam)
 - **Category**: Missed opportunities
