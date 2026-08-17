@@ -150,7 +150,13 @@ export default function MotionPath({ lang }: Props) {
         )
           return;
 
-        let rotateTo = gsap.quickTo(dropletRef.current, "rotation");
+        const rotateTo = gsap.quickTo(dropletRef.current, "rotation");
+        const scaleYTo = gsap.quickTo(dropletRef.current, "scaleY", {
+          duration: 0.4,
+          ease: "back.out",
+        });
+        const setFill = gsap.quickSetter(dropletRef.current, "fill");
+        const interpolateFill = gsap.utils.interpolate("#97D5D0", "#654321");
         let prevDirection = 0;
 
         gsap.set(dropletRef.current, {
@@ -163,20 +169,12 @@ export default function MotionPath({ lang }: Props) {
             trigger: pathRef.current,
             start: config.scrollStart,
             end: () => "+=" + pathRef.current?.getBoundingClientRect().height,
-            scrub: 2,
+            scrub: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              const interpolate = gsap.utils.interpolate("#97D5D0", "#654321");
               const v = gsap.utils.clamp(0, 200, Math.abs(self.getVelocity()));
-              const scaleY = gsap.utils.mapRange(0, 200, 1, 1.5, v);
-
-              gsap.to(dropletRef.current, {
-                scaleY: scaleY,
-                duration: 1,
-                ease: "back.out",
-                overwrite: "auto",
-                fill: interpolate(self.progress),
-              });
+              scaleYTo(gsap.utils.mapRange(0, 200, 1, 1.5, v));
+              setFill(interpolateFill(self.progress));
 
               if (prevDirection !== self.direction) {
                 rotateTo(self.direction === 1 ? 0 : -180);
