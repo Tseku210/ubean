@@ -8,7 +8,7 @@ This is the **animation** plan set; the general codebase plan set lives one leve
 
 | # | Plan | Severity | Status |
 | --- | --- | --- | --- |
-| 001 | [Rebuild the `.animate` page-reveal system](001-rebuild-animate-reveal.md) | HIGH | TODO |
+| 001 | [Rebuild the `.animate` page-reveal system](001-rebuild-animate-reveal.md) | HIGH | DONE |
 | 002 | [Gate GSAP behind reduced-motion + fix ScrollSmoother lifecycle](002-gsap-reduced-motion-and-scrollsmoother.md) | HIGH | TODO |
 | 003 | [Stop the per-frame tween storm in the droplet ScrollTrigger](003-motionpath-scroll-performance.md) | HIGH | TODO |
 | 004 | [Fix the broken Discount reveal and Portofilters freeze](004-fix-broken-homepage-entrances.md) | MEDIUM | TODO |

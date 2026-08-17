@@ -1,6 +1,6 @@
 # 001 — Rebuild the `.animate` page-reveal system
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: HIGH
 - **Category**: Purpose & frequency / Performance / Accessibility
