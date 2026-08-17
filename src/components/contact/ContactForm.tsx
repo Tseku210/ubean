@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { LabeledInput } from "../ui/LabeledInput";
 import { LabeledTextArea } from "../ui/LabeledTextArea";
 import { useForm } from "react-hook-form";
+import { CircleCheckIcon } from "lucide-react";
 import useWeb3Forms from "@web3forms/react";
 import { useTranslations } from "@/i18n/utils";
 import { useState } from "react";
@@ -22,7 +23,7 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     mode: "onTouched",
     defaultValues: {
@@ -56,6 +57,20 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
     if (isBlocked) return;
     return submitToWeb3(data);
   });
+
+  if (isSent || isBlocked) {
+    return (
+      <div
+        className={`flex size-full max-w-md flex-col items-center justify-center gap-4 text-center ${
+          isSent ? "success-enter" : ""
+        }`}
+        role="status"
+      >
+        <CircleCheckIcon className="text-primary size-12" strokeWidth={1.5} />
+        <p className="text-h5">{t("contact.success")}</p>
+      </div>
+    );
+  }
 
   return (
     <form
@@ -110,11 +125,7 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
         disabled={isBlocked || isSubmitting}
         className="px-14"
       >
-        {isSubmitting
-          ? t("contact.sending")
-          : isSubmitSuccessful || isBlocked || isSent
-            ? t("contact.success")
-            : t("contact.submit")}
+        {isSubmitting ? t("contact.sending") : t("contact.submit")}
       </Button>
     </form>
   );
