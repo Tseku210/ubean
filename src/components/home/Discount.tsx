@@ -16,17 +16,17 @@ export default function Discount({ lang }: Props) {
   return (
     <section
       ref={container}
-      className="bg-secondary reveal mx-4 flex h-fit flex-col items-center gap-14 rounded-[50px] px-9 py-14 md:mx-10 md:px-10 md:py-20"
+      className="bg-secondary mx-4 flex h-fit flex-col items-center gap-14 rounded-[50px] px-9 py-14 md:mx-10 md:px-10 md:py-20"
     >
       <div className="flex flex-col items-center justify-center gap-5">
-        <h3 className="text-h5 md:text-h3 font-bold text-white">
+        <h3 className="reveal text-h5 md:text-h3 font-bold text-white">
           {t("home.discount.title")}
         </h3>
         <a href={translatePath("/contact/")} className="reveal">
           <Button className="px-10 py-2">{t("home.discount.button")}</Button>
         </a>
       </div>
-      <div className="flex w-full max-w-md justify-center">
+      <div className="reveal flex w-full max-w-md justify-center">
         <img
           src="/images/loyalty-discount.webp"
           className="aspect-[4/2] w-full object-contain"

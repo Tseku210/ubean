@@ -39,8 +39,6 @@ export default function Portofilters() {
               end: "center 30%",
               scrub: true,
               invalidateOnRefresh: true,
-              once: true,
-              // markers: true,
             },
           });
 
@@ -51,7 +49,6 @@ export default function Portofilters() {
               y: 0,
               rotation: 0,
               ease: "power2.out",
-              onComplete: () => console.log("moved"),
             },
             0,
           );
@@ -77,11 +74,6 @@ export default function Portofilters() {
 
         animate();
       });
-
-      // window.addEventListener("load", animate);
-      // return () => {
-      //   window.removeEventListener("load", animate);
-      // };
     },
     {
       scope: container,
