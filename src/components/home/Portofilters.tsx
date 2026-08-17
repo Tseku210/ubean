@@ -15,80 +15,83 @@ export default function Portofilters() {
   useGSAP(
     (_context, contextSafe) => {
       if (!contextSafe) return;
-      if (!bean.current || !butalsan.current || !latte.current) return;
+      const mm = gsap.matchMedia();
 
-      // Offsets are applied synchronously (before first paint) so the images
-      // never flash at their final positions while the decode gate is pending.
-      gsap.set(bean.current, {
-        x: -200,
-        y: 200,
-        rotation: -45,
-      });
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        if (!bean.current || !butalsan.current || !latte.current) return;
 
-      gsap.set(butalsan.current, {
-        y: 200,
-      });
-
-      gsap.set(latte.current, {
-        x: 200,
-        y: 200,
-        rotation: 45,
-      });
-
-      const animate = () => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 80%",
-            end: "center 30%",
-            scrub: true,
-            invalidateOnRefresh: true,
-            once: true,
-            // markers: true,
-          },
+        // Offsets are applied synchronously (before first paint) so the
+        // images never flash at their final positions while the decode gate
+        // below is pending.
+        gsap.set(bean.current, {
+          x: -200,
+          y: 200,
+          rotation: -45,
         });
 
-        tl.to(
-          bean.current,
-          {
-            x: 10,
-            y: 0,
-            rotation: 0,
-            ease: "power2.out",
-          },
-          0,
-        );
-        tl.to(
-          butalsan.current,
-          {
-            y: 0,
-            ease: "power2.out",
-          },
-          0,
-        );
-        tl.to(
-          latte.current,
-          {
-            x: -20,
-            y: 0,
-            rotation: 0,
-            ease: "power2.out",
-          },
-          0,
-        );
-      };
+        gsap.set(butalsan.current, {
+          y: 200,
+        });
 
-      // Build the scroll timeline only after the portofilter images are
-      // decoded, then refresh (debounced form) so trigger positions use final
-      // layout heights.
-      const startAnimation = contextSafe(() => {
-        animate();
-        ScrollTrigger.refresh(true);
+        gsap.set(latte.current, {
+          x: 200,
+          y: 200,
+          rotation: 45,
+        });
+
+        const animate = () => {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top 80%",
+              end: "center 30%",
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          tl.to(
+            bean.current,
+            {
+              x: 10,
+              y: 0,
+              rotation: 0,
+              ease: "power2.out",
+            },
+            0,
+          );
+          tl.to(
+            butalsan.current,
+            {
+              y: 0,
+              ease: "power2.out",
+            },
+            0,
+          );
+          tl.to(
+            latte.current,
+            {
+              x: -20,
+              y: 0,
+              rotation: 0,
+              ease: "power2.out",
+            },
+            0,
+          );
+        };
+
+        // Build the scroll timeline only after the portofilter images are
+        // decoded, then refresh (debounced form) so trigger positions use
+        // final layout heights.
+        const startAnimation = contextSafe(() => {
+          animate();
+          ScrollTrigger.refresh(true);
+        });
+        const images = container.current
+          ? Array.from(container.current.querySelectorAll("img"))
+          : [];
+        waitForImages(images).then(startAnimation);
       });
-      const images = container.current
-        ? Array.from(container.current.querySelectorAll("img"))
-        : [];
-      waitForImages(images).then(startAnimation);
     },
     {
       scope: container,

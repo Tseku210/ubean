@@ -20,19 +20,28 @@ export function useReveal() {
       );
       if (targets.length === 0) return;
 
-      gsap.set(targets, { autoAlpha: 0, y: 50 });
+      // Checked once at mount; the reveal runs once, so live media-query
+      // switching buys nothing here.
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      gsap.set(
+        targets,
+        prefersReduced ? { autoAlpha: 0 } : { autoAlpha: 0, y: 50 },
+      );
 
       // Triggers are created after an await, outside useGSAP's synchronous
       // run — contextSafe keeps them owned by the context for cleanup.
       const createTriggers = contextSafe(() => {
         ScrollTrigger.batch(targets, {
           onEnter: (batch) => {
-            gsap.to(batch, {
-              autoAlpha: 1,
-              y: 0,
-              stagger: 0.1,
-              ease: "back.out",
-            });
+            gsap.to(
+              batch,
+              prefersReduced
+                ? { autoAlpha: 1, duration: 0.3, ease: "power2.out" }
+                : { autoAlpha: 1, y: 0, stagger: 0.1, ease: "back.out" },
+            );
           },
           start: "top 80%",
           once: true,
