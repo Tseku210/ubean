@@ -31,6 +31,16 @@ export interface SectionConfig {
   className: string;
 }
 
+export interface CupPlacement {
+  /** uniform scale of the local cup art */
+  scale: number;
+  /** rim-center position in the motion-path SVG's user space */
+  cx: number;
+  cy: number;
+  /** droplet fall distance from path end to the coffee surface, in SVG units */
+  fall: number;
+}
+
 export interface MotionPathConfig {
   width: string;
   height: string;
@@ -41,4 +51,5 @@ export interface MotionPathConfig {
   dropletPathData: string;
   sections: SectionConfig[];
   scrollStart: string | number;
+  cup: CupPlacement;
 }
