@@ -1,6 +1,6 @@
 # 006 — Reveal the Hero on mount, not via ScrollTrigger
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: MEDIUM
 - **Category**: Purpose & frequency / Accessibility
