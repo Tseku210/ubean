@@ -30,6 +30,8 @@ export function LabeledInput({
         <Label htmlFor={id}>{label}</Label>
         <Input
           id={id}
+          type={type}
+          required={required}
           aria-invalid={!!error || undefined}
           aria-describedby={error ? errorId : undefined}
           {...registration}

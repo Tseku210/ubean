@@ -31,3 +31,7 @@ organized by section
 - Tailwind CSS - Utility-first CSS framework
 - GSAP - Animation library
 - Sanity CMS - Headless content management system
+
+## ⚙️ Setup
+
+Copy `.env.example` to `.env` and set `PUBLIC_WEB3FORMS_ACCESS_KEY` (from the Web3Forms dashboard) — the contact form cannot submit without it.

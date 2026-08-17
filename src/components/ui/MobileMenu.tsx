@@ -8,13 +8,17 @@ import {
   DrawerTrigger,
 } from "./drawer";
 import { useState } from "react";
+import { useTranslations } from "@/i18n/utils";
+import type { Language } from "@/types";
 
 interface Props {
   navLinks: Record<string, string>;
+  lang: Language;
 }
 
-export default function MobileMenu({ navLinks }: Props) {
+export default function MobileMenu({ navLinks, lang }: Props) {
   const [open, setOpen] = useState(false);
+  const t = useTranslations(lang);
 
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
@@ -39,7 +43,7 @@ export default function MobileMenu({ navLinks }: Props) {
           ))}
         </div>
         <p className="text-b4 mb-10 text-center text-white">
-          © 2025 All rights reserved
+          {t("footer.allrights")}
         </p>
       </DrawerContent>
     </Drawer>

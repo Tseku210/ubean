@@ -1,9 +1,11 @@
 ---
-import imageUrlBuilder from "@sanity/image-url";
-import type { ImageUrlBuilder } from "@sanity/image-url/lib/types/builder";
+import {
+  createImageUrlBuilder,
+  type ImageUrlBuilder,
+} from "@sanity/image-url";
 import { sanityClient } from "sanity:client";
 
-const builder = imageUrlBuilder(sanityClient);
+const builder = createImageUrlBuilder(sanityClient);
 
 const { node } = Astro.props;
 const { width = 960 } = Astro.props;

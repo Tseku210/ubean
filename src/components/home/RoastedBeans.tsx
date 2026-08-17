@@ -1,11 +1,19 @@
 import gsap from "gsap";
 import { BEANS } from "@/consts";
 import { formatPrice } from "@/lib/utils";
+import { useTranslations } from "@/i18n/utils";
+import type { Language } from "@/types";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 
-export default function RoastedBeans() {
+interface Props {
+  lang: Language;
+}
+
+export default function RoastedBeans({ lang }: Props) {
   const container = useRef<HTMLDivElement>(null);
+  const t = useTranslations(lang);
+  const beans = BEANS[lang];
 
   useGSAP(
     () => {
@@ -66,12 +74,12 @@ export default function RoastedBeans() {
 
   return (
     <section className="relative w-full space-y-6 overflow-visible text-center md:space-y-15">
-      <h2 className="text-h5 md:text-h2">FRESHLY ROASTED BEANS</h2>
+      <h2 className="text-h5 md:text-h2">{t("home.roasted.title")}</h2>
       <div
         ref={container}
         className="no-scrollbar flex snap-x flex-nowrap gap-8 overflow-x-auto overflow-y-hidden"
       >
-        {BEANS.map((bean, index) => (
+        {beans.map((bean, index) => (
           <div
             key={bean.name}
             className={`bean-card group relative max-w-[210px] snap-start space-y-4 bean-item-${index}`}
