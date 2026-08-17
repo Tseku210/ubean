@@ -1,6 +1,6 @@
 # 012 — Land the droplet's journey: cup arrival reveal
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: LOW (missed opportunity — the homepage's one earned delight moment)
 - **Category**: Missed opportunities

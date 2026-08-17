@@ -19,7 +19,7 @@ This is the **animation** plan set; the general codebase plan set lives one leve
 | 009 | [Easing & transition polish sweep](009-easing-transition-polish.md) | LOW–MED | DONE |
 | 010 | [Menu category switching via ClientRouter](010-menu-view-transitions.md) | MEDIUM | DONE |
 | 011 | [Contact form success moment](011-contact-success-moment.md) | LOW | DONE |
-| 012 | [Cup arrival payoff](012-cup-arrival-payoff.md) | LOW | TODO |
+| 012 | [Cup arrival payoff](012-cup-arrival-payoff.md) | LOW | DONE |
 | 013 | [Mux poster → stream crossfade](013-mux-poster-crossfade.md) | LOW | TODO |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason).
