@@ -39,11 +39,19 @@ export function LabeledTextArea({
         {...registration}
         {...rest}
       />
-      {error && (
-        <small id={errorId} className="text-sm text-red-600">
+      <div
+        className={`grid transition-[grid-template-rows,opacity] duration-200 ease-out ${
+          error ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <small
+          id={errorId}
+          aria-hidden={!error}
+          className="overflow-hidden text-sm text-red-600"
+        >
           {error}
         </small>
-      )}
+      </div>
     </div>
   );
 }
