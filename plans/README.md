@@ -15,7 +15,7 @@ plans on any of them.
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
 | 001  | Verification baseline (typecheck + CI build gate) | P1 | S | — | DONE |
-| 002  | Untrack build artifacts, close image proxy, security headers | P1 | S | 001 | TODO |
+| 002  | Untrack build artifacts, close image proxy, security headers | P1 | S | 001 | DONE |
 | 003  | Patch vulnerable deps, fix adapter import, remove dead packages | P1 | S | 001 | TODO |
 | 004  | Contact form: email validation, error states, env-var handling | P1 | S | 001 | TODO |
 | 005  | Menu island: guard Sanity fetch, empty state, param query | P2 | S | 001 | TODO |
