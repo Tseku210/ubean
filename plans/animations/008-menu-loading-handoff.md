@@ -1,6 +1,6 @@
 # 008 — Smooth the menu's skeleton → content handoff and image pop-in
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: MEDIUM
 - **Category**: Missed transition / Performance
