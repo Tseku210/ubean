@@ -218,15 +218,24 @@
     font-family: var(--font-roboto);
   }
 
-  .animate {
+  html.js .animate {
     opacity: 0;
     transform: translateY(0.75rem);
-    transition: all var(--duration-normal) var(--ease-out-cubic);
+    transition:
+      opacity var(--duration-normal) var(--ease-out-quint),
+      transform var(--duration-normal) var(--ease-out-quint);
   }
 
-  .animate.show {
+  html.js .animate.show {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.js .animate {
+      transform: none;
+      transition: opacity var(--duration-fast) ease-out;
+    }
   }
 
   mux-player {

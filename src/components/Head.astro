@@ -172,6 +172,8 @@ const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 </script>
 
 <script is:inline>
+  document.documentElement.classList.add("js");
+
   function init() {
     onScroll();
     animate();
@@ -186,13 +188,27 @@ const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
   }
 
   function animate() {
-    const animateElements = document.querySelectorAll(".animate");
+    const animateElements = document.querySelectorAll(".animate:not(.show)");
+    if (!("IntersectionObserver" in window)) {
+      animateElements.forEach((el) => el.classList.add("show"));
+      return;
+    }
 
-    animateElements.forEach((element, index) => {
-      setTimeout(() => {
-        element.classList.add("show");
-      }, index * 150);
-    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let batchIndex = 0;
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          setTimeout(() => el.classList.add("show"), batchIndex * 60);
+          batchIndex += 1;
+          observer.unobserve(el);
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+
+    animateElements.forEach((el) => observer.observe(el));
   }
 
   function onScroll() {

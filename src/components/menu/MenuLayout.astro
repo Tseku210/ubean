@@ -21,15 +21,15 @@ const t = useTranslations(lang);
     class="my-6 flex min-h-screen w-full flex-col items-center md:mx-auto md:my-32 md:max-w-6xl"
   >
     <div class="flex max-w-lg flex-col gap-6 px-8 text-center">
-      <h1 class="animate text-h4 md:text-h2 uppercase">{t("menu.menu")}</h1>
-      <h2 class="animate text-b4 md:text-b2">
+      <h1 class="text-h4 md:text-h2 uppercase">{t("menu.menu")}</h1>
+      <h2 class="text-b4 md:text-b2">
         {t("menu.desc")}
       </h2>
     </div>
-    <div class="animate relative mt-10 mb-8 w-full md:mt-20 md:mb-16 md:w-fit">
+    <div class="relative mt-10 mb-8 w-full md:mt-20 md:mb-16 md:w-fit">
       <CategoryButtons lang={lang} category={category} />
     </div>
-    <div class="animate w-full space-y-10 px-8 md:space-y-20">
+    <div class="w-full space-y-10 px-8 md:space-y-20">
       <MenuList server:defer lang={lang} category={category}>
         <MenuListLoading slot="fallback" />
       </MenuList>
