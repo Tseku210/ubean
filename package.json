@@ -9,7 +9,7 @@
     "format": "prettier --write \"**/*.{astro,css,html,js,jsx,json,md,mdx,ts,tsx,vue,yaml,yml}\"",
     "astro": "astro",
     "typecheck": "astro check",
-    "deploy": "astro build && vercel deploy --prebuilt && vercel deploy --prod"
+    "deploy:prod": "astro build && vercel deploy --prebuilt --prod"
   },
   "dependencies": {
     "@astrojs/react": "^4.3.0",
