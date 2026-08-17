@@ -1,6 +1,6 @@
 # 009 — Easing & transition polish sweep
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: LOW–MEDIUM
 - **Category**: Easing & duration / Performance
