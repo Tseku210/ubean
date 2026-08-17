@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { Font } from "astro:assets";
+import { getLangFromUrl } from "@/i18n/utils";
 
 interface Props {
   title: string;
@@ -24,6 +25,83 @@ const {
 
 const siteName = "UBean Roastery Shop";
 const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+
+const lang = getLangFromUrl(Astro.url);
+
+// hreflang alternates. English pages live at `/x`, Mongolian at `/mn/x`.
+const path = Astro.url.pathname.replace(/^\/mn(?=\/|$)/, "") || "/";
+const enUrl = new URL(path, Astro.site).href;
+const mnUrl = new URL(`/mn${path === "/" ? "" : path}`, Astro.site).href;
+
+const localized = {
+  en: {
+    description: "Premium coffee beans and expertly crafted beverages",
+    servesCuisine: ["Coffee", "Bakery"],
+    streetAddress:
+      "Nam Yan Ju St БЗД, 13-р хороолол Mongol NamYanJu Cultural Center (Across from the Night Market), 2nd Floor Монгол Намянжүгийн Соёлын төв (шөнийн захын эсрэг талд), 2-р давхар, Ulaanbaatar, Mongolia",
+    addressLocality: "Ulaanbaatar",
+    url: new URL("/", Astro.site).href,
+    hasMenu: new URL("/menu/coffee", Astro.site).href,
+  },
+  mn: {
+    description: "Дээд зэрэглэлийн кофе болон кофены үрийг нэг дор.",
+    servesCuisine: ["Кофе", "Бейкери"],
+    streetAddress:
+      "Нам Ян Жү гудамж, БЗД, 13-р хороолол, Монгол Намянжү Соёлын төв (Шөнийн захын эсрэг талд), 2-р давхар",
+    addressLocality: "Улаанбаатар",
+    url: new URL("/mn", Astro.site).href,
+    hasMenu: new URL("/mn/menu/coffee", Astro.site).href,
+  },
+}[lang];
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  "@id": new URL("/#coffee-shop", Astro.site).href,
+  name: siteName,
+  description: localized.description,
+  url: localized.url,
+  logo: new URL("/images/logo.webp", Astro.site).href,
+  image: [
+    new URL("/images/aboutus-1.webp", Astro.site).href,
+    new URL("/images/aboutus-2.webp", Astro.site).href,
+  ],
+  telephone: "+97686038620",
+  servesCuisine: localized.servesCuisine,
+  priceRange: "$",
+  inLanguage: lang,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: localized.streetAddress,
+    addressLocality: localized.addressLocality,
+    addressCountry: "MN",
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "07:30",
+      closes: "21:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Saturday"],
+      opens: "09:00",
+      closes: "20:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Sunday"],
+      opens: "15:30",
+      closes: "19:00",
+    },
+  ],
+  sameAs: [
+    "https://www.facebook.com/ubeancoffeehouseandroasterie",
+    "https://www.instagram.com/ubeancoffee",
+  ],
+  hasMenu: localized.hasMenu,
+};
 ---
 
 <!-- Basic Meta Tags -->
@@ -40,6 +118,11 @@ const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+
+<!-- Locale alternates -->
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="mn" href={mnUrl} />
+<link rel="alternate" hreflang="x-default" href={enUrl} />
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -68,108 +151,11 @@ const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 <meta name="format-detection" content="telephone=no" />
 
 <!-- JSON-LD Structured Data -->
-<script is:inline type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CafeOrCoffeeShop",
-    "@id": "https://ubean.mn/#coffee-shop",
-    "name": "UBean Roastery Shop",
-    "description": "Premium coffee beans and expertly crafted beverages",
-    "url": "https://ubean.mn",
-    "logo": "https://ubean.mn/images/logo.webp",
-    "image": [
-      "https://ubean.mn/images/about-us.webp",
-      "https://ubean.mn/images/aboutus-2.webp"
-    ],
-    "telephone": "+97686038620",
-    "servesCuisine": ["Coffee", "Bakery"],
-    "priceRange": "$",
-    "inLanguage": "en",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Nam Yan Ju St БЗД, 13-р хороолол Mongol NamYanJu Cultural Center (Across from the Night Market), 2nd Floor Монгол Намянжүгийн Соёлын төв (шөнийн захын эсрэг талд), 2-р давхар, Ulaanbaatar, Mongolia",
-      "addressLocality": "Ulaanbaatar",
-      "addressCountry": "MN"
-    },
-    "openingHoursSpecification": [
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "07:30",
-        "closes": "21:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Saturday"],
-        "opens": "09:00",
-        "closes": "20:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Sunday"],
-        "opens": "15:30",
-        "closes": "19:00"
-      }
-    ],
-    "sameAs": [
-      "https://www.facebook.com/ubeancoffeehouseandroasterie",
-      "https://www.instagram.com/ubeancoffee"
-    ],
-    "hasMenu": "https://ubean.mn/menu"
-  }
-</script>
-
-<!-- JSON-LD Structured Data (Mongolian) -->
-<script is:inline type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CafeOrCoffeeShop",
-    "@id": "https://ubean.mn/#coffee-shop",
-    "name": "UBean Roastery Shop",
-    "description": "Дээд зэрэглэлийн кофе болон кофены үрийг нэг дор.",
-    "url": "https://ubean.mn/mn",
-    "logo": "https://ubean.mn/images/logo.webp",
-    "image": [
-      "https://ubean.mn/images/about-us.webp",
-      "https://ubean.mn/images/aboutus-2.webp"
-    ],
-    "telephone": "+97686038620",
-    "servesCuisine": ["Кофе", "Бейкери"],
-    "priceRange": "$",
-    "inLanguage": "mn",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Нам Ян Жү гудамж, БЗД, 13-р хороолол, Монгол Намянжү Соёлын төв (Шөнийн захын эсрэг талд), 2-р давхар",
-      "addressLocality": "Улаанбаатар",
-      "addressCountry": "MN"
-    },
-    "openingHoursSpecification": [
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "07:30",
-        "closes": "21:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Saturday"],
-        "opens": "09:00",
-        "closes": "20:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Sunday"],
-        "opens": "15:30",
-        "closes": "19:00"
-      }
-    ],
-    "sameAs": [
-      "https://www.facebook.com/ubeancoffeehouseandroasterie",
-      "https://www.instagram.com/ubeancoffee"
-    ],
-    "hasMenu": "https://ubean.mn/mn/menu"
-  }
-</script>
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify(structuredData)}
+/>
 
 <script is:inline>
   function init() {
