@@ -12,6 +12,7 @@ export interface Props {
   description?: string;
   keywords?: string;
   image?: string;
+  preloadImages?: string[];
 }
 
 const lang = getLangFromUrl(Astro.url);
@@ -23,6 +24,7 @@ const {
   description = siteDescription,
   keywords = siteKeywords,
   image = "/images/where-the-aroma-begins.webp",
+  preloadImages = [],
 } = Astro.props;
 ---
 
@@ -34,15 +36,13 @@ const {
       description={description}
       keywords={keywords}
       image={image}
+      preloadImages={preloadImages}
     />
     <ClientRouter />
   </head>
-  <body class="w-screen">
+  <body>
     <SpeedInsights />
-    <div
-      id="smooth-wrapper"
-      class="font-ubuntu text-secondary bg-white bg-[url('/images/bg.webp')]"
-    >
+    <div id="smooth-wrapper" class="font-ubuntu text-secondary">
       <div id="smooth-content" class="container mx-auto max-w-[1440px]">
         <div>
           <Header />

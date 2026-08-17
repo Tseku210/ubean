@@ -2,11 +2,19 @@
 import HomeLayout from "@/layouts/HomeLayout.astro";
 import HomePage from "@/components/home/HomePage";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import Smoke from "@assets/icons/smoke.svg";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
 <HomeLayout title={`UBean - ${t("home.title")}`}>
-  <HomePage client:only="react" lang={lang} />
+  <HomePage client:only="react" lang={lang}>
+    <div
+      class="flex h-[calc(100vh-90px-90px)] items-center justify-center"
+      slot="fallback"
+    >
+      <Smoke width={100} height={100} class="animate-pulse" />
+    </div>
+  </HomePage>
 </HomeLayout>

@@ -7,13 +7,13 @@ import type { Language } from "@/types";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef, useState } from "react";
+// Shared with HomeLayout's <link rel="preload"> so the poster download starts
+// with the HTML (WebP: ~77KB vs ~989KB for the PNG variant of the same frame).
+import { HERO_POSTER as POSTER } from "@/consts";
 
 interface Props {
   lang: Language;
 }
-
-const POSTER =
-  "https://image.mux.com/Gtmx5sme3IckVw2u5vXesfT02xXA62QAfqfDIAN02VSz00/thumbnail.png?width=1280&time=5&fit_mode=preserve";
 
 export default function Hero({ lang }: Props) {
   const t = useTranslations(lang);

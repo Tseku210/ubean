@@ -11,7 +11,7 @@ interface Props {
 }
 
 const POSTER =
-  "https://image.mux.com/kfJo02Ax7pE6bO5T6wz024WPeoAJa6qPKhfKdDQ00lvbfk/thumbnail.png?width=1280&time=3&fit_mode=preserve";
+  "https://image.mux.com/kfJo02Ax7pE6bO5T6wz024WPeoAJa6qPKhfKdDQ00lvbfk/thumbnail.webp?width=1280&time=3&fit_mode=preserve";
 
 export default function Since({ lang }: Props) {
   const t = useTranslations(lang);

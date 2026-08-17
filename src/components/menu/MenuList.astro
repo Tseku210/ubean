@@ -32,22 +32,22 @@ const MENU_ITEMS_QUERY = `*[_type == "menuItem" && category == $category && avai
   }
 }`;
 
+// This runs at build time (the menu is prerendered). A failed fetch must fail
+// the build — swallowing it would bake a permanent error page into the deploy,
+// while a failed build keeps the last good deployment live.
 let menuItems: SanityDocument[] = [];
-let fetchFailed = false;
 try {
   menuItems = await sanityClient.fetch<SanityDocument[]>(MENU_ITEMS_QUERY, {
     category,
   });
 } catch (error) {
-  fetchFailed = true;
   console.error("Menu fetch failed:", error);
+  throw error;
 }
 ---
 
 {
-  fetchFailed ? (
-    <p class="menu-grid text-b1 py-12 text-center">{t("menu.error")}</p>
-  ) : menuItems.length === 0 ? (
+  menuItems.length === 0 ? (
     <p class="menu-grid text-b1 py-12 text-center">{t("menu.empty")}</p>
   ) : (
     <div class="menu-grid grid grid-cols-2 items-stretch gap-x-4 gap-y-8 md:grid-cols-4 md:gap-x-8 md:gap-y-16">

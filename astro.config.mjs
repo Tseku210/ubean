@@ -22,13 +22,17 @@ export default defineConfig({
     sanity({
       projectId: "ulqjwxud",
       dataset: "production",
-      useCdn: true,
+      // All sanityClient.fetch calls run at build time (the menu is
+      // prerendered), where the CDN's cache offers no benefit — only the risk
+      // of a publish-triggered rebuild baking stale data.
+      useCdn: false,
       studioBasePath: "/admin",
       // @sanity/astro 3.5 defaults this to "hash" when `output: "static"`,
-      // which prerenders the /admin route. That would leave the build with no
-      // on-demand route at all, so Astro would emit no server function and the
-      // menu's `server:defer` island would 404. "browser" keeps the previous
-      // (3.2.x) behaviour: an on-demand /admin route and real Studio URLs.
+      // which prerenders the /admin route. "browser" keeps /admin as an
+      // on-demand route with real Studio URLs; that Studio route is now the
+      // only consumer of the Vercel server function (the menu is fully
+      // prerendered). Switch to "hash" only if hash-based Studio URLs are
+      // acceptable and a fully static build is wanted.
       studioRouterHistory: "browser",
     }),
     sitemap({

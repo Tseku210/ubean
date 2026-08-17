@@ -1,50 +1,66 @@
 ---
-import {
-  createImageUrlBuilder,
-  type ImageUrlBuilder,
-} from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 import { sanityClient } from "sanity:client";
 
 const builder = createImageUrlBuilder(sanityClient);
 
-const { node } = Astro.props;
-const { width = 960 } = Astro.props;
-let image: ImageUrlBuilder | undefined;
+const { node, width = 960, class: className, alt } = Astro.props;
+let src: string | undefined;
+
+// Intrinsic dimensions are encoded in the asset ref
+// (e.g. "image-<id>-2000x1500-webp"), so width/height attributes can be
+// emitted without an extra API call — this prevents layout shift on decode.
+// A crop rect (from Studio) shrinks the effective source dimensions the same
+// way the URL builder itself applies it.
+const dimensionMatch = node?.asset?._ref?.match(/-(\d+)x(\d+)-/);
+let intrinsicWidth = dimensionMatch ? Number(dimensionMatch[1]) : undefined;
+let intrinsicHeight = dimensionMatch ? Number(dimensionMatch[2]) : undefined;
+if (intrinsicWidth && intrinsicHeight && node?.crop) {
+  intrinsicWidth = Math.round(
+    intrinsicWidth * (1 - (node.crop.left ?? 0) - (node.crop.right ?? 0)),
+  );
+  intrinsicHeight = Math.round(
+    intrinsicHeight * (1 - (node.crop.top ?? 0) - (node.crop.bottom ?? 0)),
+  );
+}
+const outputWidth = intrinsicWidth ? Math.min(width, intrinsicWidth) : width;
+const outputHeight =
+  intrinsicWidth && intrinsicHeight
+    ? Math.round((outputWidth * intrinsicHeight) / intrinsicWidth)
+    : undefined;
 
 // See https://www.sanity.io/docs/presenting-images for general documentation on
 // presenting images, and https://www.sanity.io/docs/image-url for specifics on
-// this builder API
+// this builder API. url() can throw on malformed refs; degrade to no image
+// rather than failing the whole prerender.
 try {
-  image =
-    node &&
-    node.asset &&
-    builder.image(node).width(width).fit("max").auto("format").quality(100);
+  if (node && node.asset) {
+    src = builder
+      .image(node)
+      .width(width)
+      .fit("max")
+      .auto("format")
+      .quality(80)
+      .url();
+  }
 } catch (error) {
-  console.error(error);
+  console.error(`SanityImage: bad asset ref ${node?.asset?._ref}:`, error);
 }
+
+const resolvedAlt = alt ?? node?.alt ?? "";
 ---
 
 {
-  image && (
+  src && (
     <img
-      src={image.url()}
-      alt={node.alt || ""}
-      title={node.alt}
-      width={width}
+      src={src}
+      alt={resolvedAlt}
+      title={resolvedAlt || undefined}
+      width={outputWidth}
+      height={outputHeight}
       loading="lazy"
       decoding="async"
-      class="sanity-img"
-      onload="this.classList.add('loaded')"
+      class={className}
     />
   )
 }
-
-<style>
-  :global(html.js) .sanity-img {
-    opacity: 0;
-    transition: opacity 200ms var(--ease-out-quint);
-  }
-  :global(html.js) .sanity-img.loaded {
-    opacity: 1;
-  }
-</style>

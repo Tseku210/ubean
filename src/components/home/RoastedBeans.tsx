@@ -1,10 +1,14 @@
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BEANS } from "@/consts";
 import { formatPrice } from "@/lib/utils";
 import { useTranslations } from "@/i18n/utils";
 import type { Language } from "@/types";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
+import { waitForImages, collectImages } from "@/lib/waitForImages";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Props {
   lang: Language;
@@ -16,41 +20,21 @@ export default function RoastedBeans({ lang }: Props) {
   const beans = BEANS[lang];
 
   useGSAP(
-    () => {
+    (_context, contextSafe) => {
+      if (!contextSafe) return;
       const q = gsap.utils.selector(container);
       const cards = q(".bean-card");
 
-      const mm = gsap.matchMedia();
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
 
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set(cards, {
-          y: 50,
-          autoAlpha: 0,
-        });
+      gsap.set(cards, prefersReduced ? { autoAlpha: 0 } : { y: 50, autoAlpha: 0 });
 
-        gsap
-          .timeline({
-            scrollTrigger: {
-              trigger: container.current,
-              start: "top 80%",
-              // markers: true,
-              once: true,
-              invalidateOnRefresh: true,
-            },
-          })
-          .to(cards, {
-            y: 0,
-            autoAlpha: 1,
-            ease: "back.out",
-            stagger: 0.1,
-          });
-      });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(cards, {
-          autoAlpha: 0,
-        });
-
+      // Built after an await — contextSafe keeps the timeline in the context
+      // so it is reverted on unmount. Reveal only once the bean images are
+      // decoded, so cards never fade in empty.
+      const buildTimeline = contextSafe(() => {
         gsap
           .timeline({
             scrollTrigger: {
@@ -60,12 +44,16 @@ export default function RoastedBeans({ lang }: Props) {
               invalidateOnRefresh: true,
             },
           })
-          .to(cards, {
-            autoAlpha: 1,
-            duration: 0.3,
-            ease: "power2.out",
-          });
+          .to(
+            cards,
+            prefersReduced
+              ? { autoAlpha: 1, duration: 0.3, ease: "power2.out" }
+              : { y: 0, autoAlpha: 1, ease: "back.out", stagger: 0.1 },
+          );
+        ScrollTrigger.refresh(true);
       });
+
+      waitForImages(collectImages(cards)).then(buildTimeline);
     },
     {
       scope: container,
