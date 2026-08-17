@@ -49,7 +49,7 @@ export function LabeledTextArea({
         <small
           id={errorId}
           aria-hidden={!error}
-          className="overflow-hidden pt-3 text-sm text-red-600"
+          className={`overflow-hidden text-sm text-red-600 ${error ? "pt-3" : ""}`}
         >
           {error}
         </small>
