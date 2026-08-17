@@ -61,7 +61,7 @@ export default function MotionPath({ lang }: Props) {
         scrollStart: "top center",
         // rim center 130 units under the path end (536, 3017); fall lands the
         // droplet on the coffee surface (local y 1928, i.e. cy - 7 * scale)
-        cup: { scale: 1.25, cx: 536, cy: 3147, fall: 121 },
+        cup: { scale: 1.1, cx: 536, cy: 3147, fall: 122 },
       };
     }
     if (isTablet) {
@@ -97,7 +97,7 @@ export default function MotionPath({ lang }: Props) {
           },
         ],
         scrollStart: "top center",
-        cup: { scale: 1.25, cx: 536, cy: 3147, fall: 121 },
+        cup: { scale: 1.1, cx: 536, cy: 3147, fall: 122 },
       };
     }
     // mobile
@@ -130,7 +130,7 @@ export default function MotionPath({ lang }: Props) {
       ],
       scrollStart: "top 20%",
       // rim center 105 units under the path end (180.5, 2276)
-      cup: { scale: 0.8, cx: 180.5, cy: 2381, fall: 99 },
+      cup: { scale: 0.72, cx: 180.5, cy: 2381, fall: 100 },
     };
   }, [isDesktop, isTablet, isPhone]);
 
@@ -163,8 +163,8 @@ export default function MotionPath({ lang }: Props) {
           transformOrigin: "50% 65%",
         });
 
-        // cup starts empty; the landing fills it
-        gsap.set(".cup-coffee", { autoAlpha: 0 });
+        // cup starts empty; the coffee waits low in the cup and rises on impact
+        gsap.set(".cup-coffee", { autoAlpha: 0, y: 18 });
 
         const steamLoop = gsap.to(".cup-steam-drift", {
           y: -12,
@@ -209,58 +209,22 @@ export default function MotionPath({ lang }: Props) {
           }
         };
 
-        // time-based landing: the fall obeys gravity, not scroll speed
-        const landing = gsap.timeline({
-          paused: true,
-          onReverseComplete: () => {
-            steamLoop.pause(0);
-            spriteLoop.pause(0);
-          },
-        });
-        landing
-          .to(landingWrapRef.current, {
-            y: config.cup.fall,
-            duration: 0.42,
-            ease: "power2.in",
-          })
-          .to(
-            dropletRef.current,
-            { scaleY: 1.35, scaleX: 0.9, duration: 0.42, ease: "power1.in" },
-            "<",
-          )
-          .to(
-            ".cup-rim",
-            {
-              scaleY: 1.09,
-              transformOrigin: "50% 50%",
-              duration: 0.35,
-              ease: "power1.out",
-            },
-            "<",
-          )
-          .addLabel("impact")
+        // one-shot impact: squash, bottom-up fill, ripples, splash, steam
+        const impactTl = gsap.timeline({ paused: true });
+        impactTl
           .to(
             dropletRef.current,
             { scaleY: 0.5, scaleX: 1.45, duration: 0.1, ease: "power2.out" },
-            "impact",
+            0,
           )
+          .to(landingWrapRef.current, { autoAlpha: 0, duration: 0.14 }, 0.05)
+          .to(".cup-coffee", { autoAlpha: 1, duration: 0.12, ease: "none" }, 0)
           .to(
-            landingWrapRef.current,
-            { autoAlpha: 0, duration: 0.14 },
-            "impact+=0.05",
-          )
-          .fromTo(
             ".cup-coffee",
-            { autoAlpha: 0, scale: 0.5, transformOrigin: "50% 50%" },
-            {
-              autoAlpha: 1,
-              scale: 1,
-              duration: 0.45,
-              ease: "power2.out",
-              immediateRender: false,
-            },
-            "impact",
+            { y: 0, duration: 0.6, ease: "power1.inOut" },
+            0.05,
           )
+          .add(spawnSplash, 0)
           .fromTo(
             ".cup-ripple-1",
             { scale: 0.25, autoAlpha: 0.8, transformOrigin: "50% 50%" },
@@ -271,7 +235,7 @@ export default function MotionPath({ lang }: Props) {
               ease: "power2.out",
               immediateRender: false,
             },
-            "impact",
+            0.35,
           )
           .fromTo(
             ".cup-ripple-2",
@@ -283,15 +247,7 @@ export default function MotionPath({ lang }: Props) {
               ease: "power2.out",
               immediateRender: false,
             },
-            "impact+=0.15",
-          )
-          .add(() => {
-            if (!landing.reversed()) spawnSplash();
-          }, "impact")
-          .to(
-            ".cup-rim",
-            { scaleY: 1, duration: 0.5, ease: "power2.out" },
-            "impact+=0.1",
+            0.5,
           )
           .fromTo(
             ".cup-steam",
@@ -303,32 +259,45 @@ export default function MotionPath({ lang }: Props) {
               ease: "power2.out",
               immediateRender: false,
             },
-            "impact+=0.45",
+            0.6,
           )
           .add(() => {
-            if (!landing.reversed()) {
-              steamLoop.play();
-              spriteLoop.play();
-            }
-          }, "impact+=0.45");
+            steamLoop.play();
+            spriteLoop.play();
+          }, 0.6);
 
-        const maybeLand = (instant: boolean) => {
-          if (landing.isActive() || landing.progress() > 0) return;
+        // the drop plays exactly once; afterwards the scrub is retired so
+        // scrolling back up never rewinds the droplet
+        let landed = false;
+        const landOnce = (instant = false) => {
+          if (landed) return;
+          landed = true;
           if (instant) {
-            landing.progress(1);
+            impactTl.progress(1);
             steamLoop.play();
             spriteLoop.play();
           } else {
-            landing.play();
+            impactTl.play();
           }
+          gsap.delayedCall(0, () => {
+            journey.progress(1);
+            journey.scrollTrigger?.kill(false);
+          });
         };
 
-        gsap.to(dropletWrapperRef.current, {
-          ease: pathEase(rawPath, { smooth: isPhone ? 50 : 20 }),
+        // journey + fall share one scrubbed timeline: the drop flows with the
+        // scroll (1:1 in path units) instead of waiting at the path's end
+        const pathUnitsH = pathRef.current.getBBox().height;
+        const journey = gsap.timeline({
           scrollTrigger: {
             trigger: pathRef.current,
             start: config.scrollStart,
-            end: () => "+=" + pathRef.current?.getBoundingClientRect().height,
+            end: () => {
+              const px = pathRef.current?.getBoundingClientRect().height ?? 0;
+              return (
+                "+=" + Math.round(px * (1 + config.cup.fall / pathUnitsH))
+              );
+            },
             scrub: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
@@ -341,27 +310,30 @@ export default function MotionPath({ lang }: Props) {
                 prevDirection = self.direction;
               }
             },
-            // fire the landing only once the scrub has visually caught up,
-            // so the droplet is exactly at the path's end when it detaches
-            onScrubComplete: (self) => {
-              if (self.progress === 1) maybeLand(false);
-            },
             // page loaded/refreshed already past the end: coffee is simply there
             onRefresh: (self) => {
-              if (self.progress === 1) maybeLand(true);
+              if (self.progress === 1) landOnce(true);
             },
-            onEnterBack: () => {
-              if (landing.progress() > 0) landing.reverse();
-            },
-          },
-          immediateRender: true,
-          motionPath: {
-            path: pathRef.current!,
-            align: pathRef.current!,
-            alignOrigin: [0.5, 0.5],
-            autoRotate: 270,
           },
         });
+        journey
+          .to(dropletWrapperRef.current, {
+            ease: pathEase(rawPath, { smooth: isPhone ? 50 : 20 }),
+            immediateRender: true,
+            motionPath: {
+              path: pathRef.current!,
+              align: pathRef.current!,
+              alignOrigin: [0.5, 0.5],
+              autoRotate: 270,
+            },
+            duration: pathUnitsH,
+          })
+          .to(landingWrapRef.current, {
+            y: config.cup.fall,
+            ease: "none",
+            duration: config.cup.fall,
+          })
+          .call(landOnce);
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {

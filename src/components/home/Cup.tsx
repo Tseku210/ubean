@@ -37,7 +37,6 @@ export function CupBack() {
         strokeWidth={28}
         strokeLinecap="round"
       />
-      {/* rim group scales open slightly to "catch" the droplet */}
       <g className="cup-rim">
         <ellipse cx={300} cy={1935} rx={112} ry={34} fill="#97D5D0" />
         <ellipse
@@ -52,11 +51,17 @@ export function CupBack() {
         <ellipse cx={300} cy={1936} rx={99} ry={27.5} fill="#4F8F89" />
         <ellipse cx={300} cy={1932} rx={99} ry={26} fill="#447D77" />
         {/* visible by default so no-JS and reduced-motion show a full cup;
-            the animated branch hides it until the droplet lands */}
-        <g className="cup-coffee">
-          <ellipse cx={300} cy={1935} rx={92} ry={24} fill="#654321" />
-          <ellipse cx={286} cy={1931} rx={58} ry={13} fill="#7A5230" />
-          <ellipse cx={270} cy={1928} rx={20} ry={5} fill="#8B6238" opacity={0.85} />
+            the animated branch hides it until the droplet lands, then the
+            surface rises bottom-up inside the interior clip */}
+        <clipPath id="cup-interior-clip">
+          <ellipse cx={300} cy={1936} rx={99} ry={27.5} />
+        </clipPath>
+        <g clipPath="url(#cup-interior-clip)">
+          <g className="cup-coffee">
+            <ellipse cx={300} cy={1935} rx={92} ry={24} fill="#654321" />
+            <ellipse cx={286} cy={1931} rx={58} ry={13} fill="#7A5230" />
+            <ellipse cx={270} cy={1928} rx={20} ry={5} fill="#8B6238" opacity={0.85} />
+          </g>
         </g>
         <ellipse
           className="cup-ripple-1"
