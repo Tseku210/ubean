@@ -25,12 +25,6 @@ export default function MotionPath({ lang }: Props) {
   const pathRef = useRef<SVGPathElement>(null);
   const dropletWrapperRef = useRef<SVGPathElement>(null);
   const dropletRef = useRef<SVGPathElement>(null);
-  const sectionRefs = useRef<Record<SectionKey, HTMLDivElement | null>>({
-    aroma: null,
-    beans: null,
-    products: null,
-    tools: null,
-  });
 
   const config = useMemo<MotionPathConfig>(() => {
     if (isDesktop) {
@@ -61,7 +55,6 @@ export default function MotionPath({ lang }: Props) {
             className: "absolute mx-auto w-full flex justify-center",
           },
         ],
-        cupWrapperClass: "mt-8 w-full",
         scrollStart: "top center",
       };
     }
@@ -97,7 +90,6 @@ export default function MotionPath({ lang }: Props) {
             className: "absolute left-10",
           },
         ],
-        cupWrapperClass: "mt-8 w-full",
         scrollStart: "top center",
       };
     }
@@ -129,7 +121,6 @@ export default function MotionPath({ lang }: Props) {
           className: "absolute mx-auto w-full px-4 flex justify-center",
         },
       ],
-      cupWrapperClass: "mx-auto mt-5 w-[200px]",
       scrollStart: "top 20%",
     };
   }, [isDesktop, isTablet, isPhone]);
@@ -268,9 +259,6 @@ export default function MotionPath({ lang }: Props) {
         return (
           <div
             key={section.key}
-            ref={(el) => {
-              sectionRefs.current[section.key] = el;
-            }}
             className={section.className}
             style={{ transform: `translateY(${y}px)` }}
           >

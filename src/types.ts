@@ -40,6 +40,5 @@ export interface MotionPathConfig {
   pathData: string;
   dropletPathData: string;
   sections: SectionConfig[];
-  cupWrapperClass: string;
   scrollStart: string | number;
 }
