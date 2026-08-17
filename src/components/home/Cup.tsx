@@ -6,7 +6,7 @@ export default function Cup() {
         src="/images/cup.webp"
         alt="Ubean Cup"
         width={370}
-        // height={370}
+        height={280}
       />
     </section>
   );

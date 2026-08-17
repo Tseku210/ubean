@@ -32,7 +32,7 @@ export default function Since({ lang }: Props) {
               video_id: "DCV4LzrdWzjB7Q1OtxfOnoragZfxRh3taaIrcMulJNU",
               video_title: "teaching",
             }}
-            poster="https://image.mux.com/kfJo02Ax7pE6bO5T6wz024WPeoAJa6qPKhfKdDQ00lvbfk/thumbnail.png?width=214&height=121&time=3&fit_mode=preserve"
+            poster="https://image.mux.com/kfJo02Ax7pE6bO5T6wz024WPeoAJa6qPKhfKdDQ00lvbfk/thumbnail.webp?width=800&time=3&fit_mode=preserve"
             streamType="on-demand"
             preload="auto"
             loop

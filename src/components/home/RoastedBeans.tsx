@@ -1,10 +1,14 @@
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BEANS } from "@/consts";
 import { formatPrice } from "@/lib/utils";
 import { useTranslations } from "@/i18n/utils";
 import type { Language } from "@/types";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
+import { waitForImages, collectImages } from "@/lib/waitForImages";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Props {
   lang: Language;
@@ -16,7 +20,8 @@ export default function RoastedBeans({ lang }: Props) {
   const beans = BEANS[lang];
 
   useGSAP(
-    () => {
+    (_context, contextSafe) => {
+      if (!contextSafe) return;
       const q = gsap.utils.selector(container);
       const cards = q(".bean-card");
 
@@ -25,22 +30,30 @@ export default function RoastedBeans({ lang }: Props) {
         autoAlpha: 0,
       });
 
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 80%",
-            // markers: true,
-            once: true,
-            invalidateOnRefresh: true,
-          },
-        })
-        .to(cards, {
-          y: 0,
-          autoAlpha: 1,
-          ease: "back.out",
-          stagger: 0.1,
-        });
+      // Built after an await — contextSafe keeps the timeline in the context
+      // so it is reverted on unmount.
+      const buildTimeline = contextSafe(() => {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top 80%",
+              // markers: true,
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          })
+          .to(cards, {
+            y: 0,
+            autoAlpha: 1,
+            ease: "back.out",
+            stagger: 0.1,
+          });
+        ScrollTrigger.refresh(true);
+      });
+
+      // Reveal cards only once their bean images are decoded.
+      waitForImages(collectImages(cards)).then(buildTimeline);
     },
     {
       scope: container,

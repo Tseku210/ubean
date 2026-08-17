@@ -11,6 +11,7 @@ interface Props {
   author?: string;
   canonicalURL?: string;
   noindex?: boolean;
+  preloadImages?: string[];
 }
 
 const {
@@ -21,6 +22,7 @@ const {
   author = "UBean",
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
   noindex = false,
+  preloadImages = [],
 } = Astro.props;
 
 const siteName = "UBean Roastery Shop";
@@ -131,6 +133,15 @@ const structuredData = {
 <Font cssVariable="--font-ubuntu" preload />
 <Font cssVariable="--font-roboto" preload />
 
+<!-- Critical images: the page background plus per-page above-the-fold images,
+     so they start downloading with the HTML instead of after CSS/JS parse -->
+<link rel="preload" as="image" href="/images/bg-tile.webp" />
+{
+  preloadImages.map((href) => (
+    <link rel="preload" as="image" href={href} fetchpriority="high" />
+  ))
+}
+
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonicalURL} />
@@ -173,11 +184,29 @@ const structuredData = {
 
   function animate() {
     const animateElements = document.querySelectorAll(".animate");
+    const DECODE_TIMEOUT_MS = 1500;
 
     animateElements.forEach((element, index) => {
-      setTimeout(() => {
-        element.classList.add("show");
-      }, index * 150);
+      const staggerDelay = new Promise((resolve) =>
+        setTimeout(resolve, index * 150),
+      );
+      // Hold image-bearing sections until their pixels are decoded, so the
+      // reveal never fades in an empty box. The timeout keeps slow networks
+      // from hiding content indefinitely. Lazy images are excluded: decode()
+      // never settles for a lazy image outside the browser's load threshold,
+      // so gating on them would always pin the reveal to the full timeout.
+      const pendingDecodes = Array.from(element.querySelectorAll("img"))
+        .filter((img) => !img.complete && img.loading !== "lazy")
+        .map((img) => img.decode().catch(() => {}));
+      const imagesReady = pendingDecodes.length
+        ? Promise.race([
+            Promise.all(pendingDecodes),
+            new Promise((resolve) => setTimeout(resolve, DECODE_TIMEOUT_MS)),
+          ])
+        : Promise.resolve();
+      Promise.all([staggerDelay, imagesReady]).then(() =>
+        element.classList.add("show"),
+      );
     });
   }
 

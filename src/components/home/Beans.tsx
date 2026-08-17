@@ -18,6 +18,7 @@ export default function Beans({ lang }: Props) {
             src="/fire.webp"
             className="reveal mb-8 size-14 rounded-full md:size-[76px]"
             alt="Fire icon"
+            loading="lazy"
           />
           <h3 className="reveal text-secondary text-h5 mb-4 font-bold md:text-2xl">
             {t("home.beans.title")}
@@ -31,6 +32,8 @@ export default function Beans({ lang }: Props) {
             src="/images/where-the-aroma-begins.webp"
             className="aspect-[5/3] h-[200px] w-full object-contain md:h-[330px] md:object-cover md:object-left md:px-0 lg:object-contain"
             alt="Where the aroma begins"
+            width={1100}
+            height={638}
           />
         </div>
       </div>

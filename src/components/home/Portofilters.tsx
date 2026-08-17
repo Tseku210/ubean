@@ -1,6 +1,10 @@
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
+import { waitForImages } from "@/lib/waitForImages";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Portofilters() {
   const container = useRef<HTMLElement | null>(null);
@@ -9,26 +13,29 @@ export default function Portofilters() {
   const latte = useRef<HTMLDivElement | null>(null);
 
   useGSAP(
-    () => {
+    (_context, contextSafe) => {
+      if (!contextSafe) return;
+      if (!bean.current || !butalsan.current || !latte.current) return;
+
+      // Offsets are applied synchronously (before first paint) so the images
+      // never flash at their final positions while the decode gate is pending.
+      gsap.set(bean.current, {
+        x: -200,
+        y: 200,
+        rotation: -45,
+      });
+
+      gsap.set(butalsan.current, {
+        y: 200,
+      });
+
+      gsap.set(latte.current, {
+        x: 200,
+        y: 200,
+        rotation: 45,
+      });
+
       const animate = () => {
-        if (!bean.current || !butalsan.current || !latte.current) return;
-
-        gsap.set(bean.current, {
-          x: -200,
-          y: 200,
-          rotation: -45,
-        });
-
-        gsap.set(butalsan.current, {
-          y: 200,
-        });
-
-        gsap.set(latte.current, {
-          x: 200,
-          y: 200,
-          rotation: 45,
-        });
-
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: container.current,
@@ -48,7 +55,6 @@ export default function Portofilters() {
             y: 0,
             rotation: 0,
             ease: "power2.out",
-            onComplete: () => console.log("moved"),
           },
           0,
         );
@@ -72,12 +78,17 @@ export default function Portofilters() {
         );
       };
 
-      animate();
-
-      // window.addEventListener("load", animate);
-      // return () => {
-      //   window.removeEventListener("load", animate);
-      // };
+      // Build the scroll timeline only after the portofilter images are
+      // decoded, then refresh (debounced form) so trigger positions use final
+      // layout heights.
+      const startAnimation = contextSafe(() => {
+        animate();
+        ScrollTrigger.refresh(true);
+      });
+      const images = container.current
+        ? Array.from(container.current.querySelectorAll("img"))
+        : [];
+      waitForImages(images).then(startAnimation);
     },
     {
       scope: container,
@@ -91,6 +102,8 @@ export default function Portofilters() {
           src="/images/portofilters.webp"
           className="w-full"
           alt="Portofilters"
+          width={1200}
+          height={718}
         />
       </div>
       <div className="hidden w-full md:flex">
@@ -100,6 +113,7 @@ export default function Portofilters() {
             className="portofilter-bean mx-auto translate-x-10"
             alt="Beans inside a porto filter"
             width={264}
+            height={460}
           />
         </div>
         <div ref={butalsan} className="size-fit">
@@ -108,6 +122,7 @@ export default function Portofilters() {
             className="portofilter-butalsan"
             alt="Butalsan beans inside a porto filter"
             width={265}
+            height={460}
           />
         </div>
 
@@ -117,6 +132,7 @@ export default function Portofilters() {
             className="portofilter-latte -translate-x-10"
             alt="Latte inside a porto filter"
             width={241}
+            height={459}
           />
         </div>
       </div>

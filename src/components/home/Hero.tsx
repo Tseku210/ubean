@@ -3,6 +3,7 @@ import { useTranslations } from "@/i18n/utils";
 import SmokeSprite from "@assets/images/smoke_sprite.png?url";
 import type { Language } from "@/types";
 import { useReveal } from "@/hooks/useReveal";
+import { HERO_POSTER } from "@/consts";
 
 interface Props {
   lang: Language;
@@ -24,7 +25,7 @@ export default function Hero({ lang }: Props) {
           video_id: "bAdLgCCx72xWn7epwLpPy00ln5N3l3RIzaXmcGirqe1g",
           video_title: "hero",
         }}
-        poster="https://image.mux.com/Gtmx5sme3IckVw2u5vXesfT02xXA62QAfqfDIAN02VSz00/thumbnail.png?width=214&height=121&time=5&fit_mode=preserve"
+        poster={HERO_POSTER}
         streamType="on-demand"
         preload="true"
         loop

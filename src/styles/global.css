@@ -204,8 +204,28 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    /* Paper tone on the root so the canvas (including overscroll and the
+       scrollbar gutter) never flashes white while the texture loads. */
+    background-color: #fafafa;
+  }
+  body::before {
+    /* Paper texture on a fixed layer so it stays stationary while the page
+       scrolls — same feel as ScrollSmoother's pinned wrapper gave the home
+       page. A fixed element is used instead of background-attachment: fixed
+       because iOS Safari does not support the latter. bg-tile.webp is a
+       seamless mirrored 2048px tile rendered at 1024px so it stays sharp on
+       retina screens (preloaded in Head.astro). */
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: url("/images/bg-tile.webp");
+    background-size: 1024px 1024px;
+    pointer-events: none;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     @apply font-sans antialiased;
   }
 

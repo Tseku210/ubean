@@ -8,6 +8,7 @@ import { useTranslations } from "@/i18n/utils";
 import { useState } from "react";
 import { storage } from "@/lib/storage";
 import { FEEDBACK_KEY } from "@/consts";
+import { useMountEffect } from "@/hooks/useMountEffect";
 
 type FormValues = {
   name: string;
@@ -39,9 +40,17 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
   });
 
   const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
-  const [isBlocked, setIsBlocked] = useState(() =>
-    Boolean(storage.get<boolean>(FEEDBACK_KEY)),
-  );
+  // The form is server-rendered (client:load), so localStorage must not be
+  // read during the initial render — the build HTML has isBlocked=false and a
+  // returning submitter would get a hydration mismatch. Sync after mount;
+  // `hydrated` also keeps the button inert until React can handle the submit
+  // (before hydration a submit would GET-navigate with the form data).
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+  useMountEffect(() => {
+    setIsBlocked(Boolean(storage.get<boolean>(FEEDBACK_KEY)));
+    setHydrated(true);
+  });
 
   const { submit: submitToWeb3 } = useWeb3Forms({
     access_key: accessKey || "",
@@ -130,7 +139,7 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
         size="lg"
         type="submit"
         isLoading={isSubmitting}
-        disabled={isBlocked || isSubmitting || !accessKey}
+        disabled={!hydrated || isBlocked || isSubmitting || !accessKey}
         className="px-14"
       >
         {isSubmitting

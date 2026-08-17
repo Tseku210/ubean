@@ -1,19 +1,27 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Smoke from "@assets/icons/smoke.svg";
 import Line from "@assets/icons/line.svg";
+import SmokeSprite from "@assets/images/smoke_sprite.png?url";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<Layout title={`UBean - ${t("aboutus.title")}`}>
+<Layout
+  title={`UBean - ${t("aboutus.title")}`}
+  preloadImages={["/images/aboutus-1.webp"]}
+>
   <main
     class="mx-8 mt-10 flex min-h-[calc(100vh-74px-122px)] max-w-4xl flex-col items-center gap-6 md:mx-auto md:gap-10"
   >
     <div class="animate flex flex-col items-center gap-8">
-      <Smoke width={100} />
+      <img
+        src={SmokeSprite}
+        alt=""
+        loading="eager"
+        class="animate-sprite size-20 object-cover md:size-[100px]"
+      />
       <h1 class="text-h4 md:text-h3 uppercase">
         {t("aboutus.ourstory.title")}
       </h1>
@@ -24,6 +32,9 @@ const t = useTranslations(lang);
       >
         <img
           src="/images/aboutus-1.webp"
+          alt={t("aboutus.ourstory.title")}
+          width={1600}
+          height={791}
           class="parallax-img size-full origin-top object-cover"
         />
       </div>
@@ -48,10 +59,16 @@ const t = useTranslations(lang);
       <div
         class="animate parallax-container aspect-[3/2] overflow-hidden rounded-[40px] md:aspect-[2/1]"
       >
-        <img
-          src="/coffee-brew.webp"
+        <video
+          src="/coffee-brew.mp4"
+          poster="/images/coffee-brew-poster.webp"
           class="size-full origin-center object-cover"
-        />
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        ></video>
       </div>
     </div>
     <Line />
@@ -71,6 +88,11 @@ const t = useTranslations(lang);
       >
         <img
           src="/images/aboutus-2.webp"
+          alt={t("aboutus.ourmission.title")}
+          width={1080}
+          height={1080}
+          loading="lazy"
+          decoding="async"
           class="parallax-img size-full origin-top object-cover"
         />
       </div>
