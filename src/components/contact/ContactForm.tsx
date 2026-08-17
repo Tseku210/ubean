@@ -18,11 +18,19 @@ type FormValues = {
 
 export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
   const t = useTranslations(lang);
+
+  const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
+  if (!accessKey && import.meta.env.DEV) {
+    console.error(
+      "PUBLIC_WEB3FORMS_ACCESS_KEY is not set — contact form cannot submit.",
+    );
+  }
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     mode: "onTouched",
     defaultValues: {
@@ -30,37 +38,48 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
     },
   });
 
-  const [isSent, setIsSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
   const [isBlocked, setIsBlocked] = useState(() =>
     Boolean(storage.get<boolean>(FEEDBACK_KEY)),
   );
 
   const { submit: submitToWeb3 } = useWeb3Forms({
-    access_key: import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || "",
+    access_key: accessKey || "",
     settings: {
       from_name: "Ubean Roastery Shop",
       subject: "Feedback from a user",
     },
     onSuccess: () => {
-      setIsSent(true);
+      setStatus("sent");
       reset();
       storage.set<boolean>(FEEDBACK_KEY, true);
       setIsBlocked(true);
     },
     onError: () => {
-      setIsSent(false);
+      setStatus("error");
     },
   });
 
   const onSubmit = handleSubmit(async (data) => {
+    if (!accessKey) {
+      setStatus("error");
+      return;
+    }
     if (isBlocked) return;
-    return submitToWeb3(data);
+    try {
+      await submitToWeb3(data);
+    } catch {
+      // useWeb3Forms only calls onError for error responses; a transport
+      // failure (offline, DNS) rejects instead.
+      setStatus("error");
+    }
   });
 
   return (
     <form
       className="relative flex size-full max-w-md flex-col items-center justify-center gap-6"
       onSubmit={onSubmit}
+      noValidate
     >
       <input
         type="checkbox"
@@ -87,6 +106,10 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
         type="email"
         registration={register("email", {
           required: t("contact.error.mail"),
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: t("contact.error.mail"),
+          },
         })}
         error={errors.email?.message}
         required
@@ -107,15 +130,20 @@ export default function ContactForm({ lang }: { lang: keyof typeof ui }) {
         size="lg"
         type="submit"
         isLoading={isSubmitting}
-        disabled={isBlocked || isSubmitting}
+        disabled={isBlocked || isSubmitting || !accessKey}
         className="px-14"
       >
         {isSubmitting
           ? t("contact.sending")
-          : isSubmitSuccessful || isBlocked || isSent
+          : isBlocked || status === "sent"
             ? t("contact.success")
             : t("contact.submit")}
       </Button>
+      {status === "error" && (
+        <p role="alert" className="text-sm text-red-600">
+          {t("contact.error")}
+        </p>
+      )}
     </form>
   );
 }

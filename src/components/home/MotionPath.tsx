@@ -208,7 +208,7 @@ export default function MotionPath({ lang }: Props) {
     () => ({
       beans: <Beans lang={lang} />,
       aroma: <Portofilters />,
-      tools: <RoastedBeans />,
+      tools: <RoastedBeans lang={lang} />,
       products: <Since lang={lang} />,
     }),
     [lang],

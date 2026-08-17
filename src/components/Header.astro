@@ -41,6 +41,6 @@ const navLinks = {
   </div>
   <div class="flex items-center gap-6 justify-self-end">
     <LanguagePicker />
-    <MobileMenu navLinks={navLinks} client:only="react" />
+    <MobileMenu navLinks={navLinks} lang={lang} client:only="react" />
   </div>
 </nav>

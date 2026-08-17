@@ -1,42 +1,83 @@
 import type { Bean, Language } from "./types";
 
-export const BEANS: Bean[] = [
-  {
-    name: "BRAZIL",
-    image: "brazil-bean.webp",
-    description: "Mogiana NY2 FC",
-    price250: 27000,
-    price500: 48000,
-  },
-  {
-    name: "ETHIOPIA",
-    image: "ethiopia-bean.webp",
-    description: "Yirgacheffe G2 Tierra",
-    price250: 35000,
-    price500: 70000,
-  },
-  {
-    name: "GUATEMALA",
-    image: "guatemala-bean.webp",
-    description: "Antigua SHB Margarita",
-    price250: 35000,
-    price500: 53000,
-  },
-  {
-    name: "DARK HORSE",
-    image: "dark-horse-bean.webp",
-    description: "Yirgacheffe G2 Tierra",
-    price250: 35000,
-    price500: 55000,
-  },
-  {
-    name: "IRON HORSE",
-    image: "iron-horse-bean.webp",
-    description: "Espresso",
-    price250: 35000,
-    price500: 55000,
-  },
-];
+export const BEANS: Record<Language, Bean[]> = {
+  en: [
+    {
+      name: "BRAZIL",
+      image: "brazil-bean.webp",
+      description: "Mogiana NY2 FC",
+      price250: 27000,
+      price500: 48000,
+    },
+    {
+      name: "ETHIOPIA",
+      image: "ethiopia-bean.webp",
+      description: "Yirgacheffe G2 Tierra",
+      price250: 35000,
+      price500: 70000,
+    },
+    {
+      name: "GUATEMALA",
+      image: "guatemala-bean.webp",
+      description: "Antigua SHB Margarita",
+      price250: 35000,
+      price500: 53000,
+    },
+    {
+      name: "DARK HORSE",
+      image: "dark-horse-bean.webp",
+      description: "Yirgacheffe G2 Tierra",
+      price250: 35000,
+      price500: 55000,
+    },
+    {
+      name: "IRON HORSE",
+      image: "iron-horse-bean.webp",
+      description: "Espresso",
+      price250: 35000,
+      price500: 55000,
+    },
+  ],
+  // Origin/blend names and coffee varietal codes stay in Latin script on
+  // purpose (they are the product identifiers printed on the bags).
+  mn: [
+    {
+      name: "BRAZIL",
+      image: "brazil-bean.webp",
+      description: "Mogiana NY2 FC",
+      price250: 27000,
+      price500: 48000,
+    },
+    {
+      name: "ETHIOPIA",
+      image: "ethiopia-bean.webp",
+      description: "Yirgacheffe G2 Tierra",
+      price250: 35000,
+      price500: 70000,
+    },
+    {
+      name: "GUATEMALA",
+      image: "guatemala-bean.webp",
+      description: "Antigua SHB Margarita",
+      price250: 35000,
+      price500: 53000,
+    },
+    {
+      name: "DARK HORSE",
+      image: "dark-horse-bean.webp",
+      description: "Yirgacheffe G2 Tierra",
+      price250: 35000,
+      price500: 55000,
+    },
+    {
+      name: "IRON HORSE",
+      image: "iron-horse-bean.webp",
+      description: "Эспрессо",
+      price250: 35000,
+      price500: 55000,
+    },
+  ],
+};
 
 export const ADDONS: Record<
   Language,
