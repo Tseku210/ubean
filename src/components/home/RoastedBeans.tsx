@@ -20,27 +20,52 @@ export default function RoastedBeans({ lang }: Props) {
       const q = gsap.utils.selector(container);
       const cards = q(".bean-card");
 
-      gsap.set(cards, {
-        y: 50,
-        autoAlpha: 0,
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.set(cards, {
+          y: 50,
+          autoAlpha: 0,
+        });
+
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top 80%",
+              // markers: true,
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          })
+          .to(cards, {
+            y: 0,
+            autoAlpha: 1,
+            ease: "back.out",
+            stagger: 0.1,
+          });
       });
 
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 80%",
-            // markers: true,
-            once: true,
-            invalidateOnRefresh: true,
-          },
-        })
-        .to(cards, {
-          y: 0,
-          autoAlpha: 1,
-          ease: "back.out",
-          stagger: 0.1,
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(cards, {
+          autoAlpha: 0,
         });
+
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top 80%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          })
+          .to(cards, {
+            autoAlpha: 1,
+            duration: 0.3,
+            ease: "power2.out",
+          });
+      });
     },
     {
       scope: container,
@@ -60,7 +85,7 @@ export default function RoastedBeans({ lang }: Props) {
             className={`bean-card group relative max-w-[210px] snap-start space-y-4 bean-item-${index}`}
           >
             <div className="shadow-card absolute bottom-0 -z-10 m-0 h-3/5 w-full rounded-4xl bg-white" />
-            <div className="bean-image-container transition-transform ease-in-out group-hover:-translate-y-2 group-hover:-rotate-2">
+            <div className="bean-image-container transition-transform duration-200 ease-out group-hover:-translate-y-2 group-hover:-rotate-2">
               <img
                 src={`/images/${bean.image}`}
                 alt={`${bean.name} coffee beans`}

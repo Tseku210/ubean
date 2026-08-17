@@ -1,16 +1,48 @@
-import MuxPlayer from "@mux/mux-player-react";
+import MuxPlayer, {
+  type MuxPlayerRefAttributes,
+} from "@mux/mux-player-react";
 import { useTranslations } from "@/i18n/utils";
 import SmokeSprite from "@assets/images/smoke_sprite.png?url";
 import type { Language } from "@/types";
-import { useReveal } from "@/hooks/useReveal";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useRef, useState } from "react";
 
 interface Props {
   lang: Language;
 }
 
+const POSTER =
+  "https://image.mux.com/Gtmx5sme3IckVw2u5vXesfT02xXA62QAfqfDIAN02VSz00/thumbnail.png?width=1280&time=5&fit_mode=preserve";
+
 export default function Hero({ lang }: Props) {
   const t = useTranslations(lang);
-  const { container } = useReveal();
+  const container = useRef<HTMLElement | null>(null);
+  const playerRef = useRef<MuxPlayerRefAttributes>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.from(".reveal", {
+          autoAlpha: 0,
+          y: 24,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: 0.1,
+        });
+      });
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.from(".reveal", {
+          autoAlpha: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      });
+    },
+    { scope: container },
+  );
 
   return (
     <section
@@ -18,19 +50,33 @@ export default function Hero({ lang }: Props) {
       className="relative z-10 mx-4 aspect-[4/3] overflow-hidden rounded-[50px] md:mx-10 lg:aspect-[1290/550]"
     >
       <MuxPlayer
+        ref={playerRef}
         className="block h-full w-full"
         playbackId="Gtmx5sme3IckVw2u5vXesfT02xXA62QAfqfDIAN02VSz00"
         metadata={{
           video_id: "bAdLgCCx72xWn7epwLpPy00ln5N3l3RIzaXmcGirqe1g",
           video_title: "hero",
         }}
-        poster="https://image.mux.com/Gtmx5sme3IckVw2u5vXesfT02xXA62QAfqfDIAN02VSz00/thumbnail.png?width=214&height=121&time=5&fit_mode=preserve"
+        poster={POSTER}
+        // 'playing' fires while the surface can still be black (first HLS
+        // frame not yet painted); wait until the clock has actually advanced
+        onTimeUpdate={() => {
+          if ((playerRef.current?.currentTime ?? 0) > 0.05) setIsPlaying(true);
+        }}
         streamType="on-demand"
-        preload="true"
+        preload="auto"
         loop
         muted
         autoPlay
         playsInline
+      />
+      <img
+        src={POSTER}
+        alt=""
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 z-[5] h-full w-full object-cover transition-opacity duration-300 ease-out ${
+          isPlaying ? "opacity-0" : "opacity-100"
+        }`}
       />
       <div className="absolute inset-0 z-10 rounded-[50px] bg-black/65" />
 

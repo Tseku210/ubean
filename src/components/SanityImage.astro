@@ -24,4 +24,27 @@ try {
 }
 ---
 
-{image && <img src={image.url()} alt={node.alt || ""} title={node.alt} />}
+{
+  image && (
+    <img
+      src={image.url()}
+      alt={node.alt || ""}
+      title={node.alt}
+      width={width}
+      loading="lazy"
+      decoding="async"
+      class="sanity-img"
+      onload="this.classList.add('loaded')"
+    />
+  )
+}
+
+<style>
+  :global(html.js) .sanity-img {
+    opacity: 0;
+    transition: opacity 200ms var(--ease-out-quint);
+  }
+  :global(html.js) .sanity-img.loaded {
+    opacity: 1;
+  }
+</style>
