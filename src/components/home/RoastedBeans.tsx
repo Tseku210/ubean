@@ -77,7 +77,7 @@ export default function RoastedBeans() {
             className={`bean-card group relative max-w-[210px] snap-start space-y-4 bean-item-${index}`}
           >
             <div className="shadow-card absolute bottom-0 -z-10 m-0 h-3/5 w-full rounded-4xl bg-white" />
-            <div className="bean-image-container transition-transform ease-in-out group-hover:-translate-y-2 group-hover:-rotate-2">
+            <div className="bean-image-container transition-transform duration-200 ease-out group-hover:-translate-y-2 group-hover:-rotate-2">
               <img
                 src={`/images/${bean.image}`}
                 alt={`${bean.name} coffee beans`}
