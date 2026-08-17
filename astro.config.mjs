@@ -2,6 +2,7 @@ import { defineConfig, fontProviders } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import sanity from "@sanity/astro";
+import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
@@ -29,6 +30,13 @@ export default defineConfig({
       // menu's `server:defer` island would 404. "browser" keeps the previous
       // (3.2.x) behaviour: an on-demand /admin route and real Studio URLs.
       studioRouterHistory: "browser",
+    }),
+    sitemap({
+      i18n: {
+        defaultLocale: "en",
+        locales: { en: "en", mn: "mn" },
+      },
+      filter: (page) => !page.includes("/admin"),
     }),
   ],
 
