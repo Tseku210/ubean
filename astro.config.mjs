@@ -25,8 +25,7 @@ export default defineConfig({
   ],
 
   image: {
-    domains: ["cdn.sanity.io"],
-    remotePatterns: [{ protocol: "https" }],
+    remotePatterns: [{ protocol: "https", hostname: "cdn.sanity.io" }],
   },
 
   adapter: vercel({
