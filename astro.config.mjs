@@ -8,6 +8,8 @@ import vercel from "@astrojs/vercel";
 export default defineConfig({
   site: "https://www.ubean.mn",
 
+  compressHTML: true,
+
   prefetch: true,
 
   vite: {
@@ -21,6 +23,12 @@ export default defineConfig({
       dataset: "production",
       useCdn: true,
       studioBasePath: "/admin",
+      // @sanity/astro 3.5 defaults this to "hash" when `output: "static"`,
+      // which prerenders the /admin route. That would leave the build with no
+      // on-demand route at all, so Astro would emit no server function and the
+      // menu's `server:defer` island would 404. "browser" keeps the previous
+      // (3.2.x) behaviour: an on-demand /admin route and real Studio URLs.
+      studioRouterHistory: "browser",
     }),
   ],
 
@@ -46,22 +54,20 @@ export default defineConfig({
     },
   },
 
-  experimental: {
-    fonts: [
-      {
-        provider: fontProviders.fontsource(),
-        name: "Ubuntu",
-        cssVariable: "--font-ubuntu",
-        weights: [300, 400, 500, 600, 700],
-        styles: ["normal", "italic"],
-      },
-      {
-        provider: fontProviders.fontsource(),
-        name: "Roboto",
-        cssVariable: "--font-roboto",
-        weights: [300, 400, 500, 600, 700],
-        styles: ["normal"],
-      },
-    ],
-  },
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: "Ubuntu",
+      cssVariable: "--font-ubuntu",
+      weights: [300, 400, 500, 600, 700],
+      styles: ["normal", "italic"],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: "Roboto",
+      cssVariable: "--font-roboto",
+      weights: [300, 400, 500, 600, 700],
+      styles: ["normal"],
+    },
+  ],
 });
