@@ -1,6 +1,6 @@
 # 003 — Stop the per-frame tween storm in the droplet ScrollTrigger
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: HIGH
 - **Category**: Performance / Easing & duration
