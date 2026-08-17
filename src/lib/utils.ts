@@ -7,5 +7,5 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatPrice(price: number): string {
   if (price === 0) return "₮0";
-  return `₮${price.toLocaleString()}`;
+  return `₮${price.toLocaleString("en-US")}`;
 }
