@@ -10,69 +10,73 @@ export default function Portofilters() {
 
   useGSAP(
     () => {
-      const animate = () => {
-        if (!bean.current || !butalsan.current || !latte.current) return;
+      const mm = gsap.matchMedia();
 
-        gsap.set(bean.current, {
-          x: -200,
-          y: 200,
-          rotation: -45,
-        });
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const animate = () => {
+          if (!bean.current || !butalsan.current || !latte.current) return;
 
-        gsap.set(butalsan.current, {
-          y: 200,
-        });
+          gsap.set(bean.current, {
+            x: -200,
+            y: 200,
+            rotation: -45,
+          });
 
-        gsap.set(latte.current, {
-          x: 200,
-          y: 200,
-          rotation: 45,
-        });
+          gsap.set(butalsan.current, {
+            y: 200,
+          });
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 80%",
-            end: "center 30%",
-            scrub: true,
-            invalidateOnRefresh: true,
-            once: true,
-            // markers: true,
-          },
-        });
+          gsap.set(latte.current, {
+            x: 200,
+            y: 200,
+            rotation: 45,
+          });
 
-        tl.to(
-          bean.current,
-          {
-            x: 10,
-            y: 0,
-            rotation: 0,
-            ease: "power2.out",
-            onComplete: () => console.log("moved"),
-          },
-          0,
-        );
-        tl.to(
-          butalsan.current,
-          {
-            y: 0,
-            ease: "power2.out",
-          },
-          0,
-        );
-        tl.to(
-          latte.current,
-          {
-            x: -20,
-            y: 0,
-            rotation: 0,
-            ease: "power2.out",
-          },
-          0,
-        );
-      };
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top 80%",
+              end: "center 30%",
+              scrub: true,
+              invalidateOnRefresh: true,
+              once: true,
+              // markers: true,
+            },
+          });
 
-      animate();
+          tl.to(
+            bean.current,
+            {
+              x: 10,
+              y: 0,
+              rotation: 0,
+              ease: "power2.out",
+              onComplete: () => console.log("moved"),
+            },
+            0,
+          );
+          tl.to(
+            butalsan.current,
+            {
+              y: 0,
+              ease: "power2.out",
+            },
+            0,
+          );
+          tl.to(
+            latte.current,
+            {
+              x: -20,
+              y: 0,
+              rotation: 0,
+              ease: "power2.out",
+            },
+            0,
+          );
+        };
+
+        animate();
+      });
 
       // window.addEventListener("load", animate);
       // return () => {

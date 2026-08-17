@@ -12,27 +12,52 @@ export default function RoastedBeans() {
       const q = gsap.utils.selector(container);
       const cards = q(".bean-card");
 
-      gsap.set(cards, {
-        y: 50,
-        autoAlpha: 0,
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.set(cards, {
+          y: 50,
+          autoAlpha: 0,
+        });
+
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top 80%",
+              // markers: true,
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          })
+          .to(cards, {
+            y: 0,
+            autoAlpha: 1,
+            ease: "back.out",
+            stagger: 0.1,
+          });
       });
 
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 80%",
-            // markers: true,
-            once: true,
-            invalidateOnRefresh: true,
-          },
-        })
-        .to(cards, {
-          y: 0,
-          autoAlpha: 1,
-          ease: "back.out",
-          stagger: 0.1,
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(cards, {
+          autoAlpha: 0,
         });
+
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top 80%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          })
+          .to(cards, {
+            autoAlpha: 1,
+            duration: 0.3,
+            ease: "power2.out",
+          });
+      });
     },
     {
       scope: container,

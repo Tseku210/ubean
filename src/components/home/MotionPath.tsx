@@ -140,50 +140,62 @@ export default function MotionPath({ lang }: Props) {
 
   useGSAP(
     () => {
-      if (!dropletWrapperRef.current || !dropletRef.current || !pathRef.current)
-        return;
+      const mm = gsap.matchMedia();
 
-      let rotateTo = gsap.quickTo(dropletRef.current, "rotation");
-      let prevDirection = 0;
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        if (
+          !dropletWrapperRef.current ||
+          !dropletRef.current ||
+          !pathRef.current
+        )
+          return;
 
-      gsap.set(dropletRef.current, {
-        transformOrigin: "50% 65%",
+        let rotateTo = gsap.quickTo(dropletRef.current, "rotation");
+        let prevDirection = 0;
+
+        gsap.set(dropletRef.current, {
+          transformOrigin: "50% 65%",
+        });
+
+        gsap.to(dropletWrapperRef.current, {
+          ease: pathEase(rawPath, { smooth: isPhone ? 50 : 20 }),
+          scrollTrigger: {
+            trigger: pathRef.current,
+            start: config.scrollStart,
+            end: () => "+=" + pathRef.current?.getBoundingClientRect().height,
+            scrub: 2,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const interpolate = gsap.utils.interpolate("#97D5D0", "#654321");
+              const v = gsap.utils.clamp(0, 200, Math.abs(self.getVelocity()));
+              const scaleY = gsap.utils.mapRange(0, 200, 1, 1.5, v);
+
+              gsap.to(dropletRef.current, {
+                scaleY: scaleY,
+                duration: 1,
+                ease: "back.out",
+                overwrite: "auto",
+                fill: interpolate(self.progress),
+              });
+
+              if (prevDirection !== self.direction) {
+                rotateTo(self.direction === 1 ? 0 : -180);
+                prevDirection = self.direction;
+              }
+            },
+          },
+          immediateRender: true,
+          motionPath: {
+            path: pathRef.current!,
+            align: pathRef.current!,
+            alignOrigin: [0.5, 0.5],
+            autoRotate: 270,
+          },
+        });
       });
 
-      gsap.to(dropletWrapperRef.current, {
-        ease: pathEase(rawPath, { smooth: isPhone ? 50 : 20 }),
-        scrollTrigger: {
-          trigger: pathRef.current,
-          start: config.scrollStart,
-          end: () => "+=" + pathRef.current?.getBoundingClientRect().height,
-          scrub: 2,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const interpolate = gsap.utils.interpolate("#97D5D0", "#654321");
-            const v = gsap.utils.clamp(0, 200, Math.abs(self.getVelocity()));
-            const scaleY = gsap.utils.mapRange(0, 200, 1, 1.5, v);
-
-            gsap.to(dropletRef.current, {
-              scaleY: scaleY,
-              duration: 1,
-              ease: "back.out",
-              overwrite: "auto",
-              fill: interpolate(self.progress),
-            });
-
-            if (prevDirection !== self.direction) {
-              rotateTo(self.direction === 1 ? 0 : -180);
-              prevDirection = self.direction;
-            }
-          },
-        },
-        immediateRender: true,
-        motionPath: {
-          path: pathRef.current!,
-          align: pathRef.current!,
-          alignOrigin: [0.5, 0.5],
-          autoRotate: 270,
-        },
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(dropletWrapperRef.current, { autoAlpha: 0 });
       });
     },
     {
