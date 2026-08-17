@@ -31,7 +31,7 @@ const lang = getLangFromUrl(Astro.url);
 // hreflang alternates. English pages live at `/x`, Mongolian at `/mn/x`.
 const path = Astro.url.pathname.replace(/^\/mn(?=\/|$)/, "") || "/";
 const enUrl = new URL(path, Astro.site).href;
-const mnUrl = new URL(`/mn${path === "/" ? "" : path}`, Astro.site).href;
+const mnUrl = new URL(`/mn${path === "/" ? "/" : path}`, Astro.site).href;
 
 const localized = {
   en: {
@@ -49,7 +49,7 @@ const localized = {
     streetAddress:
       "Нам Ян Жү гудамж, БЗД, 13-р хороолол, Монгол Намянжү Соёлын төв (Шөнийн захын эсрэг талд), 2-р давхар",
     addressLocality: "Улаанбаатар",
-    url: new URL("/mn", Astro.site).href,
+    url: new URL("/mn/", Astro.site).href,
     hasMenu: new URL("/mn/menu/coffee", Astro.site).href,
   },
 }[lang];
