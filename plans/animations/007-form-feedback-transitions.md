@@ -1,6 +1,6 @@
 # 007 — Smooth the contact form's error and focus feedback
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: MEDIUM
 - **Category**: Missed transition / Cohesion
