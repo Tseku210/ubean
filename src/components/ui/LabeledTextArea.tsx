@@ -26,19 +26,21 @@ export function LabeledTextArea({
 }: Props) {
   const errorId = `${id}-error`;
   return (
-    <div className="grid h-full w-full max-w-sm gap-3">
-      <Label htmlFor={id}>{label}</Label>
-      <Textarea
-        name={name}
-        placeholder={placeholder}
-        id={id}
-        rows={rows}
-        aria-invalid={!!error || undefined}
-        aria-describedby={error ? errorId : undefined}
-        required={required}
-        {...registration}
-        {...rest}
-      />
+    <div className="h-full w-full max-w-sm">
+      <div className="grid h-full gap-3">
+        <Label htmlFor={id}>{label}</Label>
+        <Textarea
+          name={name}
+          placeholder={placeholder}
+          id={id}
+          rows={rows}
+          aria-invalid={!!error || undefined}
+          aria-describedby={error ? errorId : undefined}
+          required={required}
+          {...registration}
+          {...rest}
+        />
+      </div>
       <div
         className={`grid transition-[grid-template-rows,opacity] duration-200 ease-out ${
           error ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
@@ -47,7 +49,7 @@ export function LabeledTextArea({
         <small
           id={errorId}
           aria-hidden={!error}
-          className="overflow-hidden text-sm text-red-600"
+          className="overflow-hidden pt-3 text-sm text-red-600"
         >
           {error}
         </small>

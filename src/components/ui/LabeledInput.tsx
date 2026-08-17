@@ -25,15 +25,17 @@ export function LabeledInput({
 }: Props) {
   const errorId = `${id}-error`;
   return (
-    <div className="grid w-full max-w-sm items-center gap-3">
-      <Label htmlFor={id}>{label}</Label>
-      <Input
-        id={id}
-        aria-invalid={!!error || undefined}
-        aria-describedby={error ? errorId : undefined}
-        {...registration}
-        {...rest}
-      />
+    <div className="w-full max-w-sm">
+      <div className="grid items-center gap-3">
+        <Label htmlFor={id}>{label}</Label>
+        <Input
+          id={id}
+          aria-invalid={!!error || undefined}
+          aria-describedby={error ? errorId : undefined}
+          {...registration}
+          {...rest}
+        />
+      </div>
       <div
         className={`grid transition-[grid-template-rows,opacity] duration-200 ease-out ${
           error ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
@@ -42,7 +44,7 @@ export function LabeledInput({
         <small
           id={errorId}
           aria-hidden={!error}
-          className="overflow-hidden text-sm text-red-600"
+          className="overflow-hidden pt-3 text-sm text-red-600"
         >
           {error}
         </small>
