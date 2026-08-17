@@ -1,6 +1,6 @@
 # 002 — Gate all GSAP motion behind reduced-motion and fix ScrollSmoother lifecycle
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: HIGH
 - **Category**: Accessibility / Interruptibility
