@@ -2,14 +2,19 @@ import MuxPlayer from "@mux/mux-player-react";
 import { useTranslations } from "@/i18n/utils";
 import type { Language } from "@/types";
 import { useReveal } from "@/hooks/useReveal";
+import { useState } from "react";
 
 interface Props {
   lang: Language;
 }
 
+const POSTER =
+  "https://image.mux.com/kfJo02Ax7pE6bO5T6wz024WPeoAJa6qPKhfKdDQ00lvbfk/thumbnail.png?width=1280&time=3&fit_mode=preserve";
+
 export default function Since({ lang }: Props) {
   const t = useTranslations(lang);
   const { container } = useReveal();
+  const [isPlaying, setIsPlaying] = useState(false);
 
   return (
     <section ref={container}>
@@ -32,13 +37,22 @@ export default function Since({ lang }: Props) {
               video_id: "DCV4LzrdWzjB7Q1OtxfOnoragZfxRh3taaIrcMulJNU",
               video_title: "teaching",
             }}
-            poster="https://image.mux.com/kfJo02Ax7pE6bO5T6wz024WPeoAJa6qPKhfKdDQ00lvbfk/thumbnail.png?width=214&height=121&time=3&fit_mode=preserve"
+            poster={POSTER}
+            onPlaying={() => setIsPlaying(true)}
             streamType="on-demand"
             preload="auto"
             loop
             muted
             autoPlay
             playsInline
+          />
+          <img
+            src={POSTER}
+            alt=""
+            aria-hidden="true"
+            className={`pointer-events-none absolute inset-0 z-[5] h-full w-full object-cover transition-opacity duration-300 ease-out ${
+              isPlaying ? "opacity-0" : "opacity-100"
+            }`}
           />
         </div>
       </div>

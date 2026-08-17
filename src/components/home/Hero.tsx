@@ -4,15 +4,19 @@ import SmokeSprite from "@assets/images/smoke_sprite.png?url";
 import type { Language } from "@/types";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 interface Props {
   lang: Language;
 }
 
+const POSTER =
+  "https://image.mux.com/Gtmx5sme3IckVw2u5vXesfT02xXA62QAfqfDIAN02VSz00/thumbnail.png?width=1280&time=5&fit_mode=preserve";
+
 export default function Hero({ lang }: Props) {
   const t = useTranslations(lang);
   const container = useRef<HTMLElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useGSAP(
     () => {
@@ -49,13 +53,22 @@ export default function Hero({ lang }: Props) {
           video_id: "bAdLgCCx72xWn7epwLpPy00ln5N3l3RIzaXmcGirqe1g",
           video_title: "hero",
         }}
-        poster="https://image.mux.com/Gtmx5sme3IckVw2u5vXesfT02xXA62QAfqfDIAN02VSz00/thumbnail.png?width=214&height=121&time=5&fit_mode=preserve"
+        poster={POSTER}
+        onPlaying={() => setIsPlaying(true)}
         streamType="on-demand"
-        preload="true"
+        preload="auto"
         loop
         muted
         autoPlay
         playsInline
+      />
+      <img
+        src={POSTER}
+        alt=""
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 z-[5] h-full w-full object-cover transition-opacity duration-300 ease-out ${
+          isPlaying ? "opacity-0" : "opacity-100"
+        }`}
       />
       <div className="absolute inset-0 z-10 rounded-[50px] bg-black/65" />
 
