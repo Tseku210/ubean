@@ -1,6 +1,6 @@
 # 011 — Give the contact form's success a real moment
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a18fdfa
 - **Severity**: LOW (missed opportunity — rare, high-emotion, once per user)
 - **Category**: Missed opportunities
