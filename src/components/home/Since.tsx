@@ -1,8 +1,10 @@
-import MuxPlayer from "@mux/mux-player-react";
+import MuxPlayer, {
+  type MuxPlayerRefAttributes,
+} from "@mux/mux-player-react";
 import { useTranslations } from "@/i18n/utils";
 import type { Language } from "@/types";
 import { useReveal } from "@/hooks/useReveal";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface Props {
   lang: Language;
@@ -14,6 +16,7 @@ const POSTER =
 export default function Since({ lang }: Props) {
   const t = useTranslations(lang);
   const { container } = useReveal();
+  const playerRef = useRef<MuxPlayerRefAttributes>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
@@ -31,6 +34,7 @@ export default function Since({ lang }: Props) {
         </div>
         <div className="reveal relative order-1 h-[190px] w-[343px] overflow-hidden rounded-[40px] md:order-2 md:aspect-[5/3] md:h-[330px] md:w-[800px] lg:w-auto">
           <MuxPlayer
+            ref={playerRef}
             className="block h-full w-full"
             playbackId="kfJo02Ax7pE6bO5T6wz024WPeoAJa6qPKhfKdDQ00lvbfk"
             metadata={{
@@ -38,7 +42,12 @@ export default function Since({ lang }: Props) {
               video_title: "teaching",
             }}
             poster={POSTER}
-            onPlaying={() => setIsPlaying(true)}
+            // 'playing' fires while the surface can still be black (first HLS
+            // frame not yet painted); wait until the clock has actually advanced
+            onTimeUpdate={() => {
+              if ((playerRef.current?.currentTime ?? 0) > 0.05)
+                setIsPlaying(true);
+            }}
             streamType="on-demand"
             preload="auto"
             loop
