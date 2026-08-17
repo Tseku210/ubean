@@ -14,6 +14,7 @@ export const ui = {
     "nav.about": "About",
     "nav.contact": "Contact",
     "error.404": "Oops! This page got lost in the coffee grounds",
+    "error.404.title": "Page Not Found",
     "home.title": "Premium Coffee Experience",
     "home.hero.title": "Unblemished beans",
     "home.hero.desc":
@@ -23,6 +24,7 @@ export const ui = {
     "home.beans.title": "BEANS",
     "home.beans.desc":
       "Coffee beans naturally grown in rich, fertile soils, nurtured by ideal climates and expert hands.",
+    "home.roasted.title": "FRESHLY ROASTED BEANS",
     "home.since.title": "SINCE 2012",
     "home.since.desc":
       "We deliver Mongolia's finest coffee with quality, integrity, and a commitment to community.",
@@ -37,7 +39,8 @@ export const ui = {
     "menu.specialty": "Specialty",
     "menu.grub": "Grub",
     "menu.empty": "No items in this category yet — check back soon.",
-    "menu.error": "The menu is temporarily unavailable. Please try again later.",
+    "menu.error":
+      "The menu is temporarily unavailable. Please try again later.",
     "contact.contact": "Contact",
     "contact.title": "Contact us",
     "contact.name": "Name",
@@ -73,21 +76,25 @@ export const ui = {
     "nav.menu": "Цэс",
     "nav.about": "Бидний тухай",
     "nav.contact": "Холбоо барих",
-    "home.title": "Premium Coffee Experience",
     "error.404": "Таны хайж буй хуудас олдсонгүй 😥☕️",
-    "home.hero.title": "Unblemished beans",
+    // TODO: native-speaker review — machine-authored Mongolian below
+    "error.404.title": "Хуудас олдсонгүй",
+    "home.title": "Дээд зэрэглэлийн кофены туршлага",
+    "home.hero.title": "Өө сэвгүй кофены үр",
     "home.hero.desc":
-      '"Crafting Mongolia\'s finest coffee experience with exceptional quality, unwavering excellence, integrity, and meaningful connections."',
+      '"Монголын хамгийн шилдэг кофены туршлагыг онцгой чанар, гуйвшгүй төгс чанар, бүрэн бүтэн байдал, утга учиртай холболтоор урлаж байна."',
     "home.title2":
-      "We serve freshly brewed coffee made from premium coffee beans.",
+      "Бид дээд зэрэглэлийн кофены үрээр шинэхэн бэлтгэсэн кофегоор үйлчилдэг.",
     "home.beans.title": "BEANS",
     "home.beans.desc":
-      "Coffee beans naturally grown in rich, fertile soils, nurtured by ideal climates and expert hands.",
+      "Үржил шимт баялаг хөрсөнд байгалийн жамаар ургаж, таатай уур амьсгал, мэргэжилтний халуун гарт бойжсон кофены үр.",
+    "home.roasted.title": "ШИНЭХЭН ХУУРСАН КОФЕНЫ ҮР",
     "home.since.title": "SINCE 2012",
     "home.since.desc":
-      "We deliver Mongolia's finest coffee with quality, integrity, and a commitment to community.",
-    "home.discount.title": "COFFEE AT YOUR HOUSE",
-    "home.discount.button": "Inquire",
+      "Бид Монголын хамгийн шилдэг кофег чанар, үнэнч шударга байдал, хамт олноо эрхэмлэх сэтгэлээр хүргэдэг.",
+    "home.discount.title": "ТАНЫ ГЭРТ КОФЕ",
+    "home.discount.button": "Лавлах",
+    // end machine-authored block
     "menu.title": "Цэс",
     "menu.menu": "Цэс",
     "menu.desc":
