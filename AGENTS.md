@@ -49,4 +49,4 @@
 
 ## Testing Requirements for OpenAI Codex
 
-OpenAI Codex shouldn't run tests.
+Run `pnpm typecheck` and `pnpm build` to verify changes.
