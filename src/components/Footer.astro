@@ -2,6 +2,7 @@
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import Logo from "@/assets/icons/logo.svg";
 import Facebook from "@/assets/icons/facebook.svg";
+import Github from "@/assets/icons/github.svg";
 import Instagram from "@/assets/icons/instagram.svg";
 import BackToTop from "@/components/BackToTop.astro";
 
@@ -22,15 +23,24 @@ const t = useTranslations(lang);
   >
     <a
       href="https://www.facebook.com/ubeancoffeehouseandroasterie"
+      aria-label="UBean on Facebook"
       class="transition-transform duration-200 ease-out hover:-translate-y-1"
     >
       <Facebook />
     </a>
     <a
       href="https://www.instagram.com/ubeancoffee/"
+      aria-label="UBean on Instagram"
       class="transition-transform duration-200 ease-out hover:-translate-y-1"
     >
       <Instagram />
+    </a>
+    <a
+      href="https://github.com/Tseku210/ubean"
+      aria-label="UBean website source on GitHub"
+      class="transition-transform duration-200 ease-out hover:-translate-y-1"
+    >
+      <Github />
     </a>
     <div class="hidden md:block">
       <BackToTop text={t("footer.backtotop")} />
