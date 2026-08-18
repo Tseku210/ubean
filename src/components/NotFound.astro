@@ -1,0 +1,383 @@
+---
+import logoUrl from "@assets/icons/logo.svg?url";
+import { SMOKE_D } from "@/components/home/Cup";
+import { ui } from "@/i18n/ui";
+import { useTranslatedPath, useTranslations } from "@/i18n/utils";
+
+/**
+ * Shared 404 content. The cup is the same flat vector art as the homepage's
+ * MotionPath cup (final, filled state) so the pages stay on-brand.
+ *
+ * Vercel serves only the root /404.html for unknown URLs, so the root page
+ * enables `clientLangSwap`: a tiny inline script swaps the visible strings
+ * (and CTA targets) to Mongolian when the missed path was under /mn.
+ */
+interface Props {
+  lang: keyof typeof ui;
+  clientLangSwap?: boolean;
+}
+
+const { lang, clientLangSwap = false } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+const mn = ui.mn;
+const mnTitle = `UBean - ${mn["error.404.title"]}`;
+
+const ctaBase =
+  "inline-flex h-12 items-center justify-center rounded-full px-8 font-medium transition-[background-color,transform] active:scale-[0.97]";
+---
+
+<main
+  class="mx-auto flex min-h-[calc(100vh-74px-122px)] max-w-4xl items-center justify-center px-8"
+>
+  <div class="flex flex-col items-center gap-4 py-16 text-center">
+    <div class="cup-wobble size-56 md:size-64">
+      <svg
+        id="nf-cup-svg"
+        class="cup-tilt size-full overflow-visible"
+        viewBox="150 1810 360 410"
+        role="img"
+        aria-label="UBean coffee cup"
+      >
+        <path
+          data-nf-steam
+          d={SMOKE_D}
+          fill="#97D5D0"
+          opacity="0.8"
+          transform="translate(282 1822) scale(0.85)"></path>
+        <g data-nf-cup>
+        <path
+          d="M405 1972 C476 1979, 488 2052, 455 2094 C436 2119, 414 2125, 402 2121"
+          fill="none"
+          stroke="#97D5D0"
+          stroke-width="28"
+          stroke-linecap="round"></path>
+        <ellipse cx="300" cy="1935" rx="112" ry="34" fill="#97D5D0"></ellipse>
+        <ellipse
+          cx="300"
+          cy="1935"
+          rx="112"
+          ry="34"
+          fill="none"
+          stroke="#6FB5AF"
+          stroke-width="1.5"></ellipse>
+        <ellipse cx="300" cy="1936" rx="99" ry="27.5" fill="#447D77"></ellipse>
+        <ellipse
+          data-nf-coffee
+          cx="300"
+          cy="1936"
+          rx="93"
+          ry="21.5"
+          fill="#654321"></ellipse>
+        <path
+          d="M188 1935 C187 2020, 192 2110, 198 2178 C199 2196, 220 2209, 300 2211 C380 2209, 401 2196, 402 2178 C408 2110, 413 2020, 412 1935 A 112 34 0 0 1 188 1935 Z"
+          fill="#97D5D0"></path>
+        <defs>
+          <linearGradient
+            id="nf-print-wrap"
+            gradientUnits="userSpaceOnUse"
+            x1="188"
+            y1="0"
+            x2="412"
+            y2="0"
+          >
+            <stop offset="0" stop-color="#fff" stop-opacity="0.35"></stop>
+            <stop offset="0.22" stop-color="#fff" stop-opacity="1"></stop>
+            <stop offset="0.78" stop-color="#fff" stop-opacity="1"></stop>
+            <stop offset="1" stop-color="#fff" stop-opacity="0.35"></stop>
+          </linearGradient>
+          <mask id="nf-print-mask">
+            <rect
+              x="188"
+              y="1990"
+              width="224"
+              height="130"
+              fill="url(#nf-print-wrap)"></rect>
+          </mask>
+        </defs>
+        <g
+          fill="#1E1512"
+          mask="url(#nf-print-mask)"
+          opacity="0.88"
+          style="mix-blend-mode: multiply"
+        >
+          <path d={SMOKE_D} transform="translate(235 2008) scale(0.45)"></path>
+          <image href={logoUrl} x="225" y="2048" width="155.4" height="44.1"
+          ></image>
+        </g>
+        </g>
+      </svg>
+    </div>
+
+    <p class="text-secondary text-8xl font-bold md:text-9xl" aria-hidden="true">
+      404
+    </p>
+    <h1 class="text-h5 md:text-h4 font-bold" data-mn={mn["error.404"]}>
+      {t("error.404")}
+    </h1>
+
+    <div class="mt-4 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href={translatePath("/")}
+        data-mn-href="/mn/"
+        data-mn={mn["error.404.back"]}
+        class={`${ctaBase} bg-primary text-secondary hover:bg-primary/90`}
+      >
+        {t("error.404.back")}
+      </a>
+      <a
+        href={translatePath("/menu/coffee/")}
+        data-mn-href="/mn/menu/coffee/"
+        data-mn={mn["error.404.menu"]}
+        class={`${ctaBase} border-gray3 hover:bg-gray3/30 border`}
+      >
+        {t("error.404.menu")}
+      </a>
+    </div>
+  </div>
+</main>
+
+{
+  clientLangSwap && (
+    <script is:inline define:vars={{ mnTitle }}>
+      if (location.pathname === "/mn" || location.pathname.startsWith("/mn/")) {
+        document.documentElement.lang = "mn";
+        document.title = mnTitle;
+        document.querySelectorAll("[data-mn]").forEach((el) => {
+          el.textContent = el.dataset.mn;
+        });
+        document.querySelectorAll("a[data-mn-href]").forEach((a) => {
+          a.setAttribute("href", a.dataset.mnHref);
+        });
+      }
+    </script>
+  )
+}
+
+<script>
+  import gsap from "gsap";
+  import Physics2DPlugin from "gsap/Physics2DPlugin";
+
+  gsap.registerPlugin(Physics2DPlugin);
+
+  // flick-and-snap-back, mirroring the homepage cup: tethered drag with a
+  // velocity tilt, momentum flick (hard throws splash), elastic spring home.
+  const init = () => {
+    const svg = document.querySelector<SVGSVGElement>("#nf-cup-svg");
+    const cup = svg?.querySelector<SVGGElement>("[data-nf-cup]");
+    if (!svg || !cup || cup.dataset.armed) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    cup.dataset.armed = "true";
+
+    const steam = svg.querySelector<SVGPathElement>("[data-nf-steam]");
+    const coffee = svg.querySelector<SVGEllipseElement>("[data-nf-coffee]");
+    const wobbleBox = svg.closest<HTMLElement>(".cup-wobble");
+
+    const pos = { x: 0, y: 0, rot: 0 };
+    const apply = () => {
+      cup.setAttribute(
+        "transform",
+        `translate(${pos.x} ${pos.y}) rotate(${pos.rot} 300 2050)`,
+      );
+      coffee?.setAttribute("transform", `rotate(${-pos.rot * 0.55} 300 1936)`);
+    };
+    const rotTo = gsap.quickTo(pos, "rot", {
+      duration: 0.25,
+      ease: "power2.out",
+      onUpdate: apply,
+    });
+
+    const toSvg = (e: PointerEvent) =>
+      new DOMPoint(e.clientX, e.clientY).matrixTransform(
+        svg.getScreenCTM()!.inverse(),
+      );
+
+    const spawnSplash = () => {
+      for (let i = 0; i < 4; i++) {
+        const c = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "circle",
+        );
+        c.setAttribute("cx", "300");
+        c.setAttribute("cy", "1926");
+        c.setAttribute("r", String(gsap.utils.random(2.5, 4.5)));
+        c.setAttribute("fill", "#654321");
+        cup.appendChild(c);
+        gsap.to(c, {
+          physics2D: {
+            velocity: gsap.utils.random(110, 190),
+            angle: gsap.utils.random(-115, -65),
+            gravity: 900,
+          },
+          autoAlpha: 0,
+          duration: 0.7,
+          ease: "none",
+          onComplete: () => c.remove(),
+        });
+      }
+    };
+
+    const TETHER = 120;
+    const samples: { t: number; x: number; y: number }[] = [];
+    let dragging = false;
+    let grabX = 0;
+    let grabY = 0;
+
+    const down = (e: PointerEvent) => {
+      dragging = true;
+      gsap.killTweensOf(pos);
+      try {
+        cup.setPointerCapture(e.pointerId);
+      } catch {
+        /* inactive pointer — capture is a nicety */
+      }
+      cup.style.cursor = "grabbing";
+      wobbleBox?.classList.add("in-hand");
+      const p = toSvg(e);
+      grabX = p.x - pos.x;
+      grabY = p.y - pos.y;
+      samples.length = 0;
+      if (steam) gsap.to(steam, { autoAlpha: 0, duration: 0.25 });
+    };
+
+    const move = (e: PointerEvent) => {
+      if (!dragging) return;
+      const p = toSvg(e);
+      let dx = p.x - grabX;
+      let dy = p.y - grabY;
+      const len = Math.hypot(dx, dy);
+      if (len > TETHER) {
+        const f = (TETHER + (len - TETHER) * 0.3) / len;
+        dx *= f;
+        dy *= f;
+      }
+      const now = performance.now();
+      samples.push({ t: now, x: dx, y: dy });
+      if (samples.length > 6) samples.shift();
+      const oldest = samples[0];
+      const dt = (now - oldest.t) / 1000;
+      rotTo(gsap.utils.clamp(-16, 16, dt > 0 ? ((dx - oldest.x) / dt) * 0.015 : 0));
+      pos.x = dx;
+      pos.y = dy;
+      apply();
+    };
+
+    const settleHome = (delay: number) => {
+      const tl = gsap.timeline();
+      tl.to(
+        pos,
+        {
+          x: 0,
+          y: 0,
+          rot: 0,
+          duration: 1.4,
+          ease: "elastic.out(1, 0.4)",
+          onUpdate: apply,
+          onComplete: () => wobbleBox?.classList.remove("in-hand"),
+        },
+        delay,
+      );
+      if (steam) {
+        tl.to(steam, { autoAlpha: 0.8, duration: 0.6 }, "<55%").fromTo(
+          steam,
+          { y: 8 },
+          { y: 0, duration: 0.5, ease: "back.out(2.5)" },
+          "<",
+        );
+      }
+    };
+
+    const up = (e: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      cup.style.cursor = "grab";
+      try {
+        cup.releasePointerCapture(e.pointerId);
+      } catch {
+        /* pointer was never captured */
+      }
+      const now = performance.now();
+      const recent = samples.filter((smp) => now - smp.t < 90);
+      const a = recent[0];
+      const b = recent[recent.length - 1];
+      let vx = 0;
+      let vy = 0;
+      if (a && b && b.t > a.t) {
+        const dt = (b.t - a.t) / 1000;
+        vx = (b.x - a.x) / dt;
+        vy = (b.y - a.y) / dt;
+      }
+      const speed = Math.hypot(vx, vy);
+      if (speed > 400) {
+        gsap.to(pos, {
+          x: pos.x + gsap.utils.clamp(-260, 260, vx * 0.14),
+          y: pos.y + gsap.utils.clamp(-260, 260, vy * 0.14),
+          rot: gsap.utils.clamp(-24, 24, vx * 0.012),
+          duration: 0.28,
+          ease: "power2.out",
+          onUpdate: apply,
+        });
+        if (speed > 1500) spawnSplash();
+        settleHome(0.24);
+      } else {
+        settleHome(0);
+      }
+    };
+
+    cup.style.cursor = "grab";
+    cup.style.touchAction = "none";
+    cup.addEventListener("pointerdown", down);
+    cup.addEventListener("pointermove", move);
+    cup.addEventListener("pointerup", up);
+    cup.addEventListener("pointercancel", up);
+  };
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>
+
+<style>
+  .cup-tilt {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* the idle wobble yields while the cup is being handled */
+  .cup-wobble.in-hand,
+  .cup-wobble.in-hand .cup-tilt {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cup-wobble {
+      animation: nf-wobble 4s var(--ease-in-out-cubic) infinite;
+    }
+    .cup-tilt {
+      animation: nf-tilt 8s var(--ease-in-out-quad) infinite;
+    }
+  }
+
+  @keyframes nf-tilt {
+    0%,
+    50%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(4deg);
+    }
+    75% {
+      transform: rotate(-4deg);
+    }
+  }
+
+  @keyframes nf-wobble {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+</style>

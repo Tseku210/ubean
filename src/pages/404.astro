@@ -1,4 +1,5 @@
 ---
+import NotFound from "@/components/NotFound.astro";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 
@@ -7,64 +8,5 @@ const t = useTranslations(lang);
 ---
 
 <Layout title={`UBean - ${t("error.404.title")}`}>
-  <main
-    class="mx-auto flex min-h-[calc(100vh-74px-122px)] max-w-4xl items-center justify-center"
-  >
-    <div class="flex flex-col items-center gap-8 text-center">
-      <div class="relative">
-        <div class="coffee-cup-container size-64 md:size-72">
-          <img
-            src="/images/ubean-cup.webp"
-            alt="Ubean Coffee Cup"
-            class="coffee-cup size-full object-contain"
-          />
-        </div>
-      </div>
-
-      <h1 class="text-primary text-7xl font-bold">404</h1>
-      <h2 class="text-h3 text-secondary font-bold">{t("error.404")}</h2>
-    </div>
-  </main>
+  <NotFound lang={lang} clientLangSwap />
 </Layout>
-
-<style>
-  /* Coffee cup rotation animation */
-  .coffee-cup-container {
-    position: relative;
-    animation: gentle-wobble 4s var(--ease-in-out-cubic) infinite;
-  }
-
-  .coffee-cup {
-    animation: rotate-cup 8s var(--ease-in-out-quad) infinite;
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
-  }
-
-  /* Animations */
-  @keyframes rotate-cup {
-    0% {
-      transform: rotate(0deg);
-    }
-    25% {
-      transform: rotate(5deg);
-    }
-    50% {
-      transform: rotate(0deg);
-    }
-    75% {
-      transform: rotate(-5deg);
-    }
-    100% {
-      transform: rotate(0deg);
-    }
-  }
-
-  @keyframes gentle-wobble {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-</style>

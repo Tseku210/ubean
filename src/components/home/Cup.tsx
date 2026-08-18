@@ -15,8 +15,9 @@ import spriteUrl from "@assets/images/smoke_sprite.png?url";
 /** Local-space anchor constants shared with MotionPath's choreography. */
 export const CUP_LOCAL = { cx: 300, rimY: 1935, surfaceY: 1928 } as const;
 
-/** The brand smoke squiggle (from src/assets/icons/smoke.svg), printed dark. */
-const SMOKE_D =
+/** The brand smoke squiggle (from src/assets/icons/smoke.svg), printed dark.
+ *  Also reused by the 404 page's static cup. */
+export const SMOKE_D =
   "M7.45713 17C11.4592 11.6544 16.6693 3.04065 16.942 0C19.4647 2.69512 26.7258 7.70313 24.7146 15.3415C23.5572 19.7373 15.5679 20.084 18.7874 27.625C21.1689 33.2031 30.695 30.0156 35.1934 34.2656C43.7158 42.3175 39.2371 48.3049 34.5326 52.8659C31.7899 55.525 10.3207 66.6179 2.9572 68C7.04805 63.2317 29.1802 51.1205 26.5555 46.6463C22.0556 38.9756 7.94218 47.2683 0.783158 37.1098C-1.32019 34.1251 0.78317 25.9146 7.45713 17Z";
 
 export function CupBack() {
