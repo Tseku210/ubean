@@ -73,6 +73,9 @@ export default defineConfig({
       cssVariable: "--font-ubuntu",
       weights: [300, 400, 500, 600, 700],
       styles: ["normal", "italic"],
+      // cyrillic-ext carries Mongolian's Ө/Ү — without these subsets the MN
+      // locale falls back to system fonts with mismatched weights
+      subsets: ["latin", "cyrillic", "cyrillic-ext"],
     },
     {
       provider: fontProviders.fontsource(),
@@ -80,6 +83,7 @@ export default defineConfig({
       cssVariable: "--font-roboto",
       weights: [300, 400, 500, 600, 700],
       styles: ["normal"],
+      subsets: ["latin", "cyrillic", "cyrillic-ext"],
     },
   ],
 });
