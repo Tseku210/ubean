@@ -22,14 +22,6 @@ const SMOKE_D =
 export function CupBack() {
   return (
     <g>
-      <ellipse cx={302} cy={2208} rx={150} ry={16} fill="#654321" opacity={0.08} />
-      <path
-        d="M405 1975 C480 1982, 492 2055, 458 2098 C438 2124, 415 2130, 402 2126"
-        fill="none"
-        stroke="#7FBFB9"
-        strokeWidth={34}
-        strokeLinecap="round"
-      />
       <path
         d="M405 1972 C476 1979, 488 2052, 455 2094 C436 2119, 414 2125, 402 2121"
         fill="none"
@@ -48,8 +40,7 @@ export function CupBack() {
           stroke="#6FB5AF"
           strokeWidth={1.5}
         />
-        <ellipse cx={300} cy={1936} rx={99} ry={27.5} fill="#4F8F89" />
-        <ellipse cx={300} cy={1932} rx={99} ry={26} fill="#447D77" />
+        <ellipse cx={300} cy={1936} rx={99} ry={27.5} fill="#447D77" />
         {/* visible by default so no-JS and reduced-motion show a full cup;
             the animated branch hides it until the droplet lands, then the
             surface rises bottom-up inside the interior clip */}
@@ -58,17 +49,17 @@ export function CupBack() {
         </clipPath>
         <g clipPath="url(#cup-interior-clip)">
           <g className="cup-coffee">
-            <ellipse cx={300} cy={1935} rx={92} ry={24} fill="#654321" />
-            <ellipse cx={286} cy={1931} rx={58} ry={13} fill="#7A5230" />
-            <ellipse cx={270} cy={1928} rx={20} ry={5} fill="#8B6238" opacity={0.85} />
+            {/* uniform 6-unit inset of the interior opening (99/27.5 @ 1936)
+                so the dark wall ring reads even all around */}
+            <ellipse cx={300} cy={1936} rx={93} ry={21.5} fill="#654321" />
           </g>
         </g>
         <ellipse
           className="cup-ripple-1"
           cx={300}
-          cy={1935}
+          cy={1936}
           rx={86}
-          ry={22}
+          ry={19}
           fill="none"
           stroke="#D9B98A"
           strokeWidth={3}
@@ -77,9 +68,9 @@ export function CupBack() {
         <ellipse
           className="cup-ripple-2"
           cx={300}
-          cy={1935}
+          cy={1936}
           rx={86}
-          ry={22}
+          ry={19}
           fill="none"
           stroke="#C9A06B"
           strokeWidth={2}
@@ -104,18 +95,34 @@ export function CupFront() {
            A 112 34 0 0 1 188 1935 Z"
         fill="#97D5D0"
       />
-      <path
-        d="M188 1935 C187 2020, 192 2110, 198 2178 C198 2190, 208 2201, 230 2207 C226 2150, 226 2040, 224 1962 C210 1958, 197 1950, 188 1935 Z"
-        fill="#000000"
-        opacity={0.06}
-      />
-      <path
-        d="M376 1966 C380 2050, 378 2160, 372 2205 C360 2208, 350 2209, 344 2210 C350 2140, 350 2030, 346 1968 C358 1968, 368 1967, 376 1966 Z"
-        fill="#ffffff"
-        opacity={0.18}
-      />
-      <g fill="#1E1512">
-        <path d={SMOKE_D} transform="translate(247 2008) scale(0.45)" />
+      {/* print multiplies into the ceramic and fades toward the silhouette
+          so it reads as wrapping the curve */}
+      <defs>
+        <linearGradient
+          id="cup-print-wrap"
+          gradientUnits="userSpaceOnUse"
+          x1={188}
+          y1={0}
+          x2={412}
+          y2={0}
+        >
+          <stop offset="0" stopColor="#fff" stopOpacity={0.35} />
+          <stop offset="0.22" stopColor="#fff" stopOpacity={1} />
+          <stop offset="0.78" stopColor="#fff" stopOpacity={1} />
+          <stop offset="1" stopColor="#fff" stopOpacity={0.35} />
+        </linearGradient>
+        <mask id="cup-print-mask">
+          <rect x={188} y={1990} width={224} height={130} fill="url(#cup-print-wrap)" />
+        </mask>
+      </defs>
+      <g
+        fill="#1E1512"
+        mask="url(#cup-print-mask)"
+        opacity={0.88}
+        style={{ mixBlendMode: "multiply" }}
+      >
+        {/* centered over the mug glyph of the logo (mug spans x 225–263 here) */}
+        <path d={SMOKE_D} transform="translate(235 2008) scale(0.45)" />
         <image href={logoUrl} x={225} y={2048} width={155.4} height={44.1} />
       </g>
     </g>
