@@ -29,7 +29,7 @@ export default function RoastedBeans({ lang }: Props) {
         "(prefers-reduced-motion: reduce)",
       ).matches;
 
-      gsap.set(cards, prefersReduced ? { autoAlpha: 0 } : { y: 50, autoAlpha: 0 });
+      gsap.set(cards, prefersReduced ? { autoAlpha: 0 } : { y: 24, autoAlpha: 0 });
 
       // Built after an await — contextSafe keeps the timeline in the context
       // so it is reverted on unmount. Reveal only once the bean images are
@@ -48,7 +48,15 @@ export default function RoastedBeans({ lang }: Props) {
             cards,
             prefersReduced
               ? { autoAlpha: 1, duration: 0.3, ease: "power2.out" }
-              : { y: 0, autoAlpha: 1, ease: "back.out", stagger: 0.1 },
+              : {
+                  y: 0,
+                  autoAlpha: 1,
+                  duration: 0.6,
+                  // softened overshoot (~2px on 24px travel): product cards keep
+                  // a hint of the brand bounce that text reveals dropped
+                  ease: "back.out(1.2)",
+                  stagger: 0.1,
+                },
           );
         ScrollTrigger.refresh(true);
       });

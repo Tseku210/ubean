@@ -28,7 +28,7 @@ export function useReveal() {
 
       gsap.set(
         targets,
-        prefersReduced ? { autoAlpha: 0 } : { autoAlpha: 0, y: 50 },
+        prefersReduced ? { autoAlpha: 0 } : { autoAlpha: 0, y: 14 },
       );
 
       // Triggers are created after an await, outside useGSAP's synchronous
@@ -40,7 +40,13 @@ export function useReveal() {
               batch,
               prefersReduced
                 ? { autoAlpha: 1, duration: 0.3, ease: "power2.out" }
-                : { autoAlpha: 1, y: 0, stagger: 0.1, ease: "back.out" },
+                : {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                  },
             );
           },
           start: "top 80%",
