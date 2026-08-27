@@ -47,7 +47,9 @@ export default function Hero({ lang }: Props) {
   return (
     <section
       ref={container}
-      className="relative z-10 mx-4 aspect-[4/3] overflow-hidden rounded-[50px] md:mx-10 lg:aspect-[1290/550]"
+      // clip-path (not just border-radius + overflow) so the composited
+      // video layer is rounded from its first frame instead of snapping
+      className="relative z-10 mx-4 aspect-[4/3] overflow-hidden rounded-[50px] [clip-path:inset(0_round_50px)] md:mx-10 lg:aspect-[1290/550]"
     >
       <MuxPlayer
         ref={playerRef}

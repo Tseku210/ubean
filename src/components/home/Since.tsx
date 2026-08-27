@@ -32,7 +32,7 @@ export default function Since({ lang }: Props) {
             </span>
           </div>
         </div>
-        <div className="reveal relative order-1 h-[190px] w-[343px] overflow-hidden rounded-[40px] md:order-2 md:aspect-[5/3] md:h-[330px] md:w-[800px] lg:w-auto">
+        <div className="reveal relative order-1 h-[190px] w-[343px] overflow-hidden rounded-[40px] [clip-path:inset(0_round_40px)] md:order-2 md:aspect-[5/3] md:h-[330px] md:w-[800px] lg:w-auto">
           <MuxPlayer
             ref={playerRef}
             className="block h-full w-full"
