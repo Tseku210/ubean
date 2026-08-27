@@ -21,12 +21,18 @@ interface Props {
   lang: Language;
 }
 
+// the droplet steps one roast darker each time it passes a station
+// (STAGE_COLORS[i] applies once sections[i - 1] is behind it); the last
+// entry must match the cup coffee (#654321) so the landing reads seamless
+const STAGE_COLORS = ["#97D5D0", "#C08552", "#8B5E3C", "#6F4E37", "#654321"];
+
 export default function MotionPath({ lang }: Props) {
   const { isPhone, isTablet, isDesktop } = useMediaQuery();
   const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const landingWrapRef = useRef<SVGGElement>(null);
   const dropletWrapperRef = useRef<SVGPathElement>(null);
+  const pulseRef = useRef<SVGGElement>(null);
   const dropletRef = useRef<SVGPathElement>(null);
 
   const config = useMemo<MotionPathConfig>(() => {
@@ -146,22 +152,42 @@ export default function MotionPath({ lang }: Props) {
         if (
           !dropletWrapperRef.current ||
           !dropletRef.current ||
-          !pathRef.current
+          !pathRef.current ||
+          !pulseRef.current
         )
           return;
 
-        const rotateTo = gsap.quickTo(dropletRef.current, "rotation");
-        const scaleYTo = gsap.quickTo(dropletRef.current, "scaleY", {
+        const dropletEl = dropletRef.current;
+        const rotateTo = gsap.quickTo(dropletEl, "rotation", {
+          duration: 0.45,
+          ease: "power3.out",
+        });
+        const scaleYTo = gsap.quickTo(dropletEl, "scaleY", {
           duration: 0.4,
           ease: "back.out",
         });
-        const setFill = gsap.quickSetter(dropletRef.current, "fill");
-        const interpolateFill = gsap.utils.interpolate("#97D5D0", "#654321");
+        const scaleXTo = gsap.quickTo(dropletEl, "scaleX", {
+          duration: 0.4,
+          ease: "back.out",
+        });
         let prevDirection = 0;
 
-        gsap.set(dropletRef.current, {
+        // whenever scrolling pauses, the droplet eases back to its resting
+        // teardrop instead of freezing mid-stretch (back.out gives the
+        // return a soft jelly settle)
+        const settle = gsap
+          .delayedCall(0.18, () => {
+            if (!landed) {
+              scaleYTo(1);
+              scaleXTo(1);
+            }
+          })
+          .pause();
+
+        gsap.set(dropletEl, {
           transformOrigin: "50% 65%",
         });
+        gsap.set(pulseRef.current, { transformOrigin: "50% 50%" });
 
         // cup starts empty; the coffee waits low in the cup and rises on impact
         gsap.set(".cup-coffee", { autoAlpha: 0, y: 18 });
@@ -181,6 +207,32 @@ export default function MotionPath({ lang }: Props) {
           spriteLoop.set(".cup-steam-sprite", { attr: { x: 225 - 150 * i } }, i / 7);
         }
         spriteLoop.to({}, { duration: 1 / 7 }, 6 / 7);
+
+        const stageStops = config.sections.map((s) => s.progress);
+        let stage = 0;
+        const setStage = (next: number) => {
+          if (next === stage) return;
+          stage = next;
+          gsap.to(dropletEl, {
+            fill: STAGE_COLORS[next],
+            duration: 0.25,
+            overwrite: "auto",
+          });
+          gsap.fromTo(
+            pulseRef.current,
+            { scale: 1 },
+            {
+              scale: 1.16,
+              duration: 0.14,
+              yoyo: true,
+              repeat: 1,
+              ease: "sine.out",
+              overwrite: true,
+            },
+          );
+        };
+
+        const trail = { p: 0 };
 
         const spawnSplash = () => {
           const layer = svgRef.current?.querySelector(".cup-splash");
@@ -209,11 +261,11 @@ export default function MotionPath({ lang }: Props) {
           }
         };
 
-        // one-shot impact: squash, bottom-up fill, ripples, splash, steam
+        // one-shot impact: squash, bottom-up fill, slosh, ripples, splash, steam
         const impactTl = gsap.timeline({ paused: true });
         impactTl
           .to(
-            dropletRef.current,
+            dropletEl,
             { scaleY: 0.5, scaleX: 1.45, duration: 0.1, ease: "power2.out" },
             0,
           )
@@ -225,6 +277,33 @@ export default function MotionPath({ lang }: Props) {
             0.05,
           )
           .add(spawnSplash, 0)
+          // three decaying tilts of the surface ellipse sell the liquid
+          .fromTo(
+            ".cup-coffee-surface",
+            { rotation: 0, transformOrigin: "50% 50%" },
+            {
+              rotation: 2.2,
+              duration: 0.16,
+              ease: "sine.inOut",
+              immediateRender: false,
+            },
+            0.1,
+          )
+          .to(
+            ".cup-coffee-surface",
+            { rotation: -1.4, duration: 0.2, ease: "sine.inOut" },
+            0.26,
+          )
+          .to(
+            ".cup-coffee-surface",
+            { rotation: 0.6, duration: 0.22, ease: "sine.inOut" },
+            0.46,
+          )
+          .to(
+            ".cup-coffee-surface",
+            { rotation: 0, duration: 0.26, ease: "sine.out" },
+            0.68,
+          )
           .fromTo(
             ".cup-ripple-1",
             { scale: 0.25, autoAlpha: 0.8, transformOrigin: "50% 50%" },
@@ -266,74 +345,142 @@ export default function MotionPath({ lang }: Props) {
             spriteLoop.play();
           }, 0.6);
 
-        // the drop plays exactly once; afterwards the scrub is retired so
+        // the drop plays exactly once; once released the scrub is retired so
         // scrolling back up never rewinds the droplet
         let landed = false;
-        const landOnce = (instant = false) => {
+        const finishJourney = () => {
+          journey.progress(1);
+          journey.scrollTrigger?.kill(false);
+        };
+
+        // page loaded/refreshed already past the end: coffee is simply there
+        const landInstantly = () => {
           if (landed) return;
           landed = true;
-          if (instant) {
-            impactTl.progress(1);
-            steamLoop.play();
-            spriteLoop.play();
-          } else {
-            impactTl.play();
-          }
+          finishJourney();
+          gsap.set(landingWrapRef.current, { y: config.cup.fall });
+          impactTl.progress(1);
+          steamLoop.play();
+          spriteLoop.play();
+        };
+
+        // nearing the path's end the scrub hands off to a one-shot sequence:
+        // glide to the endpoint (eased out, no dead stop), relax to the
+        // resting teardrop, build surface tension, then really fall
+        const releaseOnce = () => {
+          if (landed) return;
+          landed = true;
           gsap.delayedCall(0, () => {
-            journey.progress(1);
             journey.scrollTrigger?.kill(false);
+            settle.kill();
+            gsap.killTweensOf(journey);
+            gsap.killTweensOf(dropletEl, "scaleX,scaleY");
+            gsap
+              .timeline()
+              .to(journey, { progress: 1, duration: 0.35, ease: "power1.out" }, 0)
+              .to(
+                dropletEl,
+                { scaleX: 1, scaleY: 1, duration: 0.3, ease: "power2.out" },
+                0,
+              )
+              .to(
+                dropletEl,
+                {
+                  scaleY: 1.45,
+                  scaleX: 0.85,
+                  duration: 0.24,
+                  ease: "power2.inOut",
+                },
+                0.35,
+              )
+              .to(
+                dropletEl,
+                { scaleY: 1.15, scaleX: 0.95, duration: 0.12, ease: "power1.in" },
+                0.59,
+              )
+              .to(
+                landingWrapRef.current,
+                {
+                  y: config.cup.fall,
+                  duration: 0.38,
+                  ease: "power2.in",
+                },
+                0.59,
+              )
+              .add(() => impactTl.play(), 0.97);
           });
         };
 
-        // journey + fall share one scrubbed timeline: the drop flows with the
-        // scroll (1:1 in path units) instead of waiting at the path's end
         const pathUnitsH = pathRef.current.getBBox().height;
+        const journeyEase = pathEase(rawPath, { smooth: isPhone ? 50 : 20 });
         const journey = gsap.timeline({
           scrollTrigger: {
             trigger: pathRef.current,
             start: config.scrollStart,
-            end: () => {
-              const px = pathRef.current?.getBoundingClientRect().height ?? 0;
-              return (
-                "+=" + Math.round(px * (1 + config.cup.fall / pathUnitsH))
-              );
-            },
-            scrub: 1,
+            end: () =>
+              "+=" +
+              Math.round(pathRef.current?.getBoundingClientRect().height ?? 0),
+            scrub: isPhone ? 0.5 : 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
+              if (landed) return;
+              // close enough to the end: hand the last stretch to the release
+              // sequence so the droplet never idles just short of the payoff
+              if (self.progress > 0.985) {
+                releaseOnce();
+                return;
+              }
               const v = gsap.utils.clamp(0, 200, Math.abs(self.getVelocity()));
-              scaleYTo(gsap.utils.mapRange(0, 200, 1, 1.5, v));
-              setFill(interpolateFill(self.progress));
-
-              if (prevDirection !== self.direction) {
+              // volume-conserving stretch: what scaleY gains, scaleX gives back
+              const sy = gsap.utils.mapRange(0, 200, 1, 1.5, v);
+              scaleYTo(sy);
+              scaleXTo(1 / Math.sqrt(sy));
+              settle.restart(true);
+              // flip only on a deliberate reversal; scroll jitter is ignored
+              if (prevDirection !== self.direction && v > 25) {
                 rotateTo(self.direction === 1 ? 0 : -180);
                 prevDirection = self.direction;
               }
             },
-            // page loaded/refreshed already past the end: coffee is simply there
             onRefresh: (self) => {
-              if (self.progress === 1) landOnce(true);
+              if (self.progress === 1) landInstantly();
             },
           },
         });
         journey
-          .to(dropletWrapperRef.current, {
-            ease: pathEase(rawPath, { smooth: isPhone ? 50 : 20 }),
-            immediateRender: true,
-            motionPath: {
-              path: pathRef.current!,
-              align: pathRef.current!,
-              alignOrigin: [0.5, 0.5],
-              autoRotate: 270,
+          .to(
+            dropletWrapperRef.current,
+            {
+              ease: journeyEase,
+              immediateRender: true,
+              motionPath: {
+                path: pathRef.current!,
+                align: pathRef.current!,
+                alignOrigin: [0.5, 0.5],
+                autoRotate: 270,
+              },
+              duration: pathUnitsH,
             },
-            duration: pathUnitsH,
-          })
-          .to(landingWrapRef.current, {
-            y: config.cup.fall,
-            ease: "none",
-            duration: config.cup.fall,
-          })
-          .call(landOnce);
+            0,
+          )
+          // same ease + duration as the motionPath tween, so trail.p is the
+          // droplet's exact fraction of path length: it drives the station
+          // color steps and the pendant-drop hang
+          .to(
+            trail,
+            {
+              p: 1,
+              ease: journeyEase,
+              duration: pathUnitsH,
+              onUpdate: () => {
+                let s = 0;
+                while (s < stageStops.length && trail.p >= stageStops[s]) s++;
+                setStage(s);
+              },
+            },
+            0,
+          )
+          .call(releaseOnce);
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
@@ -406,7 +553,7 @@ export default function MotionPath({ lang }: Props) {
         </g>
         <g ref={landingWrapRef}>
           <g ref={dropletWrapperRef}>
-            <g>
+            <g ref={pulseRef}>
               <path
                 ref={dropletRef}
                 className="origin-[50%_65%]"

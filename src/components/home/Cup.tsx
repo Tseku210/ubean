@@ -52,7 +52,14 @@ export function CupBack() {
           <g className="cup-coffee">
             {/* uniform 6-unit inset of the interior opening (99/27.5 @ 1936)
                 so the dark wall ring reads even all around */}
-            <ellipse cx={300} cy={1936} rx={93} ry={21.5} fill="#654321" />
+            <ellipse
+              className="cup-coffee-surface"
+              cx={300}
+              cy={1936}
+              rx={93}
+              ry={21.5}
+              fill="#654321"
+            />
           </g>
         </g>
         <ellipse
