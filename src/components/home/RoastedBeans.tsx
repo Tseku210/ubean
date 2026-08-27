@@ -70,7 +70,7 @@ export default function RoastedBeans({ lang }: Props) {
 
   return (
     <section className="relative w-full space-y-6 overflow-visible text-center md:space-y-15">
-      <h2 className="text-h5 md:text-h2">{t("home.roasted.title")}</h2>
+      <h2 className="text-h5 sm:text-h3 md:text-h2">{t("home.roasted.title")}</h2>
       <div
         ref={container}
         className="no-scrollbar flex snap-x flex-nowrap gap-8 overflow-x-auto overflow-y-hidden"

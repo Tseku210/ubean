@@ -30,7 +30,7 @@ export default function HomePage({ lang }: Props) {
     <main className="relative overflow-hidden">
       <Hero lang={lang} />
       <MotionPath lang={lang} />
-      <h2 className="text-h5 md:text-h2 mx-auto my-8 max-w-4xl px-6 text-center uppercase md:my-30 md:px-0">
+      <h2 className="text-h5 sm:text-h3 md:text-h2 mx-auto my-8 max-w-4xl px-6 text-center uppercase md:my-30 md:px-0">
         {t("home.title2")}
       </h2>
       <Discount lang={lang} />

@@ -100,7 +100,10 @@ export default function Portofilters() {
 
   return (
     <section ref={container} className="relative">
-      <div className="flex w-fit items-center justify-center md:hidden">
+      {/* Capped below md: the section sits at a fixed y on the motion path,
+          so a full-width image at 640–767px grows tall enough to overlap the
+          RoastedBeans section pinned below it. */}
+      <div className="mx-auto flex w-fit max-w-md items-center justify-center md:hidden">
         <img
           src="/images/portofilters.webp"
           className="w-full"

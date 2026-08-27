@@ -87,10 +87,10 @@ export default function Hero({ lang }: Props) {
           alt=""
           className="reveal animate-sprite mb-6 size-12 object-cover md:mb-16 md:size-20"
         />
-        <h1 className="reveal text-h5 md:text-h1 uppercase">
+        <h1 className="reveal text-h5 sm:text-h2 md:text-h1 uppercase">
           {t("home.hero.title")}
         </h1>
-        <p className="reveal text-b4 md:text-b1 mt-4 md:font-normal">
+        <p className="reveal text-b4 sm:text-b1 mt-4 md:font-normal">
           {t("home.hero.desc")}
         </p>
       </div>
