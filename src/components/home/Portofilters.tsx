@@ -40,6 +40,20 @@ export default function Portofilters() {
         });
 
         const animate = () => {
+          // The convergence scrubs forward only: on first reaching the end
+          // the trigger is retired, so scrolling back up never pulls the
+          // filters apart again. self.animation (not the tl closure) because
+          // onRefresh can fire during creation, before `tl` is assigned.
+          let converged = false;
+          const retireWhenDone = (self: ScrollTrigger) => {
+            if (converged || self.progress < 1) return;
+            converged = true;
+            gsap.delayedCall(0, () => {
+              self.animation?.progress(1);
+              self.kill(false);
+            });
+          };
+
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: container.current,
@@ -47,6 +61,9 @@ export default function Portofilters() {
               end: "center 30%",
               scrub: true,
               invalidateOnRefresh: true,
+              onUpdate: retireWhenDone,
+              // page loaded/refreshed already past the section: settled state
+              onRefresh: retireWhenDone,
             },
           });
 
