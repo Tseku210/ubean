@@ -2,9 +2,15 @@ import gsap from "gsap";
 import { useMemo, useRef, type ReactNode } from "react";
 import MotionPathPlugin from "gsap/MotionPathPlugin";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import Physics2DPlugin from "gsap/Physics2DPlugin";
 import Beans from "./Beans";
-import { CupBack, CupFront, CupSteam, CUP_LOCAL } from "./Cup";
+import {
+  CupBack,
+  CupFront,
+  CupSteam,
+  CUP_FLUID_VISIBLE_D,
+  CUP_LOCAL,
+  createCupPainter,
+} from "./Cup";
 import Portofilters from "./Portofilters";
 import RoastedBeans from "./RoastedBeans";
 import Since from "./Since";
@@ -14,8 +20,14 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useGSAP } from "@gsap/react";
 import { pathEase } from "@/lib/pathEaseHelper";
 import { cn } from "@/lib/utils";
+import {
+  CUP_SEQUENCE_SECONDS,
+  CUP_SETTLED,
+  CUP_STEAM,
+  cupFrameAt,
+} from "@/lib/cupImpact";
 
-gsap.registerPlugin(MotionPathPlugin, ScrollTrigger, Physics2DPlugin);
+gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
 
 interface Props {
   lang: Language;
@@ -30,10 +42,12 @@ export default function MotionPath({ lang }: Props) {
   const { isPhone, isTablet, isDesktop } = useMediaQuery();
   const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
+  const landingClipRef = useRef<SVGGElement>(null);
   const landingWrapRef = useRef<SVGGElement>(null);
   const dropletWrapperRef = useRef<SVGPathElement>(null);
   const pulseRef = useRef<SVGGElement>(null);
   const dropletRef = useRef<SVGPathElement>(null);
+  const satelliteRef = useRef<SVGPathElement>(null);
 
   const config = useMemo<MotionPathConfig>(() => {
     if (isDesktop) {
@@ -66,8 +80,8 @@ export default function MotionPath({ lang }: Props) {
         ],
         scrollStart: "top center",
         // rim center 130 units under the path end (536, 3017); fall lands the
-        // droplet on the coffee surface (local y 1928, i.e. cy - 7 * scale)
-        cup: { scale: 1.1, cx: 536, cy: 3147, fall: 122 },
+        // droplet's center of mass just inside the opening (local y 1956)
+        cup: { scale: 1.1, cx: 536, cy: 3147, fall: 148 },
       };
     }
     if (isTablet) {
@@ -103,7 +117,7 @@ export default function MotionPath({ lang }: Props) {
           },
         ],
         scrollStart: "top center",
-        cup: { scale: 1.1, cx: 536, cy: 3147, fall: 122 },
+        cup: { scale: 1.1, cx: 536, cy: 3147, fall: 148 },
       };
     }
     // mobile
@@ -136,7 +150,7 @@ export default function MotionPath({ lang }: Props) {
       ],
       scrollStart: "top 20%",
       // rim center 105 units under the path end (180.5, 2276)
-      cup: { scale: 0.72, cx: 180.5, cy: 2381, fall: 100 },
+      cup: { scale: 0.72, cx: 180.5, cy: 2381, fall: 116 },
     };
   }, [isDesktop, isTablet, isPhone]);
 
@@ -152,12 +166,18 @@ export default function MotionPath({ lang }: Props) {
         if (
           !dropletWrapperRef.current ||
           !dropletRef.current ||
+          !satelliteRef.current ||
+          !landingWrapRef.current ||
+          !landingClipRef.current ||
+          !svgRef.current ||
           !pathRef.current ||
           !pulseRef.current
         )
           return;
 
         const dropletEl = dropletRef.current;
+        const satelliteEl = satelliteRef.current;
+        const landingClip = landingClipRef.current;
         const rotateTo = gsap.quickTo(dropletEl, "rotation", {
           duration: 0.45,
           ease: "power3.out",
@@ -184,22 +204,28 @@ export default function MotionPath({ lang }: Props) {
           })
           .pause();
 
-        gsap.set(dropletEl, {
+        gsap.set([dropletEl, satelliteEl], {
           transformOrigin: "50% 65%",
         });
+        gsap.set(landingWrapRef.current, { y: 0 });
         gsap.set(pulseRef.current, { transformOrigin: "50% 50%" });
 
-        // cup starts empty; the coffee waits low in the cup and rises on impact
-        gsap.set(".cup-coffee", { autoAlpha: 0, y: 18 });
+        // cup starts empty; every fluid frame comes from cupFrameAt
+        const paintCup = createCupPainter(svgRef.current);
+        paintCup(cupFrameAt(0));
 
-        const steamLoop = gsap.to(".cup-steam-drift", {
-          y: -12,
-          duration: 2.4,
-          ease: "sine.inOut",
-          yoyo: true,
-          repeat: -1,
-          paused: true,
-        });
+        const steamLoop = gsap.fromTo(
+          ".cup-steam-drift",
+          { x: -2.5 },
+          {
+            x: 2.5,
+            duration: 1.6,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            paused: true,
+          },
+        );
 
         // the hero smoke's 7-frame sprite sheet, stepped at its 1s cadence
         const spriteLoop = gsap.timeline({ repeat: -1, paused: true });
@@ -234,99 +260,56 @@ export default function MotionPath({ lang }: Props) {
 
         const trail = { p: 0 };
 
-        const spawnSplash = () => {
-          const layer = svgRef.current?.querySelector(".cup-splash");
-          if (!layer) return;
-          for (let i = 0; i < 4; i++) {
-            const c = document.createElementNS(
-              "http://www.w3.org/2000/svg",
-              "circle",
-            );
-            c.setAttribute("cx", String(CUP_LOCAL.cx));
-            c.setAttribute("cy", String(CUP_LOCAL.surfaceY - 2));
-            c.setAttribute("r", String(gsap.utils.random(2.5, 4.5)));
-            c.setAttribute("fill", "#654321");
-            layer.appendChild(c);
-            gsap.to(c, {
-              physics2D: {
-                velocity: gsap.utils.random(110, 190),
-                angle: gsap.utils.random(-115, -65),
-                gravity: 900,
-              },
-              autoAlpha: 0,
-              duration: 0.7,
-              ease: "none",
-              onComplete: () => c.remove(),
-            });
-          }
+        let steaming = false;
+        const startSteam = () => {
+          if (steaming) return;
+          steaming = true;
+          // enter the sway at its midpoint so the steam doesn't jump sideways
+          steamLoop.time(0.8).play();
+          spriteLoop.play();
         };
 
-        // one-shot impact: squash, bottom-up fill, slosh, ripples, splash, steam
+        const setWrapY = gsap.quickSetter(landingWrapRef.current, "y", "px");
+        const setDropScaleX = gsap.quickSetter(dropletEl, "scaleX");
+        const setDropScaleY = gsap.quickSetter(dropletEl, "scaleY");
+        const setDropOpacity = gsap.quickSetter(dropletEl, "opacity");
+        const setSatelliteY = gsap.quickSetter(satelliteEl, "y", "px");
+        const setSatelliteScaleX = gsap.quickSetter(satelliteEl, "scaleX");
+        const setSatelliteScaleY = gsap.quickSetter(satelliteEl, "scaleY");
+        const setSatelliteOpacity = gsap.quickSetter(satelliteEl, "opacity");
+
+        const sequence = { t: 0 };
+        const paintSequence = () => {
+          const frame = cupFrameAt(sequence.t);
+          paintCup(frame);
+          setWrapY(frame.drop.travel * config.cup.fall);
+          setDropScaleX(frame.drop.scaleX);
+          setDropScaleY(frame.drop.scaleY);
+          setDropOpacity(frame.drop.opacity);
+          if (frame.satellite) {
+            // the satellite rides inside the drop's wrapper, so its offset is
+            // relative to the drop
+            setSatelliteY(
+              (frame.satellite.travel - frame.drop.travel) * config.cup.fall,
+            );
+            setSatelliteScaleX(frame.satellite.scaleX);
+            setSatelliteScaleY(frame.satellite.scaleY);
+          }
+          setSatelliteOpacity(frame.satellite ? 1 : 0);
+        };
+
+        // one-shot sequence: hang, free fall, impact, fill, splash, steam
         const impactTl = gsap.timeline({ paused: true });
         impactTl
           .to(
-            dropletEl,
-            { scaleY: 0.5, scaleX: 1.45, duration: 0.1, ease: "power2.out" },
+            sequence,
+            {
+              t: CUP_SEQUENCE_SECONDS,
+              duration: CUP_SEQUENCE_SECONDS,
+              ease: "none",
+              onUpdate: paintSequence,
+            },
             0,
-          )
-          .to(landingWrapRef.current, { autoAlpha: 0, duration: 0.14 }, 0.05)
-          .to(".cup-coffee", { autoAlpha: 1, duration: 0.12, ease: "none" }, 0)
-          .to(
-            ".cup-coffee",
-            { y: 0, duration: 0.6, ease: "power1.inOut" },
-            0.05,
-          )
-          .add(spawnSplash, 0)
-          // three decaying tilts of the surface ellipse sell the liquid
-          .fromTo(
-            ".cup-coffee-surface",
-            { rotation: 0, transformOrigin: "50% 50%" },
-            {
-              rotation: 2.2,
-              duration: 0.16,
-              ease: "sine.inOut",
-              immediateRender: false,
-            },
-            0.1,
-          )
-          .to(
-            ".cup-coffee-surface",
-            { rotation: -1.4, duration: 0.2, ease: "sine.inOut" },
-            0.26,
-          )
-          .to(
-            ".cup-coffee-surface",
-            { rotation: 0.6, duration: 0.22, ease: "sine.inOut" },
-            0.46,
-          )
-          .to(
-            ".cup-coffee-surface",
-            { rotation: 0, duration: 0.26, ease: "sine.out" },
-            0.68,
-          )
-          .fromTo(
-            ".cup-ripple-1",
-            { scale: 0.25, autoAlpha: 0.8, transformOrigin: "50% 50%" },
-            {
-              scale: 1,
-              autoAlpha: 0,
-              duration: 0.8,
-              ease: "power2.out",
-              immediateRender: false,
-            },
-            0.35,
-          )
-          .fromTo(
-            ".cup-ripple-2",
-            { scale: 0.25, autoAlpha: 0.6, transformOrigin: "50% 50%" },
-            {
-              scale: 1.15,
-              autoAlpha: 0,
-              duration: 0.9,
-              ease: "power2.out",
-              immediateRender: false,
-            },
-            0.5,
           )
           .fromTo(
             ".cup-steam",
@@ -334,16 +317,13 @@ export default function MotionPath({ lang }: Props) {
             {
               autoAlpha: 0.55,
               y: 0,
-              duration: 0.9,
+              duration: CUP_STEAM.duration,
               ease: "power2.out",
               immediateRender: false,
             },
-            0.6,
+            CUP_STEAM.at,
           )
-          .add(() => {
-            steamLoop.play();
-            spriteLoop.play();
-          }, 0.6);
+          .add(startSteam, CUP_STEAM.at);
 
         // the drop plays exactly once; once released the scrub is retired so
         // scrolling back up never rewinds the droplet
@@ -358,15 +338,14 @@ export default function MotionPath({ lang }: Props) {
           if (landed) return;
           landed = true;
           finishJourney();
-          gsap.set(landingWrapRef.current, { y: config.cup.fall });
           impactTl.progress(1);
-          steamLoop.play();
-          spriteLoop.play();
+          paintSequence();
+          startSteam();
         };
 
         // nearing the path's end the scrub hands off to a one-shot sequence:
         // glide to the endpoint (eased out, no dead stop), relax to the
-        // resting teardrop, build surface tension, then really fall
+        // resting teardrop, then hand over to the impact timeline
         const releaseOnce = () => {
           if (landed) return;
           landed = true;
@@ -375,6 +354,7 @@ export default function MotionPath({ lang }: Props) {
             settle.kill();
             gsap.killTweensOf(journey);
             gsap.killTweensOf(dropletEl, "scaleX,scaleY");
+            landingClip.setAttribute("clip-path", "url(#cup-drop-clip)");
             gsap
               .timeline()
               .to(journey, { progress: 1, duration: 0.35, ease: "power1.out" }, 0)
@@ -383,31 +363,7 @@ export default function MotionPath({ lang }: Props) {
                 { scaleX: 1, scaleY: 1, duration: 0.3, ease: "power2.out" },
                 0,
               )
-              .to(
-                dropletEl,
-                {
-                  scaleY: 1.45,
-                  scaleX: 0.85,
-                  duration: 0.24,
-                  ease: "power2.inOut",
-                },
-                0.35,
-              )
-              .to(
-                dropletEl,
-                { scaleY: 1.15, scaleX: 0.95, duration: 0.12, ease: "power1.in" },
-                0.59,
-              )
-              .to(
-                landingWrapRef.current,
-                {
-                  y: config.cup.fall,
-                  duration: 0.38,
-                  ease: "power2.in",
-                },
-                0.59,
-              )
-              .add(() => impactTl.play(), 0.97);
+              .add(() => impactTl.play(), 0.35);
           });
         };
 
@@ -481,6 +437,13 @@ export default function MotionPath({ lang }: Props) {
             0,
           )
           .call(releaseOnce);
+
+        // raw attributes aren't part of GSAP's revert: restore the full cup
+        // so a switch to reduced motion never leaves it empty
+        return () => {
+          paintCup(CUP_SETTLED);
+          landingClip.removeAttribute("clip-path");
+        };
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
@@ -551,15 +514,30 @@ export default function MotionPath({ lang }: Props) {
             <CupBack />
           </g>
         </g>
-        <g ref={landingWrapRef}>
-          <g ref={dropletWrapperRef}>
-            <g ref={pulseRef}>
-              <path
-                ref={dropletRef}
-                className="origin-[50%_65%]"
-                d={config.dropletPathData}
-                fill="#97D5d0"
-              />
+        <clipPath id="cup-drop-clip">
+          <path
+            d={CUP_FLUID_VISIBLE_D}
+            transform={`translate(${config.cup.cx} ${config.cup.cy}) scale(${config.cup.scale}) translate(${-CUP_LOCAL.cx} ${-CUP_LOCAL.rimY})`}
+          />
+        </clipPath>
+        <g ref={landingClipRef}>
+          <g ref={landingWrapRef}>
+            <g ref={dropletWrapperRef}>
+              <g ref={pulseRef}>
+                <path
+                  ref={dropletRef}
+                  className="origin-[50%_65%]"
+                  d={config.dropletPathData}
+                  fill="#97D5d0"
+                />
+                {/* the neck's leftover bead, following the drop a beat later */}
+                <path
+                  ref={satelliteRef}
+                  d={config.dropletPathData}
+                  fill="#654321"
+                  opacity={0}
+                />
+              </g>
             </g>
           </g>
         </g>
