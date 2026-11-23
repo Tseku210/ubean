@@ -4,8 +4,21 @@
     {
       "name": "dev",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev"],
+      "runtimeArgs": [
+        "dev"
+      ],
       "port": 4321
+    },
+    {
+      "name": "toolcraft",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "ubean",
+        "run",
+        "dev"
+      ],
+      "port": 3002
     }
   ]
 }

@@ -62,13 +62,18 @@ const ctaBase =
           stroke="#6FB5AF"
           stroke-width="1.5"></ellipse>
         <ellipse cx="300" cy="1936" rx="99" ry="27.5" fill="#447D77"></ellipse>
-        <ellipse
-          data-nf-coffee
-          cx="300"
-          cy="1936"
-          rx="93"
-          ry="21.5"
-          fill="#654321"></ellipse>
+        <clipPath id="nf-coffee-clip">
+          <ellipse cx="300" cy="1936" rx="99" ry="27.5"></ellipse>
+        </clipPath>
+        <g clip-path="url(#nf-coffee-clip)">
+          <ellipse
+            data-nf-coffee
+            cx="300"
+            cy="1936"
+            rx="93"
+            ry="21.5"
+            fill="#654321"></ellipse>
+        </g>
         <path
           d="M188 1935 C187 2020, 192 2110, 198 2178 C199 2196, 220 2209, 300 2211 C380 2209, 401 2196, 402 2178 C408 2110, 413 2020, 412 1935 A 112 34 0 0 1 188 1935 Z"
           fill="#97D5D0"></path>
@@ -106,6 +111,7 @@ const ctaBase =
           ></image>
         </g>
         </g>
+        <g data-nf-spill pointer-events="none" aria-hidden="true"></g>
       </svg>
     </div>
 
@@ -156,12 +162,10 @@ const ctaBase =
 
 <script>
   import gsap from "gsap";
-  import Physics2DPlugin from "gsap/Physics2DPlugin";
+  import { createCoffeeSpill } from "@/lib/coffeeSpill";
 
-  gsap.registerPlugin(Physics2DPlugin);
-
-  // flick-and-snap-back, mirroring the homepage cup: tethered drag with a
-  // velocity tilt, momentum flick (hard throws splash), elastic spring home.
+  // flick-and-snap-back: tethered drag with a velocity tilt, momentum flick and
+  // an elastic spring home. Moving the cup briskly spills the coffee.
   const init = () => {
     const svg = document.querySelector<SVGSVGElement>("#nf-cup-svg");
     const cup = svg?.querySelector<SVGGElement>("[data-nf-cup]");
@@ -171,15 +175,17 @@ const ctaBase =
 
     const steam = svg.querySelector<SVGPathElement>("[data-nf-steam]");
     const coffee = svg.querySelector<SVGEllipseElement>("[data-nf-coffee]");
+    const spillLayer = svg.querySelector<SVGGElement>("[data-nf-spill]");
     const wobbleBox = svg.closest<HTMLElement>(".cup-wobble");
 
     const pos = { x: 0, y: 0, rot: 0 };
+    const spill =
+      coffee && spillLayer ? createCoffeeSpill(coffee, spillLayer, pos) : null;
     const apply = () => {
       cup.setAttribute(
         "transform",
         `translate(${pos.x} ${pos.y}) rotate(${pos.rot} 300 2050)`,
       );
-      coffee?.setAttribute("transform", `rotate(${-pos.rot * 0.55} 300 1936)`);
     };
     const rotTo = gsap.quickTo(pos, "rot", {
       duration: 0.25,
@@ -192,40 +198,19 @@ const ctaBase =
         svg.getScreenCTM()!.inverse(),
       );
 
-    const spawnSplash = () => {
-      for (let i = 0; i < 4; i++) {
-        const c = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "circle",
-        );
-        c.setAttribute("cx", "300");
-        c.setAttribute("cy", "1926");
-        c.setAttribute("r", String(gsap.utils.random(2.5, 4.5)));
-        c.setAttribute("fill", "#654321");
-        cup.appendChild(c);
-        gsap.to(c, {
-          physics2D: {
-            velocity: gsap.utils.random(110, 190),
-            angle: gsap.utils.random(-115, -65),
-            gravity: 900,
-          },
-          autoAlpha: 0,
-          duration: 0.7,
-          ease: "none",
-          onComplete: () => c.remove(),
-        });
-      }
-    };
-
     const TETHER = 120;
     const samples: { t: number; x: number; y: number }[] = [];
     let dragging = false;
     let grabX = 0;
     let grabY = 0;
+    let settle: gsap.core.Timeline | null = null;
 
     const down = (e: PointerEvent) => {
       dragging = true;
+      // Regrabbing mid-return must also stop the steam from fading back in.
+      settle?.kill();
       gsap.killTweensOf(pos);
+      spill?.setPhase("held");
       try {
         cup.setPointerCapture(e.pointerId);
       } catch {
@@ -264,6 +249,7 @@ const ctaBase =
 
     const settleHome = (delay: number) => {
       const tl = gsap.timeline();
+      settle = tl;
       tl.to(
         pos,
         {
@@ -308,6 +294,7 @@ const ctaBase =
         vy = (b.y - a.y) / dt;
       }
       const speed = Math.hypot(vx, vy);
+      spill?.setPhase(speed > 400 ? "thrown" : "settling");
       if (speed > 400) {
         gsap.to(pos, {
           x: pos.x + gsap.utils.clamp(-260, 260, vx * 0.14),
@@ -317,7 +304,6 @@ const ctaBase =
           ease: "power2.out",
           onUpdate: apply,
         });
-        if (speed > 1500) spawnSplash();
         settleHome(0.24);
       } else {
         settleHome(0);
